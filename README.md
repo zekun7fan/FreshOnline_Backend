@@ -1,49 +1,32 @@
-# 651project
-
-
-.
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── example
-│   │   │           └── freshonline
-│   │   │               ├── advice
-│   │   │               ├── constants
-│   │   │               ├── controller
-│   │   │               ├── dao
-│   │   │               ├── dto
-│   │   │               ├── enums
-│   │   │               ├── exception
-│   │   │               ├── interceptor
-│   │   │               ├── listener
-│   │   │               ├── model
-│   │   │               ├── schedule
-│   │   │               ├── service
-│   │   │               └── utils
-│   │   └── resources
-│   │       ├── mapper
-│   │       ├── static
-│   │       │   └── images
-│   │       └── templates
-│   └── test
-│       └── java
-│           └── com
-│               └── example
-│                   └── freshonline
-│                       └── controller
-└── target
-├── classes
-│   └── com
-│       └── example
-│           └── freshonline
-├── generated-sources
-│   └── annotations
-├── generated-test-sources
-│   └── test-annotations
-└── test-classes
-└── com
-└── example
-└── freshonline
-
-
+.  
+├── src  
+│   ├── main  
+│   │   ├── java   
+│   │   │   └── com  
+│   │   │       └── example  
+│   │   │           └── freshonline  
+│   │   │               ├── advice   **global exception handler config**   
+│   │   │               ├── config    **Spring custom config**    
+│   │   │               ├── constants  **some constants**   
+│   │   │               ├── controller  **handler http requests**  
+│   │   │               ├── dao  **read/write directly database**   
+│   │   │               ├── dto  **data transfer object**    
+│   │   │               ├── enums  **some enumerates**  
+│   │   │               ├── exception  **customized exception**     
+│   │   │               ├── interceptor  
+│   │   │               ├── listener  
+│   │   │               ├── model  **database entity class(POJO)**    
+│   │   │               ├── schedule  
+│   │   │               ├── service  **mediate between controller and dao**  
+│   │   │               └── utils  **some common utils**  
+│   │   └── resources  
+│   │       ├── mapper   **mybatis mapper config files**  
+│   │       ├── static  
+│   │       │   └── images  **store static images**    
+│   │       └── templates  
+│   └── test  
+│       └── java  
+│           └── com  
+│               └── example  
+│                   └── freshonline  
+│                       └── controller  **unit tests for controllers**    
