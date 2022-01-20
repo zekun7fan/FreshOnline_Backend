@@ -5,6 +5,7 @@ import com.example.freshonline.model.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.transform.Source;
+import java.util.ArrayList;
 import java.util.Date;
 
 @RestController
@@ -19,10 +20,10 @@ public class HelloWorld {
 
     @GetMapping("/hello/{user_id}/orders")
     public String h2(@PathVariable("user_id") String id,
-                     @RequestParam("pagesize") Integer pagesize,
-                     @RequestParam("pagenum") Integer pagenum,
-                     @RequestParam("start") Date start_date,
-                     @RequestParam("end") Date end){
+                     @RequestParam("pagesize") String pagesize,
+                     @RequestParam("pagenum") String pagenum,
+                     @RequestParam("start") String start_date,
+                     @RequestParam("end") String end){
         return "h2:   user_id="+ id+
                 "-----pagesize="+pagesize+
                 "----pagenum="+pagenum+
@@ -30,10 +31,33 @@ public class HelloWorld {
                 "----end="+end.toString();
     }
 
+    /**
+     *
+     * @param req
+     * @author
+     * @return
+     */
     @PostMapping("/hello/user")
-    public String h3(@RequestBody JSONObject req){
+    public JSONObject h3(@RequestBody JSONObject req){
+
+
+
         User user = req.toJavaObject(User.class);
-        return "h3:   "+ user.toString();
+        ArrayList<Integer> ids = new ArrayList<>(); // service
+//        return "h3:   "+ user.toString();
+        if (ids != null && !ids.isEmpty()){
+            JSONObject res = new JSONObject();
+            res.put("code",0);
+            res.put("msg","add user successful");
+            ids.add(user.getId());
+            res.put("data",ids);
+            System.out.println(res);
+            return res;
+        }else{
+
+        }
+
+//        JSONObject res = util.createResp(data, rule, succuess_msg, fail_msg)
     }
 
 

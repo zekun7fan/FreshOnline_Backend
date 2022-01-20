@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-public class Config implements WebMvcConfigurer {
+public class GlobalConfig implements WebMvcConfigurer {
 
     // handler cors problem
     @Override
