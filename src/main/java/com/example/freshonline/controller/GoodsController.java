@@ -27,22 +27,22 @@ public class GoodsController {
         ValidationChecker vc = new ValidationChecker();
 
         Integer MIN_PRICE = 0, MAX_PRICE = 10000;
-        Integer price_low = vc.string2Integer(price_low_req, MIN_PRICE);
-        Integer price_high = vc.string2Integer(price_high_req, MAX_PRICE);
+        Integer price_low = vc.str2int(price_low_req, MIN_PRICE);
+        Integer price_high = vc.str2int(price_high_req, MAX_PRICE);
         test.append("price_low=" + price_low);
         test.append(",price_high=" + price_high);
 
         test.append(",brands=" + brands);
 
-        Integer sort_type = vc.string2Integer(sort_type_req, 0);
+        Integer sort_type = vc.str2int(sort_type_req, 0);
         test.append(",sort_type=" + sort_type);
 
         test.append(",keyword=" + keyword);
 
-        Integer page = vc.string2Integer(page_req, 1);
+        Integer page = vc.str2int(page_req, 1);
         test.append(",page=" + page);
 
-        Integer category_id = vc.string2Integer(category_id_req, 0);
+        Integer category_id = vc.str2int(category_id_req, 0);
         test.append(",category_id=" + category_id);
 
         return test.toString();
