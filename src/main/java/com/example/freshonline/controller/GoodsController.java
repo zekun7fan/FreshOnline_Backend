@@ -5,9 +5,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Josh Sun
+ */
 @RestController
 public class GoodsController {
 
+
+    /**
+     * @author Josh Sun
+     * @param price_low_req String
+     * @param price_high_req String
+     * @param brands String
+     * @param sort_type_req String
+     * @param keyword String
+     * @param page_req String
+     * @param category_id_req String
+     * @return String
+     */
     @GetMapping("/goods")
     public String getSearchTest(@RequestParam(value = "price_low", required = false) String price_low_req,
                                 @RequestParam(value = "price_high", required = false) String price_high_req,
@@ -16,13 +31,6 @@ public class GoodsController {
                                 @RequestParam(value = "keyword", required = false) String keyword,
                                 @RequestParam(value = "page", required = false) String page_req,
                                 @RequestParam(value = "category_id", required = false) String category_id_req){
-        /*
-        * @description: A test method for getSearch()
-        * @author: Josh Sun
-        * @Param: price_low:dec2, price_high:dec2, brands:String,
-        * @Param: sort_type:int, keyword:String, page:int, category_id:int
-        * @return String
-        * */
         StringBuffer test = new StringBuffer();
         ValidationChecker vc = new ValidationChecker();
 
@@ -48,11 +56,11 @@ public class GoodsController {
         return test.toString();
     }
 
+    /**
+     * @author Josh Sun
+     */
     @GetMapping("*")
     public void defaultMappingTest(){
-        /*
-        * @author: Josh Sun
-        * @description: This is a default mapping*/
         System.out.println("default mapping");
     }
 }
