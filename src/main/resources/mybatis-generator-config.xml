@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--mybatis的代码生成器相关配置-->
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <properties resource="application.properties"/>
+
+    <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
+
+
+        <!-- jdbc连接 -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <!--高版本的 mysql-connector-java 需要设置 nullCatalogMeansCurrent=true-->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="com.example.freshonline.model" targetProject="src/main/java"/>
+
+
+        <!-- 生成Mapper.xml文件 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!-- 生成 XxxMapper.java 接口-->
+        <javaClientGenerator targetPackage="com.example.freshonline.dao" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+
+        <table schema="" tableName="stocked_goods"/>
+        <table schema="" tableName="category"/>
+        <table schema="" tableName="saled_goods"/>
+        <table schema="" tableName="order"/>
+        <table schema="" tableName="user"/>
+        <table schema="" tableName="payment_method"/>
+        <table schema="" tableName="cart"/>
+        <table schema="" tableName="favorite"/>
+
+    </context>
+</generatorConfiguration>
