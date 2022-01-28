@@ -11,7 +11,7 @@ public class CategoryController {
      * @author Josh Sun
      * @return JSON
      */
-    @GetMapping("/goods")
+    @GetMapping("/goods/categoryTree")
     public JSONObject getCategoryTree(){
         return new CategoryService().getCategoryTree();
     }

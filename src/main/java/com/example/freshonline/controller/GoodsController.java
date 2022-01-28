@@ -2,10 +2,17 @@ package com.example.freshonline.controller;
 
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.example.freshonline.model.StockedGoods;
+import com.example.freshonline.service.GoodsService;
 import com.example.freshonline.utils.ValidationChecker;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Josh Sun
@@ -13,49 +20,52 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GoodsController {
 
-
     /**
      * @author Josh Sun
-     * @param price_low_req String
-     * @param price_high_req String
-     * @param brands String
-     * @param sort_type_req String
-     * @param keyword String
-     * @param page_req String
-     * @param category_id_req String
-     * @return String
+     * @param price_low_req
+     * @param price_high_req
+     * @param brands
+     * @param sort_type_req
+     * @param keyword
+     * @param page_req
+     * @param category_id_req
+     * @return
      */
     @GetMapping("/goods")
-    public String getSearchTest(@RequestParam(value = "price_low", required = false) String price_low_req,
-                                @RequestParam(value = "price_high", required = false) String price_high_req,
-                                @RequestParam(value = "brands_id", required = false) String brands,
-                                @RequestParam(value = "sort_type", required = false) String sort_type_req,
-                                @RequestParam(value = "keyword", required = false) String keyword,
-                                @RequestParam(value = "page", required = false) String page_req,
-                                @RequestParam(value = "category_id", required = false) String category_id_req){
-        StringBuilder test = new StringBuilder();
+    public JSONObject getSearch(@RequestParam(value = "price_low", required = false) String price_low_req,
+                                    @RequestParam(value = "price_high", required = false) String price_high_req,
+                                    @RequestParam(value = "brands", required = false) String brands,
+                                    @RequestParam(value = "sort_type", required = false) String sort_type_req,
+                                    @RequestParam(value = "keyword", required = false) String keyword,
+                                    @RequestParam(value = "page", required = false) String page_req,
+                                    @RequestParam(value = "category_id", required = false) String category_id_req){
+
+        JSONObject param = new JSONObject();
         ValidationChecker vc = new ValidationChecker();
+        param.put("page", vc.str2int(page_req, 1));
+        if (price_low_req != null) param.put("price_low", vc.str2int(price_low_req, 0));
+        if (price_high_req != null) param.put("price_high", vc.str2int(price_high_req, 10000));
+        /**
+         * brands: ('brand1', 'brand2')
+         * @TODO: 如何前端检验，是否需要后端检验
+         */
+        if (brands != null) param.put("brands", brands);
+        if (keyword != null) param.put("keyword", keyword);
+        if ( (sort_type_req != null) && (vc.str2int(sort_type_req, 0) != 0) ){
+            param.put("sort_type", vc.str2int(sort_type_req, 0));
+        }
+        if ( (category_id_req != null) && (vc.str2int(category_id_req, 0) != 0) ){
+            param.put("category_id", vc.str2int(category_id_req, 0));
+        }
 
-        Integer MIN_PRICE = 0, MAX_PRICE = 10000;
-        Integer price_low = vc.str2int(price_low_req, MIN_PRICE);
-        Integer price_high = vc.str2int(price_high_req, MAX_PRICE);
-        test.append("price_low=").append(price_low);
-        test.append(",price_high=").append(price_high);
+        GoodsService gs = new GoodsService();
+        List<StockedGoods> output_by_service = gs.getSearch(param);
 
-        test.append(",brands=").append(brands);
-
-        Integer sort_type = vc.str2int(sort_type_req, 0);
-        test.append(",sort_type=").append(sort_type);
-
-        test.append(",keyword=").append(keyword);
-
-        Integer page = vc.str2int(page_req, 1);
-        test.append(",page=").append(page);
-
-        Integer category_id = vc.str2int(category_id_req, 0);
-        test.append(",category_id=").append(category_id);
-
-        return test.toString();
+        JSONObject output = new JSONObject();
+        String s = JSONObject.toJSONString(output_by_service);
+        System.out.println(s);
+        output.put("Result", s);
+        return output;
     }
 
     /**
