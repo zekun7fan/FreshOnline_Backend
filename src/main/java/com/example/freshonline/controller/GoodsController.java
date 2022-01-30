@@ -4,15 +4,16 @@ package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.example.freshonline.constants.Constants;
+import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.service.GoodsService;
+import com.example.freshonline.utils.RespBuilder;
 import com.example.freshonline.utils.ValidationChecker;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Josh Sun
@@ -46,8 +47,7 @@ public class GoodsController {
         if (price_low_req != null) param.put("price_low", vc.str2int(price_low_req, 0));
         if (price_high_req != null) param.put("price_high", vc.str2int(price_high_req, 10000));
         /**
-         * brands: ('brand1', 'brand2')
-         * @TODO: 如何前端检验，是否需要后端检验
+         * brands:brand1, brand2 逗号分隔
          */
         if (brands != null) param.put("brands", brands);
         if (keyword != null) param.put("keyword", keyword);
@@ -59,20 +59,16 @@ public class GoodsController {
         }
 
         GoodsService gs = new GoodsService();
-        List<StockedGoods> output_by_service = gs.getSearch(param);
+        JSONObject output = gs.getSearch(param);
 
-        JSONObject output = new JSONObject();
-        String s = JSONObject.toJSONString(output_by_service);
-        System.out.println(s);
-        output.put("Result", s);
-        return output;
+        return RespBuilder.create(output, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
 
-    /**
-     * @author Josh Sun
-     */
-    @GetMapping("*")
-    public void defaultMappingTest(){
-        System.out.println("default mapping");
-    }
+//    /**
+//     * @author Josh Sun
+//     */
+//    @GetMapping("*")
+//    public void defaultMappingTest(){
+//        System.out.println("default mapping");
+//    }
 }

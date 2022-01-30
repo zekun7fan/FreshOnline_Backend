@@ -24,18 +24,6 @@ public class CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-//    /**
-//     * @author Josh Sun
-//     * @return JSON
-//     */
-//    public JSONObject getCategoryTree(){
-//        JSONObject output = new JSONObject();
-//
-//
-//        return output;
-//    }
-
-
     /**
      *
      * @return
