@@ -5,7 +5,9 @@ package com.example.freshonline.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSON;
+
 import com.example.freshonline.constants.Constants;
+
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.service.GoodsService;
@@ -20,6 +22,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Josh Sun
@@ -56,6 +61,12 @@ public class GoodsController {
     }
 
    /**
+    private final GoodsService goodsService;
+    public GoodsController(GoodsService goodsService){
+        this.goodsService=goodsService;
+    }
+
+    /**
      * @author Josh Sun
      * @param price_low_req
      * @param price_high_req
@@ -68,12 +79,12 @@ public class GoodsController {
      */
     @GetMapping("/goods")
     public JSONObject getSearch(@RequestParam(value = "price_low", required = false) String price_low_req,
-                                    @RequestParam(value = "price_high", required = false) String price_high_req,
-                                    @RequestParam(value = "brands", required = false) String brands,
-                                    @RequestParam(value = "sort_type", required = false) String sort_type_req,
-                                    @RequestParam(value = "keyword", required = false) String keyword,
-                                    @RequestParam(value = "page", required = false) String page_req,
-                                    @RequestParam(value = "category_id", required = false) String category_id_req){
+                                @RequestParam(value = "price_high", required = false) String price_high_req,
+                                @RequestParam(value = "brands", required = false) String brands,
+                                @RequestParam(value = "sort_type", required = false) String sort_type_req,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "page", required = false) String page_req,
+                                @RequestParam(value = "category_id", required = false) String category_id_req){
 
         JSONObject param = new JSONObject();
         ValidationChecker vc = new ValidationChecker();
@@ -98,6 +109,27 @@ public class GoodsController {
         return RespBuilder.create(output, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
 
+
+    /**
+     * @author Huang
+     */
+    @GetMapping("/weekly_special")
+    public JSONObject getWeeklySpecial(){
+        return RespBuilder.create(this.goodsService.getWeeklySpecial(), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
+    }
+    /**
+     * @author Huang
+     */
+    @GetMapping("/random_goods")
+    public JSONObject getRandomGoods(@RequestParam(value = "catogory_id_list", required = true) List<String> categoryIdList){
+        ArrayList<Integer> Idlist = new ArrayList<Integer>();
+        for(String categoryId: categoryIdList){
+            Integer CId = (new ValidationChecker()).str2int(categoryId,1);
+            Idlist.add(CId);
+        }
+        return RespBuilder.create(this.goodsService.getRandomGoods(Idlist), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
+    }
+
 //    /**
 //     * @author Josh Sun
 //     */
@@ -105,4 +137,5 @@ public class GoodsController {
 //    public void defaultMappingTest(){
 //        System.out.println("default mapping");
 //    }
+
 }

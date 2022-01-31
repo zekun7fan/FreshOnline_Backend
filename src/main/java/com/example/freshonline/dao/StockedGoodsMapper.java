@@ -117,4 +117,8 @@ public interface StockedGoodsMapper {
      * @mbg.generated Fri Jan 28 11:53:04 EST 2022
      */
     int updateByPrimaryKey(StockedGoods record);
+
+    List<StockedGoods> selectByOnsale();
+
+    List<StockedGoods> selectByCatogary(List<Integer> categoryIdList);
 }

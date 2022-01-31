@@ -3,6 +3,8 @@ package com.example.freshonline.service;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.freshonline.dao.CategoryMapper;
+import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.utils.ResultSetJSONConverter;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.freshonline.dao.GoodsCategoryMapper;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -24,6 +27,9 @@ import java.sql.ResultSet;
 @Service
 public class GoodsService {
 
+    @Autowired
+    private StockedGoodsMapper stockedGoodsMapper;
+
     final BigDecimal MIN_PRICE = BigDecimal.valueOf(0), MAX_PRICE = BigDecimal.valueOf(10000);
     
     @Autowired
@@ -34,28 +40,6 @@ public class GoodsService {
     public GoodsCategory goodsDetails(Integer id) throws Exception{
         GoodsCategory gc = goodsCategoryMapper.selectByGoodsID(id);
         return gc;
-
-        // String sql = "SELECT good.*, cate1.id as id1, cate1.name as name1, cate2.id as id2, cate2.name as name2, cate3.id as id3, cate3.name as name3 "
-        // +"FROM " 
-        // +"stocked_goods as good " 
-        // +"inner join category as cate3 "
-        // +"on good.category_id = cate3.id "
-        // +"inner join category as cate2 "
-        // +"on cate3.parent_id = cate2.id "
-        // +"inner join category as cate1 "
-        // +"on cate2.parent_id = cate1.id "
-        // +"where good.id = "+id.toString()+"; ";
-
-        // Class.forName("com.mysql.cj.jdbc.Driver");
-        // Properties pros;
-        // Connection conn = null;
-        // pros = new Properties();
-        // pros.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties"));
-        // Class.forName(pros.getProperty("spring.datasource.driver-class-name"));
-        // conn = DriverManager.getConnection(pros.getProperty("spring.datasource.url"), pros.getProperty("spring.datasource.username"), pros.getProperty("spring.datasource.password"));
-        // PreparedStatement ps = conn.prepareStatement(sql);
-        // ResultSet result = ps.executeQuery();
-        // return ResultSetJSONConverter.convert(result);
     }
 
 
@@ -218,6 +202,22 @@ public class GoodsService {
         output.put("goods_total", goods_total);
 
         return output;
+    }
+    /**
+     * @author Huang
+     */
+    public List<StockedGoods> getWeeklySpecial(){
+        return this.stockedGoodsMapper.selectByOnsale();
+    }
+    /**
+     * @author Huang
+     */
+    public List<StockedGoods> getRandomGoods(List<Integer> categoryIdList){
+        return this.stockedGoodsMapper.selectByCatogary(categoryIdList);
+    }
+
+    public StockedGoods getGoodsByPk(Integer Id){
+        return this.stockedGoodsMapper.selectByPrimaryKey(Id);
     }
 
 }
