@@ -1,7 +1,11 @@
 package com.example.freshonline.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.freshonline.dao.CategoryMapper;
+import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.model.StockedGoods;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,8 +17,11 @@ import java.util.Properties;
 import java.sql.ResultSet;
 import java.util.List;
 
-
+@Component
 public class GoodsService {
+
+    @Autowired
+    private StockedGoodsMapper stockedGoodsMapper;
 
     /**
      * @author Josh Sun
@@ -123,6 +130,22 @@ public class GoodsService {
         }
 
         return output;
+    }
+    /**
+     * @author Huang
+     */
+    public List<StockedGoods> getWeeklySpecial(){
+        return this.stockedGoodsMapper.selectByOnsale();
+    }
+    /**
+     * @author Huang
+     */
+    public List<StockedGoods> getRandomGoods(List<Integer> categoryIdList){
+        return this.stockedGoodsMapper.selectByCatogary(categoryIdList);
+    }
+
+    public StockedGoods getGoodsByPk(Integer Id){
+        return this.stockedGoodsMapper.selectByPrimaryKey(Id);
     }
 
 }
