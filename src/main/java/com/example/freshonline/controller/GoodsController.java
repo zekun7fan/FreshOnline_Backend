@@ -4,16 +4,22 @@ package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.example.freshonline.constants.Constants;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.service.GoodsService;
 import com.example.freshonline.utils.RespBuilder;
 import com.example.freshonline.utils.ValidationChecker;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.web.bind.annotation.*;
+import com.example.freshonline.model.joined_tables.GoodsCategory;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Josh Sun
@@ -21,7 +27,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GoodsController {
 
-    /**
+    @Autowired
+    private GoodsService goodsService;
+
+    @GetMapping("/goodsdetails/{goods_id}")
+    public JSONObject getGoodsDetails(@PathVariable("goods_id") String id) {
+        JSONObject res = new JSONObject();
+        try{
+            Integer goods_id = Integer.parseInt(id);
+            GoodsCategory gc = goodsService.goodsDetails(goods_id);
+            JSONObject data = (JSONObject) JSONObject.toJSON(gc);
+            res.put("code", 0);
+            res.put("data",data);
+            return res;
+        }
+        catch(Exception e){
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            
+            res.put("code", 1);
+            res.put("msg", sw.toString());
+            return res;
+
+        }
+
+        
+    }
+
+   /**
      * @author Josh Sun
      * @param price_low_req
      * @param price_high_req

@@ -2,6 +2,7 @@ package com.example.freshonline.model;
 
 import java.math.BigDecimal;
 
+
 public class StockedGoods {
     /**
      *
@@ -496,5 +497,12 @@ public class StockedGoods {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString() + " "+ getName() + " " + getId() + " " + getDescription();
     }
 }
