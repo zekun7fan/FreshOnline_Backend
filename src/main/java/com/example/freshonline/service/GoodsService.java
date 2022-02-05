@@ -54,6 +54,8 @@ public class GoodsService {
      *   price_range: List<BigDecimal> price_range: Arrays.asList(minInit: MAX_PRICE, maxInit: MIN_PRICE)
      *   goods_total: Integer goods_total
      */
+    Integer numPerRow = 4, rowsPerPage = 5;
+
     public JSONObject getSearch(JSONObject param){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -122,7 +124,6 @@ public class GoodsService {
         }
 
         String sql_page;
-        Integer numPerRow = 5, rowsPerPage = 5;
         Integer item_low = (page-1) * numPerRow * rowsPerPage, item_high = page * numPerRow * rowsPerPage;
         sql_page = "\n limit " + item_low + "," + item_high;
 
@@ -200,6 +201,7 @@ public class GoodsService {
         output.put("price_range", JSONObject.toJSONString(price_range));
         output.put("brand_list", JSONObject.toJSONString(new ArrayList<>(brand_set)));
         output.put("goods_total", goods_total);
+        output.put("page", page);
 
         return output;
     }
