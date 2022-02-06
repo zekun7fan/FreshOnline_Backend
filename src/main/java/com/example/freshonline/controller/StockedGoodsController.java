@@ -15,7 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.freshonline.model.joined_tables.GoodsCategory;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Josh Sun
@@ -27,6 +33,37 @@ public class StockedGoodsController {
     @Autowired
     private StockedGoodsService stockedGoodsService;
 
+
+    @GetMapping("/goodsdetails/{goods_id}")
+    public JSONObject getGoodsDetails(@PathVariable("goods_id") String id) {
+        JSONObject res = new JSONObject();
+        try{
+            Integer goods_id = Integer.parseInt(id);
+            GoodsCategory gc = stockedGoodsService.goodsDetails(goods_id);
+            JSONObject data = (JSONObject) JSONObject.toJSON(gc);
+            res.put("code", 0);
+            res.put("data",data);
+            return res;
+        }
+        catch(Exception e){
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            
+            res.put("code", 1);
+            res.put("msg", sw.toString());
+            return res;
+
+        }
+
+        
+    }
+
+   /**
+    private final GoodsService goodsService;
+    public GoodsController(GoodsService goodsService){
+        this.goodsService=goodsService;
+    }
 
     /**
      * @author Josh Sun
@@ -41,12 +78,12 @@ public class StockedGoodsController {
      */
     @GetMapping("/goods")
     public JSONObject getSearch(@RequestParam(value = "price_low", required = false) String price_low_req,
-                                    @RequestParam(value = "price_high", required = false) String price_high_req,
-                                    @RequestParam(value = "brands", required = false) String brands,
-                                    @RequestParam(value = "sort_type", required = false) String sort_type_req,
-                                    @RequestParam(value = "keyword", required = false) String keyword,
-                                    @RequestParam(value = "page", required = false) String page_req,
-                                    @RequestParam(value = "category_id", required = false) String category_id_req){
+                                @RequestParam(value = "price_high", required = false) String price_high_req,
+                                @RequestParam(value = "brands", required = false) String brands,
+                                @RequestParam(value = "sort_type", required = false) String sort_type_req,
+                                @RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "page", required = false) String page_req,
+                                @RequestParam(value = "category_id", required = false) String category_id_req){
 
         JSONObject param = new JSONObject();
         ValidationChecker vc = new ValidationChecker();
@@ -54,8 +91,7 @@ public class StockedGoodsController {
         if (price_low_req != null) param.put("price_low", vc.str2int(price_low_req, 0));
         if (price_high_req != null) param.put("price_high", vc.str2int(price_high_req, 10000));
         /**
-         * brands: ('brand1', 'brand2')
-         * @TODO: 如何前端检验，是否需要后端检验
+         * brands:brand1, brand2 逗号分隔
          */
         if (brands != null) param.put("brands", brands);
         if (keyword != null) param.put("keyword", keyword);
@@ -67,21 +103,18 @@ public class StockedGoodsController {
         }
 
         StockedGoodsService gs = new StockedGoodsService();
-        List<StockedGoods> output_by_service = gs.getSearch(param);
+        JSONObject output = gs.getSearch(param);
 
-        JSONObject output = new JSONObject();
-        String s = JSONObject.toJSONString(output_by_service);
-        System.out.println(s);
-        output.put("Result", s);
-        return output;
+        return RespBuilder.create(output, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
 
+
     /**
-     * @author Josh Sun
+     * @author Huang
      */
-    @GetMapping("*")
-    public void defaultMappingTest(){
-        System.out.println("default mapping");
+    @GetMapping("/weekly_special")
+    public JSONObject getWeeklySpecial(){
+        return RespBuilder.create(stockedGoodsService.getWeeklySpecial(), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
     }
 
 
@@ -118,5 +151,17 @@ public class StockedGoodsController {
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
+    /**
+     * @author Huang
+     */
+    @GetMapping("/random_goods")
+    public JSONObject getRandomGoods(@RequestParam(value = "catogory_id_list", required = true) List<String> categoryIdList){
+        ArrayList<Integer> Idlist = new ArrayList<Integer>();
+        for(String categoryId: categoryIdList){
+            Integer CId = (new ValidationChecker()).str2int(categoryId,1);
+            Idlist.add(CId);
+        }
+        return RespBuilder.create(stockedGoodsService.getRandomGoods(Idlist), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
+    }
 
 }

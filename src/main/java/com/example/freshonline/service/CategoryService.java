@@ -34,18 +34,6 @@ public class CategoryService {
     @Autowired
     private StockedGoodsMapper stockedGoodsMapper;
 
-//    /**
-//     * @author Josh Sun
-//     * @return JSON
-//     */
-//    public JSONObject getCategoryTree(){
-//        JSONObject output = new JSONObject();
-//
-//
-//        return output;
-//    }
-
-
     /**
      *
      * @return

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.freshonline.dao.GoodsCategoryMapper">
+  <resultMap id="selectByGoodsIDMap" type="com.example.freshonline.model.joined_tables.GoodsCategory">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="storage" jdbcType="DECIMAL" property="storage" />
+    <result column="sales" jdbcType="DECIMAL" property="sales" />
+    <result column="onsale" jdbcType="TINYINT" property="onsale" />
+    <result column="sale_price" jdbcType="DECIMAL" property="salePrice" />
+    <result column="rate" jdbcType="DECIMAL" property="rate" />
+    <result column="rate_count" jdbcType="INTEGER" property="rateCount" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="is_new" jdbcType="TINYINT" property="isNew" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result property="cateid" jdbcType="INTEGER" column="id1" />
+    <association property="cate1" javaType="com.example.freshonline.model.Category">
+      <id property="id" jdbcType="INTEGER" column="id1"/>
+      <result property="name" column="name1" />
+    </association>
+    <association property="cate2" javaType="com.example.freshonline.model.Category">
+      <id property="id" column="id2" />
+      <result property="name" column="name2" />
+    </association>
+    <association property="cate3" javaType="com.example.freshonline.model.Category">
+      <id property="id" column="id3"/>
+      <result property="name" column="name3"/>
+    </association>
+  </resultMap>
+
+  <select id="selectByGoodsID" parameterType="int" resultMap="selectByGoodsIDMap">
+    SELECT good.*, cate1.id as id1, cate1.name as name1, cate2.id as id2, cate2.name as name2, cate3.id as id3, cate3.name as name3 
+    FROM 
+    stocked_goods as good 
+    inner join category as cate3
+    on good.category_id = cate3.id
+    inner join category as cate2
+    on cate3.parent_id = cate2.id
+    inner join category as cate1
+    on cate2.parent_id = cate1.id
+    where good.id = #{id}
+  </select>
+
+</mapper>

@@ -18,14 +18,6 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
-//    /**
-//     * @author Josh Sun
-//     * @return JSON
-//     */
-//    @GetMapping("/goods/categoryTree")
-//    public JSONObject getCategoryTree(){
-//        return new CategoryService().getCategoryTree();
-//    }
 
     @GetMapping("/goods/categoryTree")
     public JSONObject getCategoryTree(){
