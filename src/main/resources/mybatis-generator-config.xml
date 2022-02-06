@@ -8,6 +8,7 @@
 
     <properties resource="application.properties"/>
 
+
     <context id="myContext" targetRuntime="MyBatis3" defaultModelType="flat">
 
 

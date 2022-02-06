@@ -3,22 +3,30 @@ package com.example.freshonline.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONArray;
+import com.example.freshonline.constants.Constants;
+import com.example.freshonline.dto.GoodsPicInfo;
+import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.StockedGoods;
-import com.example.freshonline.service.GoodsService;
+import com.example.freshonline.service.StockedGoodsService;
+import com.example.freshonline.utils.PicUtils;
+import com.example.freshonline.utils.RespBuilder;
 import com.example.freshonline.utils.ValidationChecker;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Josh Sun
  */
 @RestController
-public class GoodsController {
+public class StockedGoodsController {
+
+
+    @Autowired
+    private StockedGoodsService stockedGoodsService;
+
 
     /**
      * @author Josh Sun
@@ -58,7 +66,7 @@ public class GoodsController {
             param.put("category_id", vc.str2int(category_id_req, 0));
         }
 
-        GoodsService gs = new GoodsService();
+        StockedGoodsService gs = new StockedGoodsService();
         List<StockedGoods> output_by_service = gs.getSearch(param);
 
         JSONObject output = new JSONObject();
@@ -75,4 +83,40 @@ public class GoodsController {
     public void defaultMappingTest(){
         System.out.println("default mapping");
     }
+
+
+    @PostMapping("/goods/pic/{id}")
+    public JSONObject uploadGoodsPictures(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile multipartFile){
+        GoodsPicInfo info = PicUtils.save(id, multipartFile);
+        return RespBuilder.create(info, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+    }
+
+    @DeleteMapping("/goods/pic/{id}")
+    public JSONObject deleteGoodsPictures(@PathVariable("id") Integer id, @RequestBody JSONObject jsonObject){
+        String url = jsonObject.getString("url");
+        GoodsPicInfo info = PicUtils.delete(id, url);
+        return RespBuilder.create(info, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+    }
+
+    @PostMapping("/goods")
+    public JSONObject addGoods(@RequestBody JSONObject jsonObject){
+        StockedGoods goods = jsonObject.toJavaObject(StockedGoods.class);
+        boolean res = stockedGoodsService.addGoods(goods);
+        return RespBuilder.create(res, VerifyRule.TRUE);
+    }
+
+    @PutMapping("/goods")
+    public JSONObject updateGoods(@RequestBody JSONObject jsonObject){
+        StockedGoods goods = jsonObject.toJavaObject(StockedGoods.class);
+        boolean res = stockedGoodsService.updateGoods(goods);
+        return RespBuilder.create(res, VerifyRule.TRUE);
+    }
+
+    @DeleteMapping("/goods/{id}")
+    public JSONObject deleteGoods(@PathVariable("id") Integer id){
+        boolean res = stockedGoodsService.deleteGoods(id);
+        return RespBuilder.create(res, VerifyRule.TRUE);
+    }
+
+
 }

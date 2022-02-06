@@ -1,0 +1,8 @@
+2022-02-05 22:46:54.846  INFO 7211 --- [main] c.e.freshonline.FreshOnlineApplication   : Starting FreshOnlineApplication using Java 11.0.12 on fanzekundeMacBook-Pro.local with PID 7211 (/Users/fanzekun/IdeaProjects/FreshOnline/target/classes started by fanzekun in /Users/fanzekun/IdeaProjects/FreshOnline)
+2022-02-05 22:46:54.857  INFO 7211 --- [main] c.e.freshonline.FreshOnlineApplication   : No active profile set, falling back to default profiles: default
+2022-02-05 22:46:55.323  INFO 7211 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-02-05 22:46:55.323  INFO 7211 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-02-05 22:46:55.354  INFO 7211 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-02-05 22:46:55.807  INFO 7211 --- [main] c.e.freshonline.FreshOnlineApplication   : Started FreshOnlineApplication in 1.111 seconds (JVM running for 1.816)
+2022-02-05 22:51:56.741  INFO 7211 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-02-05 22:53:54.806  INFO 7211 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-0} closing ...

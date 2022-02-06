@@ -22,4 +22,28 @@ public class RespBuilder {
         }
         return resp;
     }
+
+
+    public static JSONObject create(Object data, VerifyRule rule){
+        return create(data, rule, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+    }
+
+    public static JSONObject createFailedRsp(String fail_msg){
+        JSONObject resp = new JSONObject();
+        resp.put(Constants.CODE, Constants.FAIL_CODE);
+        resp.put(Constants.MSG, fail_msg);
+        return resp;
+    }
+
+
+    public static JSONObject createFailedRsp(Integer errorCode, String fail_msg){
+        JSONObject resp = new JSONObject();
+        resp.put(Constants.CODE, errorCode);
+        resp.put(Constants.MSG, fail_msg);
+        return resp;
+    }
+
+
+
+
 }

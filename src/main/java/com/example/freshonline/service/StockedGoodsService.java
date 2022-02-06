@@ -1,7 +1,13 @@
 package com.example.freshonline.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.freshonline.dao.SaledGoodsMapper;
+import com.example.freshonline.dao.StockedGoodsMapper;
+import com.example.freshonline.model.SaledGoodsExample;
 import com.example.freshonline.model.StockedGoods;
+import com.example.freshonline.utils.PicUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,7 +20,15 @@ import java.sql.ResultSet;
 import java.util.List;
 
 
-public class GoodsService {
+@Service
+public class StockedGoodsService {
+
+
+    @Autowired
+    private StockedGoodsMapper stockedGoodsMapper;
+
+    @Autowired
+    private SaledGoodsMapper saledGoodsMapper;
 
     /**
      * @author Josh Sun
@@ -125,4 +139,39 @@ public class GoodsService {
         return output;
     }
 
+
+
+    public boolean addGoods(StockedGoods goods){
+        Integer dummyId = goods.getId();
+        goods.setId(null);
+        if (stockedGoodsMapper.insertSelective(goods) != 1){
+            return false;
+        }
+        Integer id = goods.getId();
+        String pic = goods.getPic();
+        String new_pic = PicUtils.change(dummyId, id, pic);
+        goods.setPic(new_pic);
+        return stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
+    }
+
+
+    public boolean updateGoods(StockedGoods goods){
+        return stockedGoodsMapper.updateByPrimaryKeySelective(goods)== 1;
+    }
+
+    public boolean deleteGoods(Integer id){
+        SaledGoodsExample saledGoodsExample = new SaledGoodsExample();
+        saledGoodsExample.createCriteria().andGoodsIdEqualTo(id);
+        long num = saledGoodsMapper.countByExample(saledGoodsExample);
+        if (num > 0){
+            // mark goods off the shelf, but not delete from db
+            StockedGoods goods = new StockedGoods();
+            goods.setId(id);
+            goods.setActive(false);
+            return stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
+        }else{
+            // delete goods from stocked_goods table
+            return stockedGoodsMapper.deleteByPrimaryKey(id)==1;
+        }
+    }
 }

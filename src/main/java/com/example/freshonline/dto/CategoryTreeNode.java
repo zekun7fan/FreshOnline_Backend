@@ -10,8 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryTreeNode {
-    private Integer value;
-    private String label;
+    private Integer id;
+    private String name;
+    private Integer level;
     private List<CategoryTreeNode> children;
 }
 

@@ -23,6 +23,13 @@ public enum VerifyRule implements VerifyRespData {
             return collection != null && !collection.isEmpty();
         }
     },
+    COLLECTION_EMPTY{
+        @Override
+        public boolean verify(Object data) {
+            Collection<?> collection = (Collection<?>) data;
+            return collection != null && collection.isEmpty();
+        }
+    },
     GREATER_THAN_ZERO{
         @Override
         public boolean verify(Object data) {
