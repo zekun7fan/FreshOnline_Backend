@@ -1,5 +1,7 @@
 package com.example.freshonline.dao;
 
+import com.example.freshonline.dto.SearchParams;
+import com.example.freshonline.dto.SearchResultInfo;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.model.StockedGoodsExample;
 import java.util.List;
@@ -121,4 +123,8 @@ public interface StockedGoodsMapper {
     List<StockedGoods> selectByOnsale();
 
     List<StockedGoods> selectByCatogary(List<Integer> categoryIdList);
+
+    List<StockedGoods> selectByFilter(@Param("param") SearchParams param);
+
+    SearchResultInfo searchInfo(@Param("param") SearchParams param);
 }

@@ -567,4 +567,95 @@
     order by rand()
     limit 6
   </select>
+
+
+  <select id="selectByFilter" parameterType="com.example.freshonline.dto.SearchParams" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from stocked_goods
+    <where>
+      <if test="param!=null and param.price_low!=-1">
+        and case
+        when onsale = 1 then sale_price else price end
+        >= ${param.price_low}
+      </if>
+      <if test="param!=null and param.price_high!=-1">
+        and case
+        when onsale = 1 then sale_price else price end
+        &lt;= ${param.price_high}
+      </if>
+      <if test="param!=null and param.category_id!=-1">
+        and category_id = ${param.category_id}
+      </if>
+      <if test="param!=null and param.keyword!=null">
+        and name like CONCAT('%',#{param.keyword},'%')
+      </if>
+      <if test="param!=null and param.brands!=null">
+        and brand in ${param.brands}
+      </if>
+    </where>
+    <if test="param!=null and param.sort_type!=-1">
+      <if test="param.sort_type==1">
+        order by case
+        when onsale = 1 then sale_price else price end
+        asc
+      </if>
+      <if test="param.sort_type==2">
+        order by case
+        when onsale = 1 then sale_price else price end
+        desc
+      </if>
+      <if test="param.sort_type==3">
+        order by sales asc
+      </if>
+      <if test="param.sort_type==4">
+        order by sales desc
+      </if>
+    </if>
+    <if test="param!=null and param.item_low!=-1 and param.item_high!=-1">
+      limit ${param.item_low}, ${param.item_high}
+    </if>
+  </select>
+  <resultMap id="InfoResultMap" type="com.example.freshonline.dto.SearchResultInfo">
+    <result column="min_price" jdbcType="DECIMAL" property="min_price" />
+    <result column="max_price" jdbcType="DECIMAL" property="max_price" />
+    <result column="goods_total" jdbcType="INTEGER" property="goods_total" />
+    <result column="brand_list" jdbcType="VARCHAR" property="brand_list" />
+  </resultMap>
+  <select id="searchInfo" parameterType="com.example.freshonline.dto.SearchParams" resultMap="InfoResultMap">
+    select min(
+    case
+    when onsale = 1 then sale_price else price end
+    ) as min_price,
+    max(
+    case
+    when onsale = 1 then sale_price else price end
+    ) as max_price,
+    count(id) as goods_total,
+    GROUP_CONCAT(distinct brand, '') as brand_list
+    from stocked_goods
+    <where>
+      <if test="param!=null and param.price_low!=-1">
+        and case
+        when onsale = 1 then sale_price else price end
+        >= ${param.price_low}
+      </if>
+      <if test="param!=null and param.price_high!=-1">
+        and case
+        when onsale = 1 then sale_price else price end
+        &lt;= ${param.price_high}
+      </if>
+      <if test="param!=null and param.category_id!=-1">
+        and category_id = ${param.category_id}
+      </if>
+      <if test="param!=null and param.keyword!=null">
+        and name like CONCAT('%',#{param.keyword},'%')
+      </if>
+      <if test="param!=null and param.brands!=null">
+        and brand in ${param.brands}
+      </if>
+    </where>
+  </select>
 </mapper>
