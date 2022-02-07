@@ -23,19 +23,20 @@ import java.time.LocalDateTime;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
+    private static final String userTokenKey = "user_token";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        System.out.println("jjjjj");
         return true;
     }
 
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        String user_token = request.getHeader("user_token");
+        String user_token = request.getHeader(userTokenKey);
         String token = JwtUtils.updateToken(user_token);
-        response.setHeader("user_token", token);
+        response.setHeader(userTokenKey, token);
     }
 
     private boolean isTokenValid(HttpServletRequest request, HttpServletResponse response){
