@@ -11,6 +11,7 @@ import com.example.freshonline.utils.TimeUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +31,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
 
-
-
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        String user_token = request.getHeader("user_token");
+        String token = JwtUtils.updateToken(user_token);
+        response.setHeader("user_token", token);
+    }
 
     private boolean isTokenValid(HttpServletRequest request, HttpServletResponse response){
         String token = request.getHeader(Constants.TOKEN_KEY);

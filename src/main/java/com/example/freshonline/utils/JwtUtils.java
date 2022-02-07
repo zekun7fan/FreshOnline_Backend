@@ -51,4 +51,17 @@ public class JwtUtils {
             return null;
         }
     }
+
+
+    public static String updateToken(String oldToken){
+        if (oldToken == null){
+            return null;
+        }
+        UserJwtPayload userJwtPayload = verifyToken(oldToken);
+        if (userJwtPayload == null){
+            return null;
+        }
+        userJwtPayload.setExpire(TimeUtils.after30days());
+        return createToken(userJwtPayload);
+    }
 }
