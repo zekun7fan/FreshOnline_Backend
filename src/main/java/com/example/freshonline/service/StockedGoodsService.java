@@ -211,9 +211,14 @@ public class StockedGoodsService {
         List<StockedGoods> stockedGoods = stockedGoodsMapper.selectByFilter(param);
         SearchResultInfo info = stockedGoodsMapper.searchInfo(param);
         System.out.println(info);
-        List<BigDecimal> price_range = new ArrayList<>(Arrays.asList(info.getMin_price(), info.getMax_price()));
-        Integer goods_total = info.getGoods_total();
-        List<String> brand_list = Arrays.asList(info.getBrand_list().split(","));
+        List<BigDecimal> price_range = null;
+        Integer goods_total = 0;
+        List<String> brand_list = null;
+        if (info.getGoods_total() != 0){
+            price_range = new ArrayList<>(Arrays.asList(info.getMin_price(), info.getMax_price()));
+            goods_total = info.getGoods_total();
+            brand_list = Arrays.asList(info.getBrand_list().split(","));
+        }
 
         JSONObject output = new JSONObject();
         output.put("goods_list", JSONObject.toJSONString(stockedGoods));
