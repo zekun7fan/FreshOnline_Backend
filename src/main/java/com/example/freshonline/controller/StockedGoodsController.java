@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -83,7 +84,8 @@ public class StockedGoodsController {
                                 @RequestParam(value = "sort_type", required = false) String sort_type_req,
                                 @RequestParam(value = "keyword", required = false) String keyword,
                                 @RequestParam(value = "page", required = false) String page_req,
-                                @RequestParam(value = "category_id", required = false) String category_id_req){
+                                @RequestParam(value = "category_id", required = false) String category_id_req,
+                                @RequestParam Map<String, String> map){
 
         JSONObject param = new JSONObject();
         ValidationChecker vc = new ValidationChecker();

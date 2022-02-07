@@ -5,6 +5,7 @@ import com.example.freshonline.dao.SaledGoodsMapper;
 import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.model.SaledGoodsExample;
 import com.example.freshonline.model.StockedGoods;
+import com.example.freshonline.model.StockedGoodsExample;
 import com.example.freshonline.utils.PicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -255,5 +256,12 @@ public class StockedGoodsService {
             // delete goods from stocked_goods table
             return stockedGoodsMapper.deleteByPrimaryKey(id)==1;
         }
+    }
+
+
+    public void ff(){
+        StockedGoodsExample example = new StockedGoodsExample();
+        StockedGoodsExample.Criteria criteria = example.createCriteria();
+        List<StockedGoods> stockedGoods = stockedGoodsMapper.selectByExample(example);
     }
 }
