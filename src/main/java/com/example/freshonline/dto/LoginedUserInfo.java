@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginedUserInfo implements VerifyRequestData<LoginedUserInfo>{
+public class LoginedUserInfo{
 
     private Integer id;
 
@@ -20,8 +20,4 @@ public class LoginedUserInfo implements VerifyRequestData<LoginedUserInfo>{
 
     private String token;
 
-    @Override
-    public LoginedUserInfo verifyBody(Map<String, String> requestBodyMap) {
-        return VerifyRequestData.super.verifyBody(requestBodyMap);
-    }
 }

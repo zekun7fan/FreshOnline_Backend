@@ -258,10 +258,4 @@ public class StockedGoodsService {
         }
     }
 
-
-    public void ff(){
-        StockedGoodsExample example = new StockedGoodsExample();
-        StockedGoodsExample.Criteria criteria = example.createCriteria();
-        List<StockedGoods> stockedGoods = stockedGoodsMapper.selectByExample(example);
-    }
 }

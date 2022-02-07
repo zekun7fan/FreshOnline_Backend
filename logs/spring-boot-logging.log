@@ -487,3 +487,5 @@ java.lang.IllegalArgumentException: Invalid character found in the request targe
 2022-02-06 21:22:14.226 DEBUG 24221 --- [http-nio-8080-exec-9] c.e.f.d.CategoryMapper.selectByExample   : ==>  Preparing: select id, parent_id, name, level from category
 2022-02-06 21:22:14.227 DEBUG 24221 --- [http-nio-8080-exec-9] c.e.f.d.CategoryMapper.selectByExample   : ==> Parameters: 
 2022-02-06 21:22:14.230 DEBUG 24221 --- [http-nio-8080-exec-9] c.e.f.d.CategoryMapper.selectByExample   : <==      Total: 20
+2022-02-06 21:47:02.201  INFO 24221 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2022-02-06 21:47:02.205  INFO 24221 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
