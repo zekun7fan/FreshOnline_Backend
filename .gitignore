@@ -33,8 +33,5 @@ build/
 .vscode/
 
 
-### database setup ###
-src/main/resources/application.properties
-
 ### logs ###
 logs/*
