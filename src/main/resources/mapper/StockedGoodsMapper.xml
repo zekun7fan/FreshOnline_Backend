@@ -587,8 +587,8 @@
         when onsale = 1 then sale_price else price end
         &lt;= ${param.price_high}
       </if>
-      <if test="param!=null and param.category_id!=-1">
-        and category_id = ${param.category_id}
+      <if test="param!=null and param.category_id!=null">
+        and category_id in ${param.category_id}
       </if>
       <if test="param!=null and param.keyword!=null">
         and name like CONCAT('%',#{param.keyword},'%')
@@ -649,8 +649,8 @@
         when onsale = 1 then sale_price else price end
         &lt;= ${param.price_high}
       </if>
-      <if test="param!=null and param.category_id!=-1">
-        and category_id = ${param.category_id}
+      <if test="param!=null and param.category_id!=null">
+        and category_id in ${param.category_id}
       </if>
       <if test="param!=null and param.keyword!=null">
         and name like CONCAT('%',#{param.keyword},'%')

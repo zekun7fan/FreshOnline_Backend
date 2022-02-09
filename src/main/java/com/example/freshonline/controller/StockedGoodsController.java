@@ -34,10 +34,8 @@ import java.util.Map;
 @RestController
 public class StockedGoodsController {
 
-
     @Autowired
     private StockedGoodsService stockedGoodsService;
-
 
     @GetMapping("/goodsdetails/{goods_id}")
     public JSONObject getGoodsDetails(@PathVariable("goods_id") String id) {
@@ -58,10 +56,7 @@ public class StockedGoodsController {
             res.put("code", 1);
             res.put("msg", sw.toString());
             return res;
-
         }
-
-        
     }
 
    /**
@@ -77,28 +72,8 @@ public class StockedGoodsController {
    @GetMapping("/goods")
    public JSONObject getSearch(@RequestParam Map<String, String> map){
 
-//        JSONObject param = new JSONObject();
-//        ValidationChecker vc = new ValidationChecker();
-//        param.put("page", vc.str2int(page_req, 1));
-//        if (price_low_req != null) param.put("price_low", vc.str2int(price_low_req, 0));
-//        if (price_high_req != null) param.put("price_high", vc.str2int(price_high_req, 10000));
-//        /**
-//         * brands:brand1, brand2 逗号分隔
-//         */
-//        if (brands != null) param.put("brands", brands);
-//        if (keyword != null) param.put("keyword", keyword);
-//        if ( (sort_type_req != null) && (vc.str2int(sort_type_req, 0) != 0) ){
-//            param.put("sort_type", vc.str2int(sort_type_req, 0));
-//        }
-//        if ( (category_id_req != null) && (vc.str2int(category_id_req, 0) != 0) ){
-//            param.put("category_id", vc.str2int(category_id_req, 0));
-//        }
-//
-//        JSONObject output = stockedGoodsService.getSearch(param);
-//
-//        return RespBuilder.create(output, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
-
-       SearchParams param = new SearchParams(map);
+       SearchParams param = new SearchParams();
+       param = param.verifyParams(map);
        System.out.println(param);
 
        JSONObject output = stockedGoodsService.getSearch(param);
