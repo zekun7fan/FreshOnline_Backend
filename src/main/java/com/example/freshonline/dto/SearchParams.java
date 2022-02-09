@@ -48,9 +48,9 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
         }
         if (param.containsKey("keyword")) {
             if (param.get("keyword") != null && param.get("keyword").length() > 0) {
-                this.setKeyword(param.get("keyword"));
+                output.setKeyword(param.get("keyword"));
             }
-            else { this.setKeyword(null); }
+            else { output.setKeyword(null); }
         }
         if (param.containsKey("sort_type")) { output.setSort_type(vc.str2int(param.get("sort_type"), -1)); }
         if (param.containsKey("category_id")) {
