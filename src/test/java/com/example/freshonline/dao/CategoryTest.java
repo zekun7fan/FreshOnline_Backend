@@ -6,9 +6,22 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
+import javax.servlet.ServletContext;
+import javax.xml.transform.Source;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 @MapperScan("com.example.freshonline.dao")
@@ -17,6 +30,12 @@ public class CategoryTest {
     
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ServletContext servletContext;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
     
     
     @Test
@@ -29,10 +48,15 @@ public class CategoryTest {
 
     @Test
     public void test2(){
-        Category category = new Category();
-        category.setParentId(0);
-        category.setName("aaa");
-        category.setLevel(1);
-        categoryMapper.insert(category);
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:static");
+            System.out.println(file.exists());
+        } catch (FileNotFoundException e) {
+            System.out.println("***");
+        }
+
     }
 }
+
+
