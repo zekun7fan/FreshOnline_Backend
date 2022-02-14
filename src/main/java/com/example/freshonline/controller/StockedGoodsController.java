@@ -133,6 +133,7 @@ public class StockedGoodsController {
             Integer CId = (new ValidationChecker()).str2int(categoryId,1);
             Idlist.add(CId);
         }
+        if(Idlist.isEmpty()) Idlist.add(-1);
         return RespBuilder.create(stockedGoodsService.getRandomGoods(Idlist), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
     }
 

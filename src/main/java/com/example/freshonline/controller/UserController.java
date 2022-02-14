@@ -47,18 +47,21 @@ public class UserController {
         }
     }
     @GetMapping("/user/update_address")
-    public JSONObject updateUserAddress(@RequestParam("user_id") Integer userId,
+    public JSONObject updateUserAddress(@RequestParam("user_id") String userId,
                                          @RequestParam("address") String address){
+        Integer userIdInt = (new ValidationChecker()).str2int(userId,1);
         User user = new User();
-        user.setId(userId);
+        user.setId(userIdInt);
         user.setLocation(address);
         userService.updateUserSelective(user);
-        return RespBuilder.create(userService.getUserById(userId), VerifyRule.NOT_NULL,"success","Update fail");
+        return RespBuilder.create(userService.getUserById(userIdInt), VerifyRule.NOT_NULL,"success","Update fail");
     }
 
-    @GetMapping("/user/{user_id}/orders")
-    public JSONObject serachUserOrders(@PathVariable("user_id") Integer id){
-        return RespBuilder.create(orderService.getOrderByUserId(id),VerifyRule.COLLECTION_NOT_EMPTY,"success","Query error");
+    @GetMapping("/user/orders")
+    public JSONObject searchUserOrders(@RequestParam("user_id") String userId,@RequestParam("position") String position){
+        Integer userIdInt = (new ValidationChecker()).str2int(userId,1);
+        Integer positionInt = (new ValidationChecker()).str2int(position,1);
+        return RespBuilder.create(orderService.getOrderByUserId(userIdInt,positionInt),VerifyRule.COLLECTION_NOT_EMPTY,"success","Query error");
     }
 
     @PostMapping("/login")
