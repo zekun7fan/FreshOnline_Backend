@@ -39,7 +39,7 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
         ValidationChecker vc = new ValidationChecker();
         if (param.containsKey("page")){ output.setPage(vc.str2int(param.get("page"), -1)); }
         if (param.containsKey("price_low")) { output.setPrice_low(vc.str2int(param.get("price_low"), -1)); }
-        if (param.containsKey("price_high")) { output.setPrice_low(vc.str2int(param.get("price_high"), -1)); }
+        if (param.containsKey("price_high")) { output.setPrice_high(vc.str2int(param.get("price_high"), -1)); }
         if (param.containsKey("brands")) {
             try{
                 String[] brands_list = param.get("brands").split(",");
