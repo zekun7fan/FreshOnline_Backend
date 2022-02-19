@@ -36,6 +36,10 @@ public class CartService {
         return cartMapper.selectByUserID(userId);
     }
 
+    public Cart getCartEntry(Integer userId, Integer goodsId) {
+        return cartMapper.selectByPrimaryKey(userId, goodsId);
+    }
+
 
 
 
