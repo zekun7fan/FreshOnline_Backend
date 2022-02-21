@@ -42,6 +42,7 @@ public class CategoryController {
 
     @DeleteMapping("/category")
     public JSONObject delCategory(@RequestBody JSONObject jsonObject){
+        System.out.println("sssss");
         CategoryTreeNode node = jsonObject.toJavaObject(CategoryTreeNode.class);
         List<CategoryTreeNode> failedDelNodeList = categoryService.delSubCategoryTree(node);
         return RespBuilder.create(failedDelNodeList, VerifyRule.COLLECTION_EMPTY);
