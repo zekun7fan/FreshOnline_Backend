@@ -24,6 +24,8 @@ public class CategoryController {
         // validate
         // dispatch
         // sum up
+        System.out.println(15);
+        System.out.println(15);
         List<CategoryTreeNode> categoryTree = categoryService.getCategoryTree();
         return RespBuilder.create(categoryTree, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
