@@ -30,6 +30,11 @@ public class CategoryController {
 
     @PostMapping("/category")
     public JSONObject addCategory(@RequestBody JSONObject jsonObject){
+        System.out.println("7-temp-issue");
+        System.out.println("7-temp-issue");
+        System.out.println("7-temp-issue");
+        System.out.println("7-temp-issue");
+        System.out.println("7-temp-issue");
         Category category = jsonObject.toJavaObject(Category.class);
         boolean res = categoryService.addCategory(category);
         return RespBuilder.create(res, VerifyRule.TRUE);
