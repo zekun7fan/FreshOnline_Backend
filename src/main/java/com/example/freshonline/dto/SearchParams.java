@@ -79,9 +79,8 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
 
     @Override
     public String toString(){
-        return "price_low = " + price_low + " price_high = " + price_high
-                + "\nbrands = " + brands + " keyword = " + keyword
-                + "\nsort_type = " + sort_type + "\ncategory_id = " + category_id
+        return  "category_id = " + category_id + " keyword = " + keyword
+                + "\nselected brands = " + brands + "price_low = " + price_low + " price_high = " + price_high + "sort_type = " + sort_type
                 + "\npage = " + page + " item_low = " + item_low + " item_high = " + item_high;
     }
 
