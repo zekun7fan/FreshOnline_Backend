@@ -7,7 +7,6 @@ import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.dto.SearchResultInfo;
 import com.example.freshonline.model.SaledGoodsExample;
 import com.example.freshonline.model.StockedGoods;
-import com.example.freshonline.model.StockedGoodsExample;
 import com.example.freshonline.utils.PicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,7 @@ import org.springframework.stereotype.Service;
 import com.example.freshonline.dao.GoodsCategoryMapper;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.*;
-import java.sql.ResultSet;
 
 @Service
 public class StockedGoodsService {
