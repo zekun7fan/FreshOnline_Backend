@@ -12,8 +12,6 @@ import com.example.freshonline.service.StockedGoodsService;
 import com.example.freshonline.utils.PicUtils;
 import com.example.freshonline.utils.RespBuilder;
 import com.example.freshonline.utils.ValidationChecker;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +21,6 @@ import com.example.freshonline.model.joined_tables.GoodsCategory;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

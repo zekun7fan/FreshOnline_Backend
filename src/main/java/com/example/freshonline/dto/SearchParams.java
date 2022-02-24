@@ -37,7 +37,10 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
     public SearchParams verifyParams(Map<String, String> param){
         SearchParams output = new SearchParams();
         ValidationChecker vc = new ValidationChecker();
-        if (param.containsKey("page")){ output.setPage(vc.str2int(param.get("page"), -1)); }
+        if (param.containsKey("page")){
+            int tmpPage = vc.str2int(param.get("page"), 1);
+            output.setPage(tmpPage > 0 ? tmpPage: 1);
+        }
         if (param.containsKey("price_low")) { output.setPrice_low(vc.str2int(param.get("price_low"), -1)); }
         if (param.containsKey("price_high")) { output.setPrice_high(vc.str2int(param.get("price_high"), -1)); }
         if (param.containsKey("brands")) {
@@ -79,10 +82,9 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
 
     @Override
     public String toString(){
-        return "price_low = " + price_low + " price_high = " + price_high
-                + "\nbrands = " + brands + " keyword = " + keyword
-                + "\nsort_type = " + sort_type + "\ncategory_id = " + category_id
-                + "\npage = " + page + " item_low = " + item_low + " item_high = " + item_high;
+        return  " category_id = " + category_id + " keyword = " + keyword
+                + "\n selected brands = " + brands + " price_low = " + price_low + " price_high = " + price_high + " sort_type = " + sort_type
+                + "\n page = " + page + " item_low = " + item_low + " item_high = " + item_high;
     }
 
 }
