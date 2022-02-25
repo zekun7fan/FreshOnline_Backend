@@ -1,7 +1,11 @@
 package com.example.freshonline.model;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     /**
      *

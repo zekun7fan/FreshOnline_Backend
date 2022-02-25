@@ -1,5 +1,10 @@
 package com.example.freshonline.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     /**
      *
