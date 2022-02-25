@@ -1,15 +1,27 @@
 package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.freshonline.dto.HelloWorldDto;
+import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.User;
+import com.example.freshonline.service.HelloWorldService;
+import com.example.freshonline.utils.RespBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.Date;
 
 @RestController
-public class HelloWorld {
+public class HelloWorldController {
+
+
+    @Autowired
+    private HelloWorldService helloWorldService;
 
     @GetMapping("/hello/{hello_id}")
     public String h1(@PathVariable("hello_id") Integer id, @RequestParam("hello_name") String xxx){
@@ -61,6 +73,22 @@ public class HelloWorld {
 
 //        JSONObject res = util.createResp(data, rule, succuess_msg, fail_msg)
     }
+
+    @PostMapping("/helloworld/{id}")
+    public JSONObject m1(
+            @PathVariable("id") Integer id
+    ) throws Exception {
+        String res = helloWorldService.m1();
+        return RespBuilder.create(res, VerifyRule.NOT_NULL);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.IM_USED)
+    private void m(Throwable e, HttpServletRequest request, HttpServletResponse response){
+        System.out.println("mm");
+        System.out.println("mm");
+    }
+
 
 
 }

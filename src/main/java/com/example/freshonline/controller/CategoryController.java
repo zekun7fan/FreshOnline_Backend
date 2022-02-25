@@ -24,21 +24,12 @@ public class CategoryController {
         // validate
         // dispatch
         // sum up
-        System.out.println(17);
-        System.out.println(16);
-        System.out.println(15);
-        System.out.println(15);
         List<CategoryTreeNode> categoryTree = categoryService.getCategoryTree();
         return RespBuilder.create(categoryTree, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
 
     @PostMapping("/category")
     public JSONObject addCategory(@RequestBody JSONObject jsonObject){
-        System.out.println("7-temp-issue");
-        System.out.println("7-temp-issue");
-        System.out.println("7-temp-issue");
-        System.out.println("7-temp-issue");
-        System.out.println("7-temp-issue");
         Category category = jsonObject.toJavaObject(Category.class);
         boolean res = categoryService.addCategory(category);
         return RespBuilder.create(res, VerifyRule.TRUE);
@@ -46,7 +37,6 @@ public class CategoryController {
 
     @DeleteMapping("/category")
     public JSONObject delCategory(@RequestBody JSONObject jsonObject){
-        System.out.println("sssss");
         CategoryTreeNode node = jsonObject.toJavaObject(CategoryTreeNode.class);
         List<CategoryTreeNode> failedDelNodeList = categoryService.delSubCategoryTree(node);
         return RespBuilder.create(failedDelNodeList, VerifyRule.COLLECTION_EMPTY);
