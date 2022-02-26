@@ -44,10 +44,15 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
         if (param.containsKey("price_low")) { output.setPrice_low(vc.str2int(param.get("price_low"), -1)); }
         if (param.containsKey("price_high")) { output.setPrice_high(vc.str2int(param.get("price_high"), -1)); }
         if (param.containsKey("brands")) {
-            try{
-                String[] brands_list = param.get("brands").split(",");
-                output.setBrands("('" + String.join("','", brands_list) + "')");
-            } catch (Exception e) {output.setBrands(null);}
+            String brandsStr = param.get("brands");
+            if (brandsStr==null || brandsStr.isBlank()){
+                output.setBrands(null);
+            }else{
+                try{
+                    String[] brands_list = param.get("brands").split(",");
+                    output.setBrands("('" + String.join("','", brands_list) + "')");
+                } catch (Exception e) {output.setBrands(null);}
+            }
         }
         if (param.containsKey("keyword")) {
             if (param.get("keyword") != null && param.get("keyword").length() > 0) {

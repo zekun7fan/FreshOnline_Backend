@@ -19,7 +19,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/goods/categoryTree")
+    @GetMapping("/categoryTree")
     public JSONObject getCategoryTree(){
         // validate
         // dispatch

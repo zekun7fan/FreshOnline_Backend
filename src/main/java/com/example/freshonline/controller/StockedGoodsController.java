@@ -35,26 +35,25 @@ public class StockedGoodsController {
     private StockedGoodsService stockedGoodsService;
 
     @GetMapping("/goodsdetails/{goods_id}")
-    public JSONObject getGoodsDetails(@PathVariable("goods_id") Integer id) {
+    public JSONObject getGoodsDetails(@PathVariable("goods_id") String id) {
         JSONObject res = new JSONObject();
-//        try{
-//            Integer goods_id = Integer.parseInt(id);
-//            GoodsCategory gc = stockedGoodsService.goodsDetails(goods_id);
-//            JSONObject data = (JSONObject) JSONObject.toJSON(gc);
-//            res.put("code", 0);
-//            res.put("data",data);
-//            return res;
-//        }
-//        catch(Exception e){
-//            StringWriter sw = new StringWriter();
-//            PrintWriter pw = new PrintWriter(sw);
-//            e.printStackTrace(pw);
-//
-//            res.put("code", 1);
-//            res.put("msg", sw.toString());
-//            return res;
-//        }
-        return null;
+        try{
+            Integer goods_id = Integer.parseInt(id);
+            GoodsCategory gc = stockedGoodsService.goodsDetails(goods_id);
+            JSONObject data = (JSONObject) JSONObject.toJSON(gc);
+            res.put("code", 0);
+            res.put("data",data);
+            return res;
+        }
+        catch(Exception e){
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            res.put("code", 1);
+            res.put("msg", sw.toString());
+            return res;
+        }
     }
 
    /**
@@ -99,6 +98,13 @@ public class StockedGoodsController {
         String url = jsonObject.getString("url");
         GoodsPicInfo info = PicUtils.delete(id, url);
         return RespBuilder.create(info, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+    }
+
+    @GetMapping("/goods/{id}")
+    public JSONObject getGoods(@PathVariable("id") Integer id){
+        StockedGoods goods = stockedGoodsService.getGoodsByPk(id);
+        return RespBuilder.create(goods, VerifyRule.NOT_NULL);
+
     }
 
     @PostMapping("/goods")
