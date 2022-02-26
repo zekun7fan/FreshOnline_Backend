@@ -26,13 +26,10 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@RunWith(Parameterized.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
@@ -78,8 +75,6 @@ class StockedGoodsControllerIntegrationTest_2 {
             "http://localhost:8080/goods,7,1"})
     public void getSearch(String url, int expectedGoodsTotal, int expectedFirstGoodsId) throws Exception{
 
-        System.out.println("testing getSearch, test url = " + url + " expectedGoodsTotal = "
-                + expectedGoodsTotal + " expectedFirstGoodsId = " + expectedFirstGoodsId);
         MvcResult mvcResult = mockMvc.perform(get(url)).andReturn();
         System.out.println("response type: " + mvcResult.getResponse().getContentType());
         JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
@@ -91,6 +86,19 @@ class StockedGoodsControllerIntegrationTest_2 {
             int firstGoodsId = stockedGoodsList.getJSONObject(0).getInteger("id");
             Assert.assertEquals(firstGoodsId, expectedFirstGoodsId);
         }
+    }
+
+    /**
+     * Exception Test can't work with mock
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "http://localhost:8080/goods?sort_type=1.2",
+            "http://localhost:8080/goods?price_low=abcshui"})
+    public void getSearchThrowsNumberFormatException(String url) throws Exception {
+        Throwable exception = Assert.assertThrows(NumberFormatException.class,
+                ()-> { mockMvc.perform(get(url)); });
+        System.out.println(exception.getMessage());
     }
 
     private static void executeSqlScript(String scriptName) throws ClassNotFoundException, SQLException, FileNotFoundException {

@@ -36,18 +36,37 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
     @Override
     public SearchParams verifyParams(Map<String, String> param){
         SearchParams output = new SearchParams();
-        ValidationChecker vc = new ValidationChecker();
-        if (param.containsKey("page")){
-            int tmpPage = vc.str2int(param.get("page"), 1);
-            output.setPage(tmpPage > 0 ? tmpPage: 1);
+//        ValidationChecker vc = new ValidationChecker();
+        try{
+            if (param.containsKey("page")){
+                int tmpPage = Integer.parseInt(param.get("page"));
+                output.setPage(tmpPage > 0 ? tmpPage: 1);
+            }
+            if (param.containsKey("price_low")) {
+                output.setPrice_low(Integer.parseInt(param.get("price_low")));
+            }
+            if (param.containsKey("price_high")) {
+                output.setPrice_high(Integer.parseInt(param.get("price_high")));
+            }
+            if (param.containsKey("sort_type")) {
+                output.setSort_type(Integer.parseInt(param.get("sort_type")));
+            }
+            if (param.containsKey("num_per_row")) {
+                output.setNum_per_row(Integer.parseInt(param.get("num_per_row")));
+            }
+            if (param.containsKey("row_per_page")) {
+                output.setRow_per_page(Integer.parseInt(param.get("row_per_page")));
+            }
+        } catch (NumberFormatException e){
+            System.out.println("Searchparam, NumberFormatException");
+            System.out.println(e.getMessage());
+            throw e;
         }
-        if (param.containsKey("price_low")) { output.setPrice_low(vc.str2int(param.get("price_low"), -1)); }
-        if (param.containsKey("price_high")) { output.setPrice_high(vc.str2int(param.get("price_high"), -1)); }
         if (param.containsKey("brands")) {
             String brandsStr = param.get("brands");
-            if (brandsStr==null || brandsStr.isBlank()){
+            if (brandsStr==null || brandsStr.isBlank()) {
                 output.setBrands(null);
-            }else{
+            } else {
                 try{
                     String[] brands_list = param.get("brands").split(",");
                     output.setBrands("('" + String.join("','", brands_list) + "')");
@@ -57,24 +76,15 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
         if (param.containsKey("keyword")) {
             if (param.get("keyword") != null && param.get("keyword").length() > 0) {
                 output.setKeyword(param.get("keyword"));
-            }
-            else { output.setKeyword(null); }
+            } else { output.setKeyword(null); }
         }
-        if (param.containsKey("sort_type")) { output.setSort_type(vc.str2int(param.get("sort_type"), -1)); }
         if (param.containsKey("category_id")) {
             if (param.get("category_id") != null && param.get("category_id").length() > 0){
                 try {
                     String[] category_id_list = param.get("category_id").split(",");
                     output.setCategory_id("('" + String.join("','", category_id_list) + "')");
                 } catch (Exception e) {output.setCategory_id(null);}
-            }
-            else { output.setCategory_id(null); }
-        }
-        if (param.containsKey("num_per_row")) {
-            output.setNum_per_row(vc.str2int(param.get("num_per_row"), output.getNum_per_row()));
-        }
-        if (param.containsKey("row_per_page")) {
-            output.setRow_per_page(vc.str2int(param.get("row_per_page"), output.getRow_per_page()));
+            } else { output.setCategory_id(null); }
         }
         output.computePage();
         return output;
