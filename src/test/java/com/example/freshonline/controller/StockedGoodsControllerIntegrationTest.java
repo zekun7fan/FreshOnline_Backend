@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -73,9 +71,6 @@ class StockedGoodsControllerIntegrationTest {
     void getGoodsDetails() {
     }
 
-    @Test
-    void getSearch() {
-    }
 
     @Test
     void uploadGoodsPictures() {
