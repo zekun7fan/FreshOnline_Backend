@@ -103,10 +103,26 @@ class HelloWorldControllerIntegrationTest {
     class nestedTest1{
         private String testStr = "testStr";
 
-//        @BeforeAll
-//        public static void beforeAllTestInNestedTest1(){
-//            System.out.println("beforeAllTestInNestedTest1");
-//        }
+//        @Value("${spring.datasource.username}")
+//        private String username1;
+//
+//        @Value("${spring.datasource.spring.datasource.driver-class-name}")
+//        private String classname1;
+
+        private String username1 = "root";
+
+        @BeforeAll
+        public void beforeAll(){
+            System.out.println("nested, here is beforeAll");
+//            System.out.println("beforeAll, " + username1);
+//            System.out.println("beforeAll, " + classname1);
+            System.out.println("beforeAll, " + username1);
+        }
+
+        @BeforeAll
+        public void beforeAllTestInNestedTest1(){
+            System.out.println("beforeAllTestInNestedTest1");
+        }
 
         @BeforeEach
         public void beforeTestInNestedTest1(){
