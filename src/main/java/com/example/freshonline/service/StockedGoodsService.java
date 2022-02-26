@@ -115,15 +115,17 @@ public class StockedGoodsService {
         SaledGoodsExample saledGoodsExample = new SaledGoodsExample();
         saledGoodsExample.createCriteria().andGoodsIdEqualTo(id);
         long num = saledGoodsMapper.countByExample(saledGoodsExample);
+        // delete related pic
+        boolean picDeleted = PicUtils.deleteAllPicByGoodsId(id);
         if (num > 0){
             // mark goods off the shelf, but not delete from db
             StockedGoods goods = new StockedGoods();
             goods.setId(id);
             goods.setActive(false);
-            return stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
+            return picDeleted && stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
         }else{
             // delete goods from stocked_goods table
-            return stockedGoodsMapper.deleteByPrimaryKey(id)==1;
+            return picDeleted && stockedGoodsMapper.deleteByPrimaryKey(id)==1;
         }
     }
 

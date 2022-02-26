@@ -66,13 +66,30 @@ public class PicUtils {
         int index = url.lastIndexOf(System.getProperty("file.separator"));
         String picPath = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator")
                 + id + System.getProperty("file.separator") + url.substring(index+1);
+        if (!Files.exists(Paths.get(picPath))){
+            return new GoodsPicInfo(null, String.valueOf(id), url);
+        }
         try {
             Files.delete(Paths.get(picPath));
-            return new GoodsPicInfo();
+            return new GoodsPicInfo(null, String.valueOf(id), url);
         } catch (IOException e) {
             return null;
         }
 
+    }
+
+
+    public static boolean deleteAllPicByGoodsId(Integer id){
+        String picPath = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator") + id;
+        if (!Files.exists(Paths.get(picPath))){
+            return true;
+        }
+        try {
+            Files.delete(Paths.get(picPath));
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 
