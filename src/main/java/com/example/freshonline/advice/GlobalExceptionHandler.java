@@ -2,8 +2,9 @@ package com.example.freshonline.advice;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.exception.CustomExceptions;
+import com.example.freshonline.exception.CustomException;
 
+import com.example.freshonline.utils.RespBuilder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -15,20 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(CustomExceptions.class)
-    void handle(CustomExceptions e, HttpServletRequest request, HttpServletResponse response) {
-        try {
-             JSONObject jsonbody = new JSONObject();
-             jsonbody.put("msg","asddasdsaasd");
-            response.setContentType("application/json");
-            response.setStatus(700);
-            response.setCharacterEncoding("utf-8");
-            PrintWriter writer = response.getWriter();
-            writer.write(JSON.toJSONString(jsonbody));
-            writer.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
 
+    @ExceptionHandler(CustomException.class)
+    void handle(CustomException e, HttpServletRequest request, HttpServletResponse response) {
+        response.setStatus(e.getCode());
+        try {
+            PrintWriter writer = response.getWriter();
+            String resp = JSONObject.toJSONString(RespBuilder.createFailedRsp(e.getMessage()));
+            writer.write(resp);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
