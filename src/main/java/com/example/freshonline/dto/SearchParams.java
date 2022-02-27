@@ -52,12 +52,12 @@ public class SearchParams implements VerifyRequestData {
         }
 
         String brandsStr = param.get("brands");
-        if (!Objects.requireNonNull(brandsStr).isBlank()) {
+        if (brandsStr != null &&!brandsStr.isBlank()) {
             String[] brands_list = param.get("brands").split(",");
             this.setBrands("('" + String.join("','", brands_list) + "')");
         }
         String keywordStr = param.get("keyword");
-        if (!Objects.requireNonNull(keywordStr).isBlank()) {
+        if (keywordStr != null && !keywordStr.isBlank()) {
             this.setKeyword(keywordStr);
         }
         String categoryIdStr = param.get("category_id");
