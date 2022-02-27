@@ -34,7 +34,7 @@ class SearchParamsUnitTest {
                              String page, String page_expected, String category_id, String category_id_expected) {
         Map<String, String> map = packToMap(price_low, keyword, page, category_id);
         SearchParams param = new SearchParams();
-        param = param.verifyParams(map);
+        param.verifyParams(map);
         Assert.assertEquals(price_low_expected, ((Integer) param.getPrice_low()).toString());
         Assert.assertEquals(category_id_expected, param.getCategory_id());
     }

@@ -2,19 +2,19 @@ package com.example.freshonline.dto;
 
 import java.util.Map;
 
-public interface VerifyRequestData <T>{
+public interface VerifyRequestData {
 
 
-    default T verifyParams(Map<String, String> requestParamMap){
-        return null;
-    };
+    default void verifyParams(Map<String, String> requestParamMap) {
 
-    default T verifyBody(Map<String, String> requestBodyMap){
-        return null;
-    };
+    }
 
-    default T verifyParamsAndBody(Map<String, String> requestParamMap, Map<String, String> requestBodyMap){
-        return null;
+    default void verifyBody(Map<String, String> requestBodyMap) {
+
+    }
+
+    default void verifyParamsAndBody(Map<String, String> requestParamMap, Map<String, String> requestBodyMap) {
+
     }
 
 }

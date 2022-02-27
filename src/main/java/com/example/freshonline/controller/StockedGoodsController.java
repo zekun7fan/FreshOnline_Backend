@@ -70,7 +70,7 @@ public class StockedGoodsController {
    public JSONObject getSearch(@RequestParam Map<String, String> map){
 
        SearchParams param = new SearchParams();
-       param = param.verifyParams(map);
+       param.verifyParams(map);
        System.out.println(param);
 
        JSONObject output = stockedGoodsService.getSearch(param);

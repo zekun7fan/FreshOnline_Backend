@@ -10,7 +10,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchParams implements VerifyRequestData<SearchParams> {
+public class SearchParams implements VerifyRequestData {
 
     private int price_low = -1;
     private int price_high = -1;
@@ -24,7 +24,7 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
     private int item_high = -1;
 
     @Override
-    public SearchParams verifyParams(Map<String, String> param) {
+    public void verifyParams(Map<String, String> param) {
         try {
             int tmpPage = Integer.parseInt(param.get("page"));
             this.setPage(tmpPage > 0 ? tmpPage : 1);
@@ -66,7 +66,6 @@ public class SearchParams implements VerifyRequestData<SearchParams> {
             this.setCategory_id("('" + String.join("','", category_id_list) + "')");
         }
         this.computePage();
-        return this;
     }
 
     private void computePage() {
