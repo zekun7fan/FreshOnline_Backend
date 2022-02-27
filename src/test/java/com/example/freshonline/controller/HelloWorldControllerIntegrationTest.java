@@ -6,10 +6,12 @@ import com.example.freshonline.dto.HelloWorldDto;
 import com.example.freshonline.service.FavouriteService;
 import com.example.freshonline.service.HelloWorldService;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,16 +32,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@WebMvcTest({FavouriteController.class, FavouriteService.class, FavoriteMapper.class})
-//@DataJdbcTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 class HelloWorldControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-
 
     @Test
     void m1() throws Exception {
@@ -51,7 +49,6 @@ class HelloWorldControllerIntegrationTest {
         ).andReturn();
         MockHttpServletResponse response = result.getResponse();
         System.out.println("d");
-
     }
 
     @Test
@@ -62,4 +59,79 @@ class HelloWorldControllerIntegrationTest {
         System.out.println("d");
     }
 
+
+    /**
+     * @Value doesn't work with static
+     */
+
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.spring.datasource.driver-class-name}")
+    private static String classname;
+
+    @BeforeAll
+    public static void beforeAll(){
+        System.out.println("here is beforeAll");
+//        System.out.println("beforeAll, " + username);
+        System.out.println("beforeAll, " + classname);
+    }
+
+    @BeforeEach
+    public void before(){
+        System.out.println("beforeEach " + username);
+        System.out.println("beforeEach, " + classname);
+    }
+
+    @Test
+    public void test(){
+        System.out.println("test, " + username);
+        System.out.println("test, " + classname);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 5})
+    public void testWithInts(int testInt){
+        System.out.println("testWithInts, int = " + testInt);
+    }
+
+    /**
+     * @Nested doesn't work with static
+     */
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class nestedTest1{
+        private String testStr = "testStr";
+
+//        @Value("${spring.datasource.username}")
+//        private String username1;
+//
+//        @Value("${spring.datasource.spring.datasource.driver-class-name}")
+//        private String classname1;
+
+        private String username1 = "root";
+
+        @BeforeAll
+        public void beforeAll(){
+            System.out.println("nested, here is beforeAll");
+//            System.out.println("beforeAll, " + username1);
+//            System.out.println("beforeAll, " + classname1);
+            System.out.println("beforeAll, " + username1);
+        }
+
+        @BeforeAll
+        public void beforeAllTestInNestedTest1(){
+            System.out.println("beforeAllTestInNestedTest1");
+        }
+
+        @BeforeEach
+        public void beforeTestInNestedTest1(){
+            System.out.println("beforeeTestInNestedTest1, testStr = " + testStr);
+        }
+
+        @Test
+        public void testInNestedTest1(){
+            System.out.println("testInNestedTest1, testStr = " + testStr);
+        }
+    }
 }
