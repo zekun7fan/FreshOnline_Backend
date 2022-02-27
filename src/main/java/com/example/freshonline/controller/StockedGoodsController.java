@@ -100,6 +100,13 @@ public class StockedGoodsController {
         return RespBuilder.create(info, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
 
+
+    @DeleteMapping("/goods/pic/{id}/all")
+    public JSONObject deleteGoodsPictures(@PathVariable("id") Integer id){
+        boolean res = PicUtils.deleteAllPicByGoodsId(id);
+        return RespBuilder.create(res, VerifyRule.TRUE, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+    }
+
     @GetMapping("/goods/{id}")
     public JSONObject getGoods(@PathVariable("id") Integer id){
         StockedGoods goods = stockedGoodsService.getGoodsByPk(id);
