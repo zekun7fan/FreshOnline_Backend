@@ -4,7 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.model.StockedGoods;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.jdbc.ScriptRunner;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +22,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 @RunWith(SpringRunner.class)
@@ -65,6 +76,54 @@ class StockedGoodsControllerIntegrationTest {
             Assertions.assertTrue(((JSONArray)obj.get("data")).size()>=1);
         }
 
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class TestNestPart2{
+        private String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false";
+        private String classname = "com.mysql.cj.jdbc.Driver";
+        private String username = "root";
+        private String password = "";
+
+        @ParameterizedTest
+        @CsvSource({
+                "http://localhost:8080/goods,7,1",
+                "http://localhost:8080/goods,7,1"})
+        public void getSearch(String url, int expectedGoodsTotal, int expectedFirstGoodsId) throws Exception{
+
+            MvcResult mvcResult = mockMvc.perform(get(url)).andReturn();
+            System.out.println("response type: " + mvcResult.getResponse().getContentType());
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            JSONObject data = (JSONObject) resp.get("data");
+            JSONArray stockedGoodsList = data.getJSONArray("goods_list");
+            int goods_total = (int) data.get("goods_total");
+            Assert.assertEquals(goods_total, expectedGoodsTotal);
+            if (goods_total != 0){
+                int firstGoodsId = stockedGoodsList.getJSONObject(0).getInteger("id");
+                Assert.assertEquals(firstGoodsId, expectedFirstGoodsId);
+            }
+        }
+
+        private void executeSqlScript(String scriptName) throws ClassNotFoundException, SQLException, FileNotFoundException {
+            Class.forName(classname);
+            Connection connection = DriverManager.getConnection(url, username, password);
+            ScriptRunner scriptRunner = new ScriptRunner(connection);
+            Resources.setCharset(Charset.forName("UTF8"));
+            scriptRunner.runScript(new FileReader(
+                    System.getProperty("user.dir") + "/src/test/static.test-sqls/" + scriptName));
+            connection.close();
+        }
+
+        @BeforeAll
+        public void setup() throws ClassNotFoundException, SQLException, FileNotFoundException {
+            executeSqlScript("stocked_goods_test_init.sql");
+        }
+
+        @AfterAll
+        public void finish() throws ClassNotFoundException, SQLException, FileNotFoundException {
+            executeSqlScript("stocked_goods_test_finish.sql");
+        }
     }
 
     @Test
