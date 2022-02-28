@@ -2,8 +2,11 @@ package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.freshonline.constants.Constants;
 import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.model.StockedGoods;
+import com.example.freshonline.model.StockedGoodsExample;
+import com.example.freshonline.utils.RespChecker;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.Assert;
@@ -14,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
@@ -29,8 +33,12 @@ import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,11 +51,11 @@ class StockedGoodsControllerIntegrationTest {
     private StockedGoodsMapper stockedGoodsMapper;
 
     @Nested
-    class TestNestPart1{
+    class TestNestPart1 {
 
         public void init() {
             StockedGoods stockedGoods =
-                        new StockedGoods((Integer) null, "chicken", (byte)1, new BigDecimal(1.0), new BigDecimal(1.0), new BigDecimal(1.0), (byte) 1, new BigDecimal(1.0),new BigDecimal(1.0), 3, "brand", 1, (byte)1, "String pic", true, "String descriptio");
+                    new StockedGoods((Integer) null, "chicken", (byte) 1, new BigDecimal(1.0), new BigDecimal(1.0), new BigDecimal(1.0), (byte) 1, new BigDecimal(1.0), new BigDecimal(1.0), 3, "brand", 1, (byte) 1, "String pic", true, "String descriptio");
             stockedGoodsMapper.insertSelective(stockedGoods);
         }
 
@@ -60,9 +68,10 @@ class StockedGoodsControllerIntegrationTest {
                     .content("")).andReturn();
             MockHttpServletResponse response = result.getResponse();
             JSONObject obj = JSONObject.parseObject(response.getContentAsString());
-            Assertions.assertEquals(0,obj.get("code"));
-            Assertions.assertTrue(((JSONArray)obj.get("data")).size()>=1);
+            Assertions.assertEquals(0, obj.get("code"));
+            Assertions.assertTrue(((JSONArray) obj.get("data")).size() >= 1);
         }
+
         @Test
         @Transactional
         @Rollback
@@ -72,15 +81,15 @@ class StockedGoodsControllerIntegrationTest {
                     .content("")).andReturn();
             MockHttpServletResponse response = result.getResponse();
             JSONObject obj = JSONObject.parseObject(response.getContentAsString());
-            Assertions.assertEquals(0,obj.get("code"));
-            Assertions.assertTrue(((JSONArray)obj.get("data")).size()>=1);
+            Assertions.assertEquals(0, obj.get("code"));
+            Assertions.assertTrue(((JSONArray) obj.get("data")).size() >= 1);
         }
 
     }
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class TestNestPart2{
+    class TestNestPart2 {
         private String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false";
         private String classname = "com.mysql.cj.jdbc.Driver";
         private String username = "root";
@@ -90,7 +99,7 @@ class StockedGoodsControllerIntegrationTest {
         @CsvSource({
                 "http://localhost:8080/goods,7,1",
                 "http://localhost:8080/goods,7,1"})
-        public void getSearch(String url, int expectedGoodsTotal, int expectedFirstGoodsId) throws Exception{
+        public void getSearch(String url, int expectedGoodsTotal, int expectedFirstGoodsId) throws Exception {
 
             MvcResult mvcResult = mockMvc.perform(get(url)).andReturn();
             System.out.println("response type: " + mvcResult.getResponse().getContentType());
@@ -99,7 +108,7 @@ class StockedGoodsControllerIntegrationTest {
             JSONArray stockedGoodsList = data.getJSONArray("goods_list");
             int goods_total = (int) data.get("goods_total");
             Assert.assertEquals(goods_total, expectedGoodsTotal);
-            if (goods_total != 0){
+            if (goods_total != 0) {
                 int firstGoodsId = stockedGoodsList.getJSONObject(0).getInteger("id");
                 Assert.assertEquals(firstGoodsId, expectedFirstGoodsId);
             }
@@ -131,24 +140,139 @@ class StockedGoodsControllerIntegrationTest {
     }
 
 
-    @Test
-    void uploadGoodsPictures() {
-    }
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    class TestNestPart3 {
 
-    @Test
-    void deleteGoodsPictures() {
-    }
+        private final String baseUrl = "http://localhost:8080";
 
-    @Test
-    void addGoods() {
-    }
+        private StockedGoods goods1 = null;
+        private final String name1 = UUID.randomUUID().toString();
+        private final boolean active1 = true;
+        private final BigDecimal price1 = new BigDecimal("223.0");
+        private final byte onsale1 = 1;
+        private final BigDecimal salePrice1 = new BigDecimal("113.0");
+        private final String brand1 = "temp brand";
+        private final Integer categoryId1 = 40;
+        private final String description1 = "temp description";
+        private final byte isNew1 = 1;
+        private final byte type1 = 1;
+        private final BigDecimal storage1 = new BigDecimal("550.0");
+        private final BigDecimal rate1 = new BigDecimal("3.0");
+        private final Integer rateCount1 = 5;
+        private final BigDecimal sales1 = new BigDecimal("88.0");
+        private final String pic1 = "";
 
-    @Test
-    void updateGoods() {
-    }
+        private final String nameForUpdate = UUID.randomUUID().toString();
+        private final Integer categoryIdforUpdate = 22;
+        private final BigDecimal priceforUpdate = new BigDecimal("73.0");
 
-    @Test
-    void deleteGoods() {
+
+        @BeforeAll
+        void setUp() {
+            goods1 = new StockedGoods(null, name1, type1, price1, storage1, sales1, onsale1, salePrice1, rate1, rateCount1, brand1, categoryId1, isNew1, pic1, active1, description1);
+        }
+
+
+        @Test
+        void uploadGoodsPictures() {
+        }
+
+        @Test
+        void deleteGoodsPictures() {
+        }
+
+        @Test
+        @Order(1)
+        void addGoods() throws Exception {
+            // arrange
+            assertNotNull(goods1);
+            //act
+            MvcResult result = mockMvc.perform(post(baseUrl + "/goods")
+                    .content(JSONObject.toJSONString(goods1))
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andReturn();
+
+            //assert
+            String resp = result.getResponse().getContentAsString();
+            Integer code = RespChecker.getCode(resp);
+            assertEquals(Constants.SUCCESS_CODE, code);
+            String msg = RespChecker.getMsg(resp);
+            assertEquals(Constants.OPERATE_SUCCESS, msg);
+            Boolean data = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
+            assertTrue(data);
+
+            StockedGoodsExample example = new StockedGoodsExample();
+            example.createCriteria().andNameEqualTo(name1);
+            List<StockedGoods> stockedGoods = stockedGoodsMapper.selectByExample(example);
+            assertEquals(1, stockedGoods.size());
+            StockedGoods stockedGoods1 = stockedGoods.get(0);
+            // set id, for upcoming update
+            goods1.setId(stockedGoods1.getId());
+//            assertEquals(goods1, stockedGoods1);
+        }
+
+        @Test
+        @Order(2)
+        void updateGoods() throws Exception {
+            // arrange
+            goods1.setPrice(priceforUpdate);
+            goods1.setCategoryId(categoryIdforUpdate);
+            goods1.setName(nameForUpdate);
+
+            //act
+            MvcResult result = mockMvc.perform(put(baseUrl + "/goods")
+                    .content(JSONObject.toJSONString(goods1))
+                    .contentType(MediaType.APPLICATION_JSON)
+            ).andReturn();
+
+            //assert
+            String resp = result.getResponse().getContentAsString();
+            Integer code = RespChecker.getCode(resp);
+            assertEquals(Constants.SUCCESS_CODE, code);
+            String msg = RespChecker.getMsg(resp);
+            assertEquals(Constants.OPERATE_SUCCESS, msg);
+            Boolean data = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
+            assertTrue(data);
+
+            StockedGoodsExample example = new StockedGoodsExample();
+            example.createCriteria()
+                    .andPriceEqualTo(priceforUpdate)
+                    .andCategoryIdEqualTo(categoryIdforUpdate)
+                    .andNameEqualTo(nameForUpdate);
+
+            List<StockedGoods> stockedGoods = stockedGoodsMapper.selectByExample(example);
+            assertEquals(1, stockedGoods.size());
+//            StockedGoods stockedGoods1 = stockedGoods.get(0);
+//            assertEquals(goods1, stockedGoods1);
+        }
+
+        @Test
+        @Order(3)
+        void deleteGoods() throws Exception {
+
+            // act
+            MvcResult result = mockMvc.perform(delete(baseUrl + "/goods/" + goods1.getId())).andReturn();
+            //assert
+            String resp = result.getResponse().getContentAsString();
+            Integer code = RespChecker.getCode(resp);
+            assertEquals(Constants.SUCCESS_CODE, code);
+            String msg = RespChecker.getMsg(resp);
+            assertEquals(Constants.OPERATE_SUCCESS, msg);
+            Boolean data = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
+            assertTrue(data);
+            StockedGoodsExample example = new StockedGoodsExample();
+            example.createCriteria().andIdEqualTo(goods1.getId());
+            List<StockedGoods> stockedGoods = stockedGoodsMapper.selectByExample(example);
+            assertEquals(0, stockedGoods.size());
+
+        }
+
+        @AfterAll
+        void cleanUp() {
+            goods1 = null;
+        }
     }
 
 }

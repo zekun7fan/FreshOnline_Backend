@@ -9,13 +9,17 @@ public class TimeUtils {
         return LocalDateTime.now().plusDays(30);
     }
 
+    public static LocalDateTime before1day(){
+        return LocalDateTime.now().minusDays(1);
+    }
+
 
     public static LocalDateTime after10sec(){
         return LocalDateTime.now().plusSeconds(10);
     }
 
     public static boolean isExpire(LocalDateTime expire){
-        return expire.isAfter(LocalDateTime.now());
+        return expire.isBefore(LocalDateTime.now());
     }
 
 }

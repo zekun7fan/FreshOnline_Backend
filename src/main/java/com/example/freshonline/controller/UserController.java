@@ -8,13 +8,8 @@ import com.example.freshonline.service.UserService;
 import com.example.freshonline.utils.RespBuilder;
 import com.example.freshonline.utils.ValidationChecker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import com.example.freshonline.dto.LoginedUserInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
@@ -78,5 +73,14 @@ public class UserController {
         boolean res = userService.register(user);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
+
+    @PutMapping("/logout")
+    public JSONObject logout(@RequestBody JSONObject jsonObject){
+        User user = jsonObject.toJavaObject(User.class);
+        LoginedUserInfo loginedUserInfo = userService.logout(user);
+        return RespBuilder.create(loginedUserInfo, VerifyRule.NOT_NULL);
+    }
+
+
 
 }
