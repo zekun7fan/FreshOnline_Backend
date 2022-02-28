@@ -1,5 +1,8 @@
 package com.example.freshonline.model;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class Favorite {
     /**
      *
