@@ -95,15 +95,17 @@ public class CategoryService {
 
     private boolean delSingleCategoryNode(CategoryTreeNode node,  List<CategoryTreeNode> failedDeleteNodeList){
         boolean res = true;
-        for (CategoryTreeNode childNode : node.getChildren()){
-            if (!delSingleCategoryNode(childNode, failedDeleteNodeList)){
-                res = false;
+        if (node.getChildren() != null && !node.getChildren().isEmpty()){
+            for (CategoryTreeNode childNode : node.getChildren()){
+                if (!delSingleCategoryNode(childNode, failedDeleteNodeList)){
+                    res = false;
+                }
             }
         }
         if (!res){
             return false;
         }
-        if (node.getChildren().size() > 0){
+        if (node.getChildren() != null && node.getChildren().size() > 0){
             int i = categoryMapper.deleteByPrimaryKey(node.getId());
             assert i==1;
             return true;

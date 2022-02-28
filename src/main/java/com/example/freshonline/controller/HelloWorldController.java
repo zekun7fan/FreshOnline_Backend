@@ -3,7 +3,6 @@ package com.example.freshonline.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.dto.HelloWorldDto;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
-import com.example.freshonline.exception.CustomExceptions;
 import com.example.freshonline.model.User;
 import com.example.freshonline.service.HelloWorldService;
 import com.example.freshonline.utils.RespBuilder;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.Date;
-import com.example.freshonline.exception.CustomExceptions;
 
 
 @RestController
@@ -89,9 +87,9 @@ public class HelloWorldController {
     // System.out.println("mm");
     // }
 
-    @PostMapping("/helloworld/raiseerror")
-    public JSONObject err() throws Exception {
-         throw new CustomExceptions("helloworld error1111", 120);
-    }
+//    @PostMapping("/helloworld/raiseerror")
+//    public JSONObject err() throws Exception {
+//         throw new CustomExceptions("helloworld error1111", 120);
+//    }
 
 }

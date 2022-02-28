@@ -25,23 +25,29 @@ import java.util.stream.Stream;
 public class PicUtils {
 
 
+    private static final String PICS_FOLDER = System.getProperty("user.dir")+System.getProperty("file.separator")+"pics";
+
+    private static final String GOODS_PICS_FOLDER = System.getProperty("user.dir")+System.getProperty("file.separator")+"pics"
+            +System.getProperty("file.separator")+"goods_pics";
+
+
     public static GoodsPicInfo save(Integer goods_id, MultipartFile multipartFile) {
 
-        File root_pic_folder = new File(Constants.PICS_FOLDER);
+        File root_pic_folder = new File(PICS_FOLDER);
         if (!root_pic_folder.exists()) {
             if (!root_pic_folder.mkdir()) {
                 return null;
             }
         }
 
-        File goods_pic_folder = new File(Constants.GOODS_PICS_FOLDER);
+        File goods_pic_folder = new File(GOODS_PICS_FOLDER);
         if (!goods_pic_folder.exists()) {
             if (!goods_pic_folder.mkdir()) {
                 return null;
             }
         }
 
-        String current_folder = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator") + goods_id;
+        String current_folder = GOODS_PICS_FOLDER + System.getProperty("file.separator") + goods_id;
         File cur_folder = new File(current_folder);
         if (!cur_folder.exists()) {
             if (!cur_folder.mkdir()) {
@@ -68,7 +74,7 @@ public class PicUtils {
 
     public static GoodsPicInfo delete(Integer id, String url) {
         int index = url.lastIndexOf(System.getProperty("file.separator"));
-        String picPath = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator")
+        String picPath = GOODS_PICS_FOLDER + System.getProperty("file.separator")
                 + id + System.getProperty("file.separator") + url.substring(index + 1);
         try {
             Files.deleteIfExists(Paths.get(picPath));
@@ -81,7 +87,7 @@ public class PicUtils {
 
 
     public static boolean deleteAllPicByGoodsId(Integer id) {
-        String picPath = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator") + id;
+        String picPath = GOODS_PICS_FOLDER + System.getProperty("file.separator") + id;
         if (!Files.exists(Paths.get(picPath))){
             return true;
         }
@@ -99,9 +105,9 @@ public class PicUtils {
 
 
     public static String change(Integer dummyId, Integer id, String pic) {
-        String folder_path = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator") + dummyId;
+        String folder_path = GOODS_PICS_FOLDER + System.getProperty("file.separator") + dummyId;
         File old_folder = new File(folder_path);
-        String new_folder_path = Constants.GOODS_PICS_FOLDER + System.getProperty("file.separator") + id;
+        String new_folder_path = GOODS_PICS_FOLDER + System.getProperty("file.separator") + id;
         boolean success = old_folder.renameTo(new File(new_folder_path));
         if (!success) {
             return null;

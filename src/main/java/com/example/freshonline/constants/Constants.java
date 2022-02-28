@@ -23,10 +23,10 @@ public class Constants {
     public static final String UPDATE_GOODS_FAIL = "update goods fail";
     public static final String DELETE_GOODS_FAIL = "delete goods fail";
 
-    public static final String PICS_FOLDER = System.getProperty("user.dir")+System.getProperty("file.separator")+"pics";
-
-    public static final String GOODS_PICS_FOLDER = System.getProperty("user.dir")+System.getProperty("file.separator")+"pics"
-            +System.getProperty("file.separator")+"goods_pics";
+//    public static final String PICS_FOLDER = System.getProperty("user.dir")+System.getProperty("file.separator")+"pics";
+//
+//    public static final String GOODS_PICS_FOLDER = System.getProperty("user.dir")+System.getProperty("file.separator")+"pics"
+//            +System.getProperty("file.separator")+"goods_pics";
 
 
 
