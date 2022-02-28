@@ -88,8 +88,6 @@ class FavouriteControllerIntegrationTest {
             userMapper.insertSelective(user);
 
             favoriteMapper.insertSelective(new Favorite(user.getId(), stockedGoods1.getId()));
-            // cartMapper.insertSelective(new Cart(user.getId(), stockedGoods2.getId(), new
-            // BigDecimal(1)));
         }
 
         @Test
@@ -131,12 +129,28 @@ class FavouriteControllerIntegrationTest {
         }
 
 
+        @Test
+        public void addFavEntryBadInput() throws Exception {
+
+            String requestStr = JSONObject.toJSONString(null);
+
+            // act
+            MvcResult mvcResult = mockMvc.perform(
+                    put("/favourite")
+                            .content(requestStr)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertNull(resp);
+        }
+
+
 
         @Test
         public void deleteFavEntrySuccess() throws Exception {
 
-            Favorite favorite = new Favorite(user.getId(), stockedGoods2.getId());Cart cart = new Cart(user.getId(), stockedGoods2.getId(), new BigDecimal(1));
-            String requestStr = JSONObject.toJSONString(cart);
+            Favorite favorite = new Favorite(user.getId(), stockedGoods2.getId());
+            String requestStr = JSONObject.toJSONString(favorite);
 
             // act
             MvcResult mvcResult = mockMvc.perform(
@@ -146,6 +160,21 @@ class FavouriteControllerIntegrationTest {
                     .andReturn();
             JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
             Assertions.assertEquals(0, resp.get("code"));
+        }
+
+        @Test
+        public void deleteFavEntryBadInput() throws Exception {
+
+            String requestStr = JSONObject.toJSONString(null);
+
+            // act
+            MvcResult mvcResult = mockMvc.perform(
+                    delete("/favourite")
+                            .content(requestStr)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertNull(resp);
         }
 
 

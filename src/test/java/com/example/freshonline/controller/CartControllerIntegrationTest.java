@@ -127,6 +127,13 @@ class CartControllerIntegrationTest {
         }
 
         @Test
+        public void getCartGoodsBadInput() throws Exception {
+            MvcResult mvcResult = mockMvc.perform(get("/cart?user_id=addasddsdas")).andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertNotEquals(0, resp.get("code"));
+        }
+
+        @Test
         public void addCartEntrySuccess() throws Exception {
 
             Cart cart = new Cart(user.getId(), stockedGoods2.getId(), new BigDecimal(1));
@@ -145,6 +152,22 @@ class CartControllerIntegrationTest {
         }
 
         @Test
+        public void addCartEntryBadInput() throws Exception {
+
+            Cart cart = new Cart(user.getId(), stockedGoods1.getId(), new BigDecimal(1));
+            String requestStr = JSONObject.toJSONString(cart);
+
+            // act
+            MvcResult mvcResult = mockMvc.perform(
+                    put("/cart")
+                            .content(requestStr)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertNotEquals(0, resp.get("code"));
+        }
+
+        @Test
         public void updateCartEntrySuccess() throws Exception {
 
             Cart cart = new Cart(user.getId(), stockedGoods1.getId(), new BigDecimal(2));
@@ -158,6 +181,21 @@ class CartControllerIntegrationTest {
                     .andReturn();
             JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
             Assertions.assertEquals(0, resp.get("code"));
+        }
+
+        @Test
+        public void updateCartEntryBadInput() throws Exception {
+
+            String requestStr = JSONObject.toJSONString(null);
+
+            // act
+            MvcResult mvcResult = mockMvc.perform(
+                    post("/cart")
+                            .content(requestStr)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertNull(resp);
         }
 
 
@@ -177,6 +215,21 @@ class CartControllerIntegrationTest {
             Assertions.assertEquals(0, resp.get("code"));
             List<Cart> cart_goods = cartService.getCart(user.getId());
             Assertions.assertEquals(1,cart_goods.size());
+        }
+
+        @Test
+        public void deleteCartEntryBadInput() throws Exception {
+
+            String requestStr = JSONObject.toJSONString(null);
+
+            // act
+            MvcResult mvcResult = mockMvc.perform(
+                    delete("/cart")
+                            .content(requestStr)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertNull(resp);
         }
 
 
