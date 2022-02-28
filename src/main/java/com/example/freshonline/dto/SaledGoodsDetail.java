@@ -9,4 +9,7 @@ public class SaledGoodsDetail extends SaledGoods {
     @Getter
     @Setter
     public String name;
+    @Getter
+    @Setter
+    public String pic;
 }
