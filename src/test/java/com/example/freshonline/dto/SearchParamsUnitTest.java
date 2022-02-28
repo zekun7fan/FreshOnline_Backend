@@ -39,14 +39,14 @@ class SearchParamsUnitTest {
         Assert.assertEquals(category_id_expected, param.getCategory_id());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"abc", "1.23"})
-    public void verifyParamsNumberFormatException(String price_low) {
-        Map<String, String> map = new HashMap<>();
-        map.put("price_low", price_low);
-        SearchParams param = new SearchParams();
-        Throwable exception = Assert.assertThrows(NumberFormatException.class,
-                ()-> { param.verifyParams(map); });
-        System.out.println("verifyParamsNumberFormatException" + exception.getMessage());
-    }
+//    @ParameterizedTest
+//    @ValueSource(strings = {"abc", "1.23"})
+//    public void verifyParamsNumberFormatException(String price_low) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("price_low", price_low);
+//        SearchParams param = new SearchParams();
+//        Throwable exception = Assert.assertThrows(NumberFormatException.class,
+//                ()-> { param.verifyParams(map); });
+//        System.out.println("verifyParamsNumberFormatException" + exception.getMessage());
+//    }
 }
