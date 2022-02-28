@@ -3,7 +3,9 @@ package com.example.freshonline.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.constants.Constants;
+import com.example.freshonline.dao.CategoryMapper;
 import com.example.freshonline.dao.StockedGoodsMapper;
+import com.example.freshonline.model.Category;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.model.StockedGoodsExample;
 import com.example.freshonline.utils.RespChecker;
@@ -49,6 +51,9 @@ class StockedGoodsControllerIntegrationTest {
 
     @Autowired
     private StockedGoodsMapper stockedGoodsMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Nested
     class TestNestPart1 {
@@ -140,10 +145,80 @@ class StockedGoodsControllerIntegrationTest {
     }
 
 
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class TestNestPart3{
+        private String url = "/goodsdetails/";
+        private StockedGoods stockedGoods;
+        Category cate1;
+        Category cate2;
+        Category cate3;
+
+
+        @BeforeAll
+        public void setup() {
+
+            this.cate1 = new Category((Integer) null, 0, "cate1", 1);
+            categoryMapper.insertSelective(cate1);
+            this.cate2 = new Category((Integer) null, cate1.getId(), "cate2", 1);
+            categoryMapper.insertSelective(cate2);
+            this.cate3 = new Category((Integer) null, cate2.getId(), "cate3", 1);
+            categoryMapper.insertSelective(cate3);
+            this.stockedGoods =
+                    new StockedGoods((Integer) null, "testproduct", (byte)1, new BigDecimal(9.99), new BigDecimal(1000), new BigDecimal(100), (byte) 0, (BigDecimal) null, new BigDecimal(3.5),10, "brandname1", cate3.getId(), (byte)1, "String pic", true, "String descriptio");
+            stockedGoodsMapper.insertSelective(stockedGoods);
+        }
+
+
+        @Test
+        public void getGoodsDetailsSuccess() throws Exception{
+            // assert success
+            MvcResult mvcResult = mockMvc.perform(get(url+stockedGoods.getId().toString())).andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            JSONObject data = (JSONObject) resp.get("data");
+            Assertions.assertEquals(0,resp.get("code"));
+            Assertions.assertEquals(stockedGoods.getId(), data.get("id"));
+            Assertions.assertEquals(cate3.getId(), ((JSONObject) data.get("cate3")).get("id"));
+        }
+
+        @Test
+        public void getGoodsDetailsMissingID() throws Exception{
+            // assert success
+            MvcResult mvcResult = mockMvc.perform(get(url+"0")).andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            JSONObject data = (JSONObject) resp.get("data");
+            Assertions.assertEquals(0,resp.get("code"));
+            Assertions.assertNull(data);
+        }
+
+        @Test
+        public void getGoodsDetailsBadInputs() throws Exception{
+            // assert success
+            MvcResult mvcResult = mockMvc.perform(get(url+"badinputshshshsh")).andReturn();
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            Assertions.assertEquals(1,resp.get("code"));
+            Assertions.assertNotNull(resp.get("msg"));
+        }
+
+
+
+
+        @AfterAll
+        public void finish(){
+            stockedGoodsMapper.deleteByPrimaryKey(stockedGoods.getId());
+            categoryMapper.deleteByPrimaryKey(cate3.getId());
+            categoryMapper.deleteByPrimaryKey(cate2.getId());
+            categoryMapper.deleteByPrimaryKey(cate1.getId());
+        }
+    }
+
+
+
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    class TestNestPart3 {
+    class TestNestPart4 {
 
         private final String baseUrl = "http://localhost:8080";
 
