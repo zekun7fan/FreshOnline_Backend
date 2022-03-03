@@ -132,6 +132,7 @@ class StockedGoodsControllerIntegrationTest {
         @BeforeAll
         public void setup() throws ClassNotFoundException, SQLException, FileNotFoundException {
             executeSqlScript("stocked_goods_test_init.sql");
+            System.out.println("set up");
         }
 
         @AfterAll
