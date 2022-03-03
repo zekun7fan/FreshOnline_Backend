@@ -82,7 +82,7 @@ class StockedGoodsControllerIntegrationTest {
         @Rollback
         void getRandomGoods() throws Exception {
             init();
-            MvcResult result = mockMvc.perform(get("/random_goods?catogory_id_list=[1]")
+            MvcResult result = mockMvc.perform(get("/random_goods?catogory_id_list=1,3")
                     .content("")).andReturn();
             MockHttpServletResponse response = result.getResponse();
             JSONObject obj = JSONObject.parseObject(response.getContentAsString());
