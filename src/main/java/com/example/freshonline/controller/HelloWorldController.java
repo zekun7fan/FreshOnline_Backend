@@ -79,13 +79,13 @@ public class HelloWorldController {
         return RespBuilder.create(res, VerifyRule.NOT_NULL);
     }
 
-    // @ExceptionHandler(Exception.class)
-    // @ResponseStatus(HttpStatus.IM_USED)
-    // private void m(Throwable e, HttpServletRequest request, HttpServletResponse
-    // response){
-    // System.out.println("mm");
-    // System.out.println("mm");
-    // }
+//     @ExceptionHandler(Exception.class)
+//     @ResponseStatus(HttpStatus.IM_USED)
+//     private void m(Throwable e, HttpServletRequest request, HttpServletResponse
+//     response){
+//     System.out.println("mm");
+//     System.out.println("mm");
+//     }
 
 //    @PostMapping("/helloworld/raiseerror")
 //    public JSONObject err() throws Exception {
