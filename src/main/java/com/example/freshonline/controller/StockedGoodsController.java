@@ -138,14 +138,9 @@ public class StockedGoodsController {
      * @author Huang
      */
     @GetMapping("/random_goods")
-    public JSONObject getRandomGoods(@RequestParam(value = "catogory_id_list", required = true) List<String> categoryIdList){
-        ArrayList<Integer> Idlist = new ArrayList<Integer>();
-        for(String categoryId: categoryIdList){
-            Integer CId = (new ValidationChecker()).str2int(categoryId,1);
-            Idlist.add(CId);
-        }
-        if(Idlist.isEmpty()) Idlist.add(-1);
-        return RespBuilder.create(stockedGoodsService.getRandomGoods(Idlist), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
+    public JSONObject getRandomGoods(@RequestParam(value = "catogory_id_list", required = true) List<Integer> categoryIdList){
+//        if(categoryIdList.isEmpty()) Idlist.add(-1);
+        return RespBuilder.create(stockedGoodsService.getRandomGoods(categoryIdList), VerifyRule.COLLECTION_NOT_EMPTY,"success","fail");
     }
 
 

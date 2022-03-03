@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.exception.CustomException;
 
+import com.example.freshonline.exception.CustomizeErrorCode;
 import com.example.freshonline.utils.RespBuilder;
+import org.apache.catalina.connector.Response;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -23,6 +25,18 @@ public class GlobalExceptionHandler {
         try {
             PrintWriter writer = response.getWriter();
             String resp = JSONObject.toJSONString(RespBuilder.createFailedRsp(e.getMessage()));
+            writer.write(resp);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    void handle(NumberFormatException e, HttpServletRequest request, HttpServletResponse response) {
+        response.setStatus(Response.SC_OK);
+        try {
+            PrintWriter writer = response.getWriter();
+            String resp = JSONObject.toJSONString(RespBuilder.createFailedRsp("Wrong parameter format!"));
             writer.write(resp);
         } catch (IOException ex) {
             ex.printStackTrace();
