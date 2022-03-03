@@ -1,6 +1,8 @@
 package com.example.freshonline.dto;
 
 
+import com.example.freshonline.exception.CustomException;
+import com.example.freshonline.exception.SearchErrorCode;
 import com.example.freshonline.utils.ValidationChecker;
 import lombok.*;
 
@@ -29,26 +31,32 @@ public class SearchParams implements VerifyRequestData {
             int tmpPage = Integer.parseInt(param.get("page"));
             this.setPage(tmpPage > 0 ? tmpPage : 1);
         } catch (NumberFormatException ignored) {
+            throw new CustomException(SearchErrorCode.SEARCH_PARAM_FORMAT_EXCEPTION);
         }
         try {
             this.setPrice_low(Integer.parseInt(param.get("price_low")));
         } catch (NumberFormatException ignored) {
+            throw new CustomException(SearchErrorCode.SEARCH_PARAM_FORMAT_EXCEPTION);
         }
         try {
             this.setPrice_high(Integer.parseInt(param.get("price_high")));
         } catch (NumberFormatException ignored) {
+            throw new CustomException(SearchErrorCode.SEARCH_PARAM_FORMAT_EXCEPTION);
         }
         try {
             this.setSort_type(Integer.parseInt(param.get("sort_type")));
         } catch (NumberFormatException ignored) {
+            throw new CustomException(SearchErrorCode.SEARCH_PARAM_FORMAT_EXCEPTION);
         }
         try {
             this.setNum_per_row(Integer.parseInt(param.get("num_per_row")));
         } catch (NumberFormatException ignored) {
+            throw new CustomException(SearchErrorCode.SEARCH_PARAM_FORMAT_EXCEPTION);
         }
         try {
             this.setRow_per_page(Integer.parseInt(param.get("row_per_page")));
         } catch (NumberFormatException ignored) {
+            throw new CustomException(SearchErrorCode.SEARCH_PARAM_FORMAT_EXCEPTION);
         }
 
         String brandsStr = param.get("brands");
