@@ -576,7 +576,7 @@
     <include refid="Blob_Column_List" />
     from stocked_goods
     <where>
-      active=0
+      active=1
       <if test="param!=null and param.price_low!=-1">
         and case
         when onsale = 1 then sale_price else price end
@@ -638,7 +638,7 @@
     GROUP_CONCAT(distinct brand, '') as brand_list
     from stocked_goods
     <where>
-      active=0
+      active=1
       <if test="param!=null and param.price_low!=-1">
         and case
         when onsale = 1 then sale_price else price end
