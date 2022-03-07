@@ -2,7 +2,7 @@ package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.constants.Constants;
+import com.example.freshonline.constants.RespConstant;
 import com.example.freshonline.dao.OrderMapper;
 import com.example.freshonline.dao.SaledGoodsMapper;
 import com.example.freshonline.dao.StockedGoodsMapper;
@@ -176,8 +176,8 @@ class UserControllerIntegrationTest {
                             .contentType(MediaType.APPLICATION_JSON)
             ).andReturn();
             String resp = result.getResponse().getContentAsString();
-            assertEquals(Constants.SUCCESS_CODE, RespChecker.getCode(resp));
-            assertEquals(Constants.OPERATE_SUCCESS, RespChecker.getMsg(resp));
+            assertEquals(RespConstant.SUCCESS_CODE, RespChecker.getCode(resp));
+            assertEquals(RespConstant.OPERATE_SUCCESS, RespChecker.getMsg(resp));
             assertEquals(true, RespChecker.getDataAsPrimitiveType(resp, Boolean.class));
 
 
@@ -201,8 +201,8 @@ class UserControllerIntegrationTest {
                             .contentType(MediaType.APPLICATION_JSON)
             ).andReturn();
             String resp = result.getResponse().getContentAsString();
-            assertEquals(Constants.SUCCESS_CODE, RespChecker.getCode(resp));
-            assertEquals(Constants.OPERATE_SUCCESS, RespChecker.getMsg(resp));
+            assertEquals(RespConstant.SUCCESS_CODE, RespChecker.getCode(resp));
+            assertEquals(RespConstant.OPERATE_SUCCESS, RespChecker.getMsg(resp));
             LoginedUserInfo info = RespChecker.getDataAsObject(resp, LoginedUserInfo.class);
             assertEquals(user.getId(), info.getId());
             assertEquals(user.getName(), info.getName());
@@ -226,8 +226,8 @@ class UserControllerIntegrationTest {
                             .contentType(MediaType.APPLICATION_JSON)
             ).andReturn();
             String resp = result.getResponse().getContentAsString();
-            assertEquals(Constants.SUCCESS_CODE, RespChecker.getCode(resp));
-            assertEquals(Constants.OPERATE_SUCCESS, RespChecker.getMsg(resp));
+            assertEquals(RespConstant.SUCCESS_CODE, RespChecker.getCode(resp));
+            assertEquals(RespConstant.OPERATE_SUCCESS, RespChecker.getMsg(resp));
             LoginedUserInfo info = RespChecker.getDataAsObject(resp, LoginedUserInfo.class);
             assertEquals(user.getId(), info.getId());
             assertEquals(user.getName(), info.getName());

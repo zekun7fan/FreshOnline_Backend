@@ -1,7 +1,7 @@
 package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.constants.Constants;
+import com.example.freshonline.constants.RespConstant;
 import com.example.freshonline.dto.CategoryTreeNode;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.Category;
@@ -20,31 +20,22 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/categoryTree")
-    public JSONObject getCategoryTree(){
-        // validate
-        // dispatch
-        // sum up
+    public JSONObject getCategoryTree() {
         List<CategoryTreeNode> categoryTree = categoryService.getCategoryTree();
-        return RespBuilder.create(categoryTree, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+        return RespBuilder.create(categoryTree, VerifyRule.NOT_NULL, RespConstant.OPERATE_SUCCESS, RespConstant.OPERATE_FAIL);
     }
 
     @PostMapping("/category")
-    public JSONObject addCategory(@RequestBody JSONObject jsonObject){
-        Category category = jsonObject.toJavaObject(Category.class);
+    public JSONObject addCategory(@RequestBody Category category) {
         boolean res = categoryService.addCategory(category);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @DeleteMapping("/category")
-    public JSONObject delCategory(@RequestBody JSONObject jsonObject){
-        CategoryTreeNode node = jsonObject.toJavaObject(CategoryTreeNode.class);
+    public JSONObject delCategory(@RequestBody CategoryTreeNode node) {
         List<CategoryTreeNode> failedDelNodeList = categoryService.delSubCategoryTree(node);
         return RespBuilder.create(failedDelNodeList, VerifyRule.COLLECTION_EMPTY);
     }
-
-
-
-
 
 
 }

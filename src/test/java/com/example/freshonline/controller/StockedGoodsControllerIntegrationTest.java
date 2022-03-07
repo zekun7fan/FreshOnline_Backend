@@ -2,7 +2,7 @@ package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.constants.Constants;
+import com.example.freshonline.constants.RespConstant;
 import com.example.freshonline.dao.CategoryMapper;
 import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.model.Category;
@@ -279,9 +279,9 @@ class StockedGoodsControllerIntegrationTest {
             //assert
             String resp = result.getResponse().getContentAsString();
             Integer code = RespChecker.getCode(resp);
-            assertEquals(Constants.SUCCESS_CODE, code);
+            assertEquals(RespConstant.SUCCESS_CODE, code);
             String msg = RespChecker.getMsg(resp);
-            assertEquals(Constants.OPERATE_SUCCESS, msg);
+            assertEquals(RespConstant.OPERATE_SUCCESS, msg);
             Boolean data = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
             assertTrue(data);
 
@@ -312,9 +312,9 @@ class StockedGoodsControllerIntegrationTest {
             //assert
             String resp = result.getResponse().getContentAsString();
             Integer code = RespChecker.getCode(resp);
-            assertEquals(Constants.SUCCESS_CODE, code);
+            assertEquals(RespConstant.SUCCESS_CODE, code);
             String msg = RespChecker.getMsg(resp);
-            assertEquals(Constants.OPERATE_SUCCESS, msg);
+            assertEquals(RespConstant.OPERATE_SUCCESS, msg);
             Boolean data = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
             assertTrue(data);
 
@@ -339,9 +339,9 @@ class StockedGoodsControllerIntegrationTest {
             //assert
             String resp = result.getResponse().getContentAsString();
             Integer code = RespChecker.getCode(resp);
-            assertEquals(Constants.SUCCESS_CODE, code);
+            assertEquals(RespConstant.SUCCESS_CODE, code);
             String msg = RespChecker.getMsg(resp);
-            assertEquals(Constants.OPERATE_SUCCESS, msg);
+            assertEquals(RespConstant.OPERATE_SUCCESS, msg);
             Boolean data = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
             assertTrue(data);
             StockedGoodsExample example = new StockedGoodsExample();

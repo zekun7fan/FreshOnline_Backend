@@ -3,7 +3,7 @@ package com.example.freshonline.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.constants.Constants;
+import com.example.freshonline.constants.RespConstant;
 import com.example.freshonline.dto.GoodsPicInfo;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
@@ -73,7 +73,7 @@ public class StockedGoodsController {
        System.out.println(param);
 
        JSONObject output = stockedGoodsService.getSearch(param);
-       return RespBuilder.create(output, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+       return RespBuilder.create(output, VerifyRule.NOT_NULL, RespConstant.OPERATE_SUCCESS, RespConstant.OPERATE_FAIL);
    }
 
 
@@ -89,21 +89,21 @@ public class StockedGoodsController {
     @PostMapping("/goods/pic/{id}")
     public JSONObject uploadGoodsPictures(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile multipartFile){
         GoodsPicInfo info = PicUtils.save(id, multipartFile);
-        return RespBuilder.create(info, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+        return RespBuilder.create(info, VerifyRule.NOT_NULL, RespConstant.OPERATE_SUCCESS, RespConstant.OPERATE_FAIL);
     }
 
     @DeleteMapping("/goods/pic/{id}")
     public JSONObject deleteGoodsPictures(@PathVariable("id") Integer id, @RequestBody JSONObject jsonObject){
         String url = jsonObject.getString("url");
         GoodsPicInfo info = PicUtils.delete(id, url);
-        return RespBuilder.create(info, VerifyRule.NOT_NULL, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+        return RespBuilder.create(info, VerifyRule.NOT_NULL, RespConstant.OPERATE_SUCCESS, RespConstant.OPERATE_FAIL);
     }
 
 
     @DeleteMapping("/goods/pic/{id}/all")
     public JSONObject deleteGoodsPictures(@PathVariable("id") Integer id){
         boolean res = PicUtils.deleteAllPicByGoodsId(id);
-        return RespBuilder.create(res, VerifyRule.TRUE, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
+        return RespBuilder.create(res, VerifyRule.TRUE, RespConstant.OPERATE_SUCCESS, RespConstant.OPERATE_FAIL);
     }
 
 

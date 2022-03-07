@@ -1,7 +1,7 @@
 package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.constants.Constants;
+import com.example.freshonline.constants.RespConstant;
 import com.example.freshonline.dao.CategoryMapper;
 import com.example.freshonline.dto.CategoryTreeNode;
 import com.example.freshonline.model.Category;
@@ -9,18 +9,15 @@ import com.example.freshonline.model.CategoryExample;
 import com.example.freshonline.utils.RespChecker;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.spring.boot.autoconfigure.MybatisLanguageDriverAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,9 +76,9 @@ class CategoryControllerIntegrationTest {
         // assert
         String resp = result.getResponse().getContentAsString();
         Integer code = RespChecker.getCode(resp);
-        assertEquals(Constants.SUCCESS_CODE, code);
+        assertEquals(RespConstant.SUCCESS_CODE, code);
         String msg = RespChecker.getMsg(resp);
-        assertEquals(Constants.OPERATE_SUCCESS, msg);
+        assertEquals(RespConstant.OPERATE_SUCCESS, msg);
         List<CategoryTreeNode> data = RespChecker.getDataAsArray(resp, CategoryTreeNode.class);
         CategoryTreeNode n1 = null;
         for (CategoryTreeNode node: data){
@@ -143,9 +140,9 @@ class CategoryControllerIntegrationTest {
         //assert
         // check response
         Integer code = RespChecker.getCode(resp);
-        assertEquals(Constants.SUCCESS_CODE, code);
+        assertEquals(RespConstant.SUCCESS_CODE, code);
         String msg = RespChecker.getMsg(resp);
-        assertEquals(Constants.OPERATE_SUCCESS, msg);
+        assertEquals(RespConstant.OPERATE_SUCCESS, msg);
         Boolean res = RespChecker.getDataAsPrimitiveType(resp, Boolean.class);
         assertTrue(res);
 
@@ -187,9 +184,9 @@ class CategoryControllerIntegrationTest {
         //assert
         // check response
         Integer code = RespChecker.getCode(resp);
-        assertEquals(Constants.SUCCESS_CODE, code);
+        assertEquals(RespConstant.SUCCESS_CODE, code);
         String msg = RespChecker.getMsg(resp);
-        assertEquals(Constants.OPERATE_SUCCESS, msg);
+        assertEquals(RespConstant.OPERATE_SUCCESS, msg);
         List<CategoryTreeNode> res = RespChecker.getDataAsArray(resp, CategoryTreeNode.class);
         assertEquals(0, res.size());
 

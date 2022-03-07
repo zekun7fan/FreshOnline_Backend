@@ -1,26 +1,17 @@
 package com.example.freshonline.utils;
 
-import com.example.freshonline.constants.Constants;
 import com.example.freshonline.dto.GoodsPicInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class PicUtils {
 

@@ -3,7 +3,7 @@ package com.example.freshonline.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.freshonline.constants.Constants;
+import com.example.freshonline.constants.RespConstant;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +33,7 @@ public class RespChecker {
 
 
     public static Integer getCode(JSONObject response){
-        return response.getInteger(Constants.CODE);
+        return response.getInteger(RespConstant.CODE);
     }
 
     public static Integer getCode(String response){
@@ -42,7 +42,7 @@ public class RespChecker {
     }
 
     public static String getMsg(JSONObject response){
-        return response.getString(Constants.MSG);
+        return response.getString(RespConstant.MSG);
     }
 
     public static String getMsg(String response){
@@ -51,7 +51,7 @@ public class RespChecker {
     }
 
     public static <R> R getDataAsPrimitiveType(JSONObject response, Class<R> primitiveType){
-        Object dataObj = response.get(Constants.DATA);
+        Object dataObj = response.get(RespConstant.DATA);
         return primitiveType.cast(dataObj);
     }
 
@@ -61,7 +61,7 @@ public class RespChecker {
     }
 
     public static <R> R getDataAsObject(JSONObject response, Class<R> dtoClass){
-        JSONObject data = response.getJSONObject(Constants.DATA);
+        JSONObject data = response.getJSONObject(RespConstant.DATA);
         return JSONObject.toJavaObject(data, dtoClass);
     }
 
@@ -71,7 +71,7 @@ public class RespChecker {
     }
 
     public static <R> List<R> getDataAsArray(JSONObject response, Class<R> elementClass){
-        JSONArray jsonArray = response.getJSONArray(Constants.DATA);
+        JSONArray jsonArray = response.getJSONArray(RespConstant.DATA);
         return JSONObject.parseArray(jsonArray.toJSONString(), elementClass);
     }
 
