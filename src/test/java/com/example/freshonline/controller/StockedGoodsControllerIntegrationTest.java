@@ -101,9 +101,15 @@ class StockedGoodsControllerIntegrationTest {
         private String password = "";
 
         @ParameterizedTest
-        @CsvSource({
-                "http://localhost:8080/goods,7,1",
-                "http://localhost:8080/goods,7,1"})
+        @CsvSource(delimiter = ';',
+                value = {
+                        "/goods?price_low=1&price_high=30&brands=&sort_type=0&keyword=&page=1&category_id=&num_per_page=20;6;-1",
+                        "/goods?price_low=5&price_high=100&brands=OPQ&sort_type=0&keyword=&page=1&category_id=&num_per_page=20;0;-1",
+                        "/goods?brands=ABC,TNT&price_low=0&price_high=1000&sort_type=0&keyword=&page=1&category_id=&num_per_page=20;5;-1",
+                        "/goods?price_low=1&price_high=30&category_id=123&brands=&sort_type=0&keyword=&page=1&num_per_page=20;5;-1",
+                        "/goods?category_id=123,124&price_low=0&price_high=1000&brands=&sort_type=0&keyword=&page=1&num_per_page=20;6;-1",
+                        "/goods?price_low=5&price_high=100&brands=&page=3&sort_type=0&keyword=&category_id=&num_per_page=20;7;-1",
+                })
         public void getSearch(String url, int expectedGoodsTotal, int expectedFirstGoodsId) throws Exception {
 
             MvcResult mvcResult = mockMvc.perform(get(url)).andReturn();
@@ -113,7 +119,7 @@ class StockedGoodsControllerIntegrationTest {
             JSONArray stockedGoodsList = data.getJSONArray("goods_list");
             int goods_total = (int) data.get("goods_total");
             Assert.assertEquals(goods_total, expectedGoodsTotal);
-            if (goods_total != 0) {
+            if (goods_total != 0 && expectedFirstGoodsId != -1) {
                 int firstGoodsId = stockedGoodsList.getJSONObject(0).getInteger("id");
                 Assert.assertEquals(firstGoodsId, expectedFirstGoodsId);
             }

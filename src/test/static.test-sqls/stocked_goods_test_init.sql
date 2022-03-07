@@ -21,7 +21,13 @@
 
 LOCK TABLES `stocked_goods` WRITE;
 /*!40000 ALTER TABLE `stocked_goods` DISABLE KEYS */;
-INSERT INTO `stocked_goods` VALUES (1,'beef1',2,20.33,10.33,2.20,'beef things',1,18.33,0.00,0,'TNT',123,0,'/usr/balabala',0),(2,'pork',2,22.33,20.33,3.33,'pork things',1,18.33,5.00,2,'abc',124,0,'/usr/else',0),(3,'lamp',2,33.00,50.00,5.00,'lamp things',0,0.00,3.00,5,'bcd',125,0,'/usr/lalala',0),(4,'beef2',2,21.33,10.33,2.20,'beef things',0,0.00,4.32,20,'TNT',123,0,'/usr/balabala',0),(5,'beef3',2,22.33,10.33,2.20,'beef things',0,0.00,0.00,0,'TNT',123,0,'/usr/balabala',0),(6,'beef4',2,20.33,10.33,2.20,'beef things',0,0.00,0.00,0,'ABC',123,0,'/usr/balabala',0),(7,'beef5',2,20.33,10.33,2.20,'beef things',0,0.00,0.00,0,'NOTNT',123,0,'/usr/balabala',0);
+INSERT INTO `stocked_goods` VALUES (1,'beef1',2,20.33,10.33,2.20,'beef things',1,18.33,0.00,0,'TNT',123,0,'/usr/balabala',1),
+                                   (2,'pork',2,22.33,20.33,3.33,'pork things',1,18.33,5.00,2,'abc',124,0,'/usr/else',1),
+                                   (3,'lamp',2,33.00,50.00,5.00,'lamp things',0,0.00,3.00,5,'bcd',125,0,'/usr/lalala',1),
+                                   (4,'beef2',2,21.33,10.33,2.20,'beef things',0,0.00,4.32,20,'TNT',123,0,'/usr/balabala',1),
+                                   (5,'beef3',2,22.33,10.33,2.20,'beef things',0,0.00,0.00,0,'TNT',123,0,'/usr/balabala',1),
+                                   (6,'beef4',2,20.33,10.33,2.20,'beef things',0,0.00,0.00,0,'ABC',123,0,'/usr/balabala',1),
+                                   (7,'beef5',2,20.33,10.33,2.20,'beef things',0,0.00,0.00,0,'NOTNT',123,0,'/usr/balabala',1);
 /*!40000 ALTER TABLE `stocked_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
