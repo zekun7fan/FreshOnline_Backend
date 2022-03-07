@@ -11,13 +11,14 @@ import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.service.StockedGoodsService;
 import com.example.freshonline.utils.PicUtils;
 import com.example.freshonline.utils.RespBuilder;
-import com.example.freshonline.utils.ValidationChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 
+import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -107,8 +108,10 @@ public class StockedGoodsController {
         return RespBuilder.create(res, VerifyRule.TRUE, Constants.OPERATE_SUCCESS, Constants.OPERATE_FAIL);
     }
 
+
+    @PreAuthorize("checkUserId(#id, #session)")
     @GetMapping("/goods/{id}")
-    public JSONObject getGoods(@PathVariable("id") Integer id){
+    public JSONObject getGoods(@PathVariable("id") Integer id, HttpSession session){
         StockedGoods goods = stockedGoodsService.getGoodsByPk(id);
         return RespBuilder.create(goods, VerifyRule.NOT_NULL);
 

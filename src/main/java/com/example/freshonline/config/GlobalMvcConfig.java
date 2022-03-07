@@ -9,10 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-public class GlobalConfig implements WebMvcConfigurer {
-
-    @Autowired
-    private AuthInterceptor authInterceptor;
+public class GlobalMvcConfig implements WebMvcConfigurer {
 
     // handler cors problem
     @Override
@@ -36,7 +33,7 @@ public class GlobalConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
+        registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login","/register","/home","/");
     }

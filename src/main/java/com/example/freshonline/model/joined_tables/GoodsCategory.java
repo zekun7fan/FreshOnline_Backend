@@ -4,6 +4,7 @@ import com.example.freshonline.model.Category;
 import com.example.freshonline.model.StockedGoods;
 
 public class GoodsCategory extends StockedGoods{
+
     private Category cate1;
     private Category cate2;
     private Category cate3;
