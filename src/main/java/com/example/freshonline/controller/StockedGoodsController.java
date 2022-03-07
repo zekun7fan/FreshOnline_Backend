@@ -116,15 +116,13 @@ public class StockedGoodsController {
     }
 
     @PostMapping("/goods")
-    public JSONObject addGoods(@RequestBody JSONObject jsonObject){
-        StockedGoods goods = jsonObject.toJavaObject(StockedGoods.class);
+    public JSONObject addGoods(@RequestBody StockedGoods goods){
         boolean res = stockedGoodsService.addGoods(goods);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @PutMapping("/goods")
-    public JSONObject updateGoods(@RequestBody JSONObject jsonObject){
-        StockedGoods goods = jsonObject.toJavaObject(StockedGoods.class);
+    public JSONObject updateGoods(@RequestBody StockedGoods goods){
         boolean res = stockedGoodsService.updateGoods(goods);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }

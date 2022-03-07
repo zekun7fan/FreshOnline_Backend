@@ -64,23 +64,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public JSONObject login(@RequestBody JSONObject jsonObject) {
-        User user = jsonObject.toJavaObject(User.class);
+    public JSONObject login(@RequestBody User user) {
         LoginedUserInfo loginedUserInfo = userService.login(user);
         return RespBuilder.create(loginedUserInfo, VerifyRule.NOT_NULL);
     }
 
 
     @PostMapping("/register")
-    public JSONObject register(@RequestBody JSONObject jsonObject) {
-        User user = jsonObject.toJavaObject(User.class);
+    public JSONObject register(@RequestBody User user) {
         boolean res = userService.register(user);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @PutMapping("/logout")
-    public JSONObject logout(@RequestBody JSONObject jsonObject) {
-        User user = jsonObject.toJavaObject(User.class);
+    public JSONObject logout(@RequestBody User user) {
         LoginedUserInfo loginedUserInfo = userService.logout(user);
         return RespBuilder.create(loginedUserInfo, VerifyRule.NOT_NULL);
     }

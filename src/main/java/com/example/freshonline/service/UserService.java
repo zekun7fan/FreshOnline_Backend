@@ -3,6 +3,8 @@ package com.example.freshonline.service;
 import com.example.freshonline.dao.UserMapper;
 import com.example.freshonline.dto.LoginedUserInfo;
 import com.example.freshonline.dto.UserJwtPayload;
+import com.example.freshonline.exception.CustomException;
+import com.example.freshonline.exception.CustomizeErrorCode;
 import com.example.freshonline.model.User;
 import com.example.freshonline.model.UserExample;
 import com.example.freshonline.utils.JwtUtils;
@@ -43,7 +45,7 @@ public class UserService {
         userExample.createCriteria().andEmailEqualTo(user.getEmail()).andPasswordEqualTo(user.getPassword());
         List<User> users = userMapper.selectByExample(userExample);
         if (users == null || users.isEmpty()) {
-            return null;
+            throw new CustomException(CustomizeErrorCode.USER_INFO_INCORRECT);
         }
         User u = users.get(0);
         return getLoginedUserInfo(u, true);
@@ -51,13 +53,20 @@ public class UserService {
 
 
     public boolean register(User user) {
-        return userMapper.insertSelective(user) == 1;
+        UserExample example = new UserExample();
+        example.createCriteria().andEmailEqualTo(user.getEmail());
+        List<User> users = userMapper.selectByExample(example);
+        if (!users.isEmpty()){
+            throw new CustomException(CustomizeErrorCode.EMAIL_ALREADY_REGISTERED);
+        }
+        userMapper.insertSelective(user);
+        return true;
     }
 
     public LoginedUserInfo logout(User user) {
         User u = userMapper.selectByPrimaryKey(user.getId());
         if (u == null) {
-            return null;
+            throw new CustomException(CustomizeErrorCode.USER_NOT_LOGIN);
         }
         return getLoginedUserInfo(u, false);
     }
