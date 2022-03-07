@@ -576,28 +576,28 @@
     <include refid="Blob_Column_List" />
     from stocked_goods
     <where>
-      active=0
-      <if test="param!=null and param.price_low!=-1">
+      active=1
+      <if test="param!=null and param.price_low!=0">
         and case
         when onsale = 1 then sale_price else price end
         >= ${param.price_low}
       </if>
-      <if test="param!=null and param.price_high!=-1">
+      <if test="param!=null and param.price_high!=0">
         and case
         when onsale = 1 then sale_price else price end
         &lt;= ${param.price_high}
       </if>
-      <if test="param!=null and param.category_id!=null">
-        and category_id in ${param.category_id}
+      <if test="param!=null and param.category_id_valid!=null">
+        and category_id in ${param.category_id_valid}
       </if>
       <if test="param!=null and param.keyword!=null">
         and name like CONCAT('%',#{param.keyword},'%')
       </if>
-      <if test="param!=null and param.brands!=null">
-        and brand in ${param.brands}
+      <if test="param!=null and param.brands_valid!=null">
+        and brand in ${param.brands_valid}
       </if>
     </where>
-    <if test="param!=null and param.sort_type!=-1">
+    <if test="param!=null and param.sort_type!=0">
       <if test="param.sort_type==1">
         order by case
         when onsale = 1 then sale_price else price end
@@ -615,7 +615,7 @@
         order by sales desc
       </if>
     </if>
-    <if test="param!=null and param.item_low!=-1 and param.item_high!=-1">
+    <if test="param!=null and param.item_low!=0 and param.item_high!=0">
       limit ${param.item_low}, ${param.item_high}
     </if>
   </select>
@@ -638,25 +638,25 @@
     GROUP_CONCAT(distinct brand, '') as brand_list
     from stocked_goods
     <where>
-      active=0
-      <if test="param!=null and param.price_low!=-1">
+      active=1
+      <if test="param!=null and param.price_low!=0">
         and case
         when onsale = 1 then sale_price else price end
         >= ${param.price_low}
       </if>
-      <if test="param!=null and param.price_high!=-1">
+      <if test="param!=null and param.price_high!=0">
         and case
         when onsale = 1 then sale_price else price end
         &lt;= ${param.price_high}
       </if>
-      <if test="param!=null and param.category_id!=null">
-        and category_id in ${param.category_id}
+      <if test="param!=null and param.category_id_valid!=null">
+        and category_id in ${param.category_id_valid}
       </if>
       <if test="param!=null and param.keyword!=null">
         and name like CONCAT('%',#{param.keyword},'%')
       </if>
-      <if test="param!=null and param.brands!=null">
-        and brand in ${param.brands}
+      <if test="param!=null and param.brands_valid!=null">
+        and brand in ${param.brands_valid}
       </if>
     </where>
   </select>
