@@ -10,6 +10,7 @@ import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/category")
-    public JSONObject delCategory(@RequestBody CategoryTreeNode node) {
+    public JSONObject delCategory(@Valid @RequestBody CategoryTreeNode node) {
         List<CategoryTreeNode> failedDelNodeList = categoryService.delSubCategoryTree(node);
         return RespBuilder.create(failedDelNodeList, VerifyRule.COLLECTION_EMPTY);
     }
