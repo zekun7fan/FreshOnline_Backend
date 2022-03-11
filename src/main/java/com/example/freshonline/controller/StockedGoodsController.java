@@ -69,7 +69,7 @@ public class StockedGoodsController {
    @GetMapping("/goods")
    public JSONObject getSearch(@Validated SearchParams param){
 
-       param.convert();
+       param.computePage();
        System.out.println(param);
 
        JSONObject output = stockedGoodsService.getSearch(param);
