@@ -554,7 +554,7 @@
     order by rand()
     limit 15
   </select>
-  <select id="selectByCatogary" resultMap="ResultMapWithBLOBs">
+  <select id="selectByCategory" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
     ,
