@@ -84,7 +84,7 @@ public class StockedGoodsService {
      * @author Huang
      */
     public List<StockedGoods> getRandomGoods(List<Integer> categoryIdList){
-        return this.stockedGoodsMapper.selectByCatogary(categoryIdList);
+        return this.stockedGoodsMapper.selectByCategory(categoryIdList);
     }
 
     public StockedGoods getGoodsByPk(Integer Id){

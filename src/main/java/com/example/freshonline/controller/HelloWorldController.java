@@ -5,6 +5,7 @@ import com.example.freshonline.dto.HelloWorldDto;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.User;
 import com.example.freshonline.service.HelloWorldService;
+import com.example.freshonline.service.MongoDbDemo;
 import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -22,6 +24,9 @@ public class HelloWorldController {
 
     @Autowired
     private HelloWorldService helloWorldService;
+
+    @Autowired
+    private MongoDbDemo mongoDbDemo;
 
     @GetMapping("/hello/{hello_id}")
     public String h1(@PathVariable("hello_id") Integer id, @RequestParam("hello_name") String xxx) {
@@ -77,6 +82,31 @@ public class HelloWorldController {
             @PathVariable("id") Integer id) throws Exception {
         String res = helloWorldService.m1();
         return RespBuilder.create(res, VerifyRule.NOT_NULL);
+    }
+
+    @GetMapping("/helloworld/copyuser")
+    public void MongoTest1( @RequestParam("id") Integer id){
+        mongoDbDemo.copyUserToMongo(id);
+    }
+
+    @GetMapping("/helloworld/queryuser")
+    public User MongoTest2( @RequestParam("id") Integer id){
+        return mongoDbDemo.getUserById(id);
+    }
+
+    @GetMapping("/helloworld/queryusername")
+    public User MongoTest4( @RequestParam("name") String name){
+        return mongoDbDemo.getUserByName(name);
+    }
+
+    @GetMapping("/helloworld/queryusertype")
+    public List<User> MongoTest5(@RequestParam("type") int type){
+        return mongoDbDemo.getUserByType(type);
+    }
+
+    @GetMapping("/helloworld/deleteuser")
+    public void MongoTest3( @RequestParam("id") Integer id){
+        mongoDbDemo.deleteUserMongo(id);
     }
 
 //     @ExceptionHandler(Exception.class)
