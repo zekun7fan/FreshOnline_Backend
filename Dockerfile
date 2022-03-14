@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM docker.io/library/openjdk:17-alpine
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 ARG JAR_FILE=target/*.jar
