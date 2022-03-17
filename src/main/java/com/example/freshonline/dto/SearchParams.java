@@ -4,7 +4,7 @@ package com.example.freshonline.dto;
 import lombok.*;
 
 import javax.validation.constraints.*;
-import java.util.Map;
+import java.util.List;
 
 
 @Data
@@ -17,7 +17,7 @@ public class SearchParams implements VerifyRequestData {
     @NotNull @PositiveOrZero
     private int price_high = 0;
     @NotNull
-    private String brands = null;
+    private List<String> brands = null;
     @NotNull @Min(0) @Max(4)
     private int sort_type = 0;
     @NotNull
@@ -25,12 +25,12 @@ public class SearchParams implements VerifyRequestData {
     @NotNull @Positive
     private int page = 1;
     @NotNull
-    private String category_id = null;
+    private List<Integer> category_id = null;
     @NotNull @Positive
     private int num_per_page = 20;
 
-    private String brands_valid = null;
-    private String category_id_valid = null;
+//    private String brands_valid = null;
+//    private String category_id_valid = null;
     private int item_low = 1;
     private int item_high = 20;
 
@@ -78,20 +78,23 @@ public class SearchParams implements VerifyRequestData {
 //        this.computePage();
 //    }
 
-    private void computePage() {
+    public void computePage() {
         this.setItem_low((this.getPage() - 1) * this.getNum_per_page());
         this.setItem_high(this.getPage() * this.getNum_per_page());
     }
 
-    public void convert(){
-        if (this.getBrands() != null && this.getBrands().length() != 0) {
-            String[] brands_list = this.getBrands().split(",");
-            this.setBrands_valid("('" + String.join("','", brands_list) + "')");
-        }
-        if (this.getCategory_id() != null && this.getCategory_id().length() != 0) {
-            this.setCategory_id_valid("(" + this.getCategory_id() + ")");
-        }
-        this.computePage();
-    }
+//    public void convert(){
+//        if (this.getBrands() != null && this.getBrands().length() != 0) {
+//            String[] brands_list = this.getBrands().split(",");
+//            this.setBrands_valid("('" + String.join("','", brands_list) + "')");
+//        }
+//        if (this.getCategory_id() != null && this.getCategory_id().length() != 0) {
+//            String[] category_list  = this.getCategory_id().split(",");
+//            if (Integer.parseInt(category_list[0]) != 0) {
+//                this.setCategory_id_valid("(" + this.getCategory_id() + ")");
+//            }
+//        }
+//        this.computePage();
+//    }
 
 }

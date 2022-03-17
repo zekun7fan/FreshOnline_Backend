@@ -6,7 +6,11 @@ import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.User;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 import com.example.freshonline.service.HelloWorldService;
+<<<<<<< HEAD
 import com.example.freshonline.service.StockedGoodsService;
+=======
+import com.example.freshonline.service.MongoDbDemo;
+>>>>>>> f744e26f620dfa2f6e5f870c872f4da3368c0376
 import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,8 +25,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+<<<<<<< HEAD
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+=======
+import java.util.List;
+>>>>>>> f744e26f620dfa2f6e5f870c872f4da3368c0376
 
 
 @RestController
@@ -82,6 +90,9 @@ public class HelloWorldController {
     @Autowired
     private HelloWorldService helloWorldService;
 
+    @Autowired
+    private MongoDbDemo mongoDbDemo;
+
     @GetMapping("/hello/{hello_id}")
     public String h1(@PathVariable("hello_id") Integer id, @RequestParam("hello_name") String xxx) {
         System.out.println("h1:  hello_id=" + id + "-----hello_name=" + xxx);
@@ -136,6 +147,31 @@ public class HelloWorldController {
             @PathVariable("id") Integer id) throws Exception {
         String res = helloWorldService.m1();
         return RespBuilder.create(res, VerifyRule.NOT_NULL);
+    }
+
+    @GetMapping("/helloworld/copyuser")
+    public void MongoTest1( @RequestParam("id") Integer id){
+        mongoDbDemo.copyUserToMongo(id);
+    }
+
+    @GetMapping("/helloworld/queryuser")
+    public User MongoTest2( @RequestParam("id") Integer id){
+        return mongoDbDemo.getUserById(id);
+    }
+
+    @GetMapping("/helloworld/queryusername")
+    public User MongoTest4( @RequestParam("name") String name){
+        return mongoDbDemo.getUserByName(name);
+    }
+
+    @GetMapping("/helloworld/queryusertype")
+    public List<User> MongoTest5(@RequestParam("type") int type){
+        return mongoDbDemo.getUserByType(type);
+    }
+
+    @GetMapping("/helloworld/deleteuser")
+    public void MongoTest3( @RequestParam("id") Integer id){
+        mongoDbDemo.deleteUserMongo(id);
     }
 
 //     @ExceptionHandler(Exception.class)

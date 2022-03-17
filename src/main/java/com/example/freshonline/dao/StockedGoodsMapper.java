@@ -122,7 +122,7 @@ public interface StockedGoodsMapper {
 
     List<StockedGoods> selectByOnsale();
 
-    List<StockedGoods> selectByCatogary(List<Integer> categoryIdList);
+    List<StockedGoods> selectByCategory(List<Integer> categoryIdList);
 
     List<StockedGoods> selectByFilter(@Param("param") SearchParams param);
 
