@@ -1,9 +1,11 @@
 package com.example.freshonline.model.joined_tables;
 
+import java.io.Serializable;
+
 import com.example.freshonline.model.Category;
 import com.example.freshonline.model.StockedGoods;
 
-public class GoodsCategory extends StockedGoods{
+public class GoodsCategory extends StockedGoods implements Serializable{
 
     private Category cate1;
     private Category cate2;

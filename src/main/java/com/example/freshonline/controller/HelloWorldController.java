@@ -4,21 +4,80 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.dto.HelloWorldDto;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.User;
+import com.example.freshonline.model.joined_tables.GoodsCategory;
 import com.example.freshonline.service.HelloWorldService;
+import com.example.freshonline.service.StockedGoodsService;
 import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Source;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @RestController
 public class HelloWorldController {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private StockedGoodsService stockedGoodsService;
+
+
+    @GetMapping("/redis/{id}")
+    public String h1(@PathVariable("id") String id) {
+        String a = (String)redisTemplate.opsForValue().get(id);
+        return ("redis result" + a);
+    }
+
+    @PostMapping("/redis/{id}/{value}")
+    public String h2(@PathVariable("id") String id,@PathVariable("value") String value) {
+        redisTemplate.opsForValue().set(id, value);
+        return ("set success");
+    }
+
+    @GetMapping("/redis/goods/{id}")
+    public JSONObject getGoodsDetails(@PathVariable("id") String id) {
+        JSONObject res = new JSONObject();
+        Integer goods_id = Integer.parseInt(id);
+        try{
+            ExecutorService executorService = Executors.newFixedThreadPool(200);
+            for(int i =0;i<500;i++){
+                executorService.submit(new Runnable() {
+                    public void run(){
+                        stockedGoodsService.goodsDetailsRedis(goods_id);
+                    }
+                });
+            }
+            return res;
+        }
+        catch(Exception e){
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            res.put("code", 1);
+            res.put("msg", sw.toString());
+            return res;
+        }
+    }
+
+
+
+
+
+
 
     @Autowired
     private HelloWorldService helloWorldService;

@@ -5,16 +5,20 @@ import com.example.freshonline.dao.SaledGoodsMapper;
 import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.dto.SearchResultInfo;
+import com.example.freshonline.exception.CustomException;
+import com.example.freshonline.exception.RedisException;
 import com.example.freshonline.model.SaledGoodsExample;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.utils.PicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.example.freshonline.dao.GoodsCategoryMapper;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class StockedGoodsService {
@@ -31,11 +35,48 @@ public class StockedGoodsService {
     @Autowired
     private GoodsCategoryMapper goodsCategoryMapper;
 
-
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public GoodsCategory goodsDetails(Integer id) throws Exception{
         GoodsCategory gc = goodsCategoryMapper.selectByGoodsID(id);
         return gc;
+    }
+
+    public GoodsCategory goodsDetailsRedis(Integer goods_id){
+        GoodsCategory gc = (GoodsCategory)redisTemplate.opsForValue().get("goods"+goods_id);
+        if (gc == null){
+            System.out.println("not in redis");
+            synchronized(this.getClass()){
+                // search in redis again
+                gc = (GoodsCategory)redisTemplate.opsForValue().get("goods"+goods_id);
+                if (gc == null){
+                    System.out.println("fail again in redis, go to database");
+                    gc = goodsCategoryMapper.selectByGoodsID(goods_id);
+                    redisTemplate.opsForValue().set("goods"+goods_id, gc);
+                    redisTemplate.expire("goods"+goods_id, 60*60, TimeUnit.SECONDS);
+                }
+                System.out.println("in redis");
+            }
+        }else{
+            System.out.println("in redis");
+        }
+        return gc;
+    }
+
+    public boolean updateGoodsRedis(StockedGoods goods) throws Exception{
+        // 延迟双删
+        if (! redisTemplate.delete("goods"+goods.getId())){
+            throw new RedisException("fail to delete from redis");
+        };
+        if (stockedGoodsMapper.updateByPrimaryKeySelective(goods)!=1){
+            throw new Exception();
+        };
+        wait(100);
+        if (! redisTemplate.delete("goods"+goods.getId())){
+            throw new RedisException("fail to delete from redis");
+        };
+        return true;
     }
 
 

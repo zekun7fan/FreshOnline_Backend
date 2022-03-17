@@ -44,20 +44,42 @@ public class FavouriteController {
     @PutMapping("/favourite")
     public JSONObject addFavEntry(@RequestBody JSONObject req) {
         JSONObject res = new JSONObject();
+
+        try {
             Favorite favorite = req.toJavaObject(Favorite.class);
             favouriteService.addFavourite(favorite);
             res.put("code", 0);
             return res;
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            res.put("code", 1);
+            res.put("msg", sw.toString());
+            return res;
+
+        }
     }
 
 
     @DeleteMapping("/favourite")
     public JSONObject deleteFavEntry(@RequestBody JSONObject req) {
         JSONObject res = new JSONObject();
+
+        try {
             Favorite favorite = req.toJavaObject(Favorite.class);
             favouriteService.deleteFavourite(favorite);
             res.put("code", 0);
             return res;
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            res.put("code", 1);
+            res.put("msg", sw.toString());
+            return res;
+        }
     }
     
 }
