@@ -6,11 +6,8 @@ import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.model.User;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 import com.example.freshonline.service.HelloWorldService;
-<<<<<<< HEAD
 import com.example.freshonline.service.StockedGoodsService;
-=======
 import com.example.freshonline.service.MongoDbDemo;
->>>>>>> f744e26f620dfa2f6e5f870c872f4da3368c0376
 import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,12 +22,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
-<<<<<<< HEAD
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-=======
 import java.util.List;
->>>>>>> f744e26f620dfa2f6e5f870c872f4da3368c0376
 
 
 @RestController
