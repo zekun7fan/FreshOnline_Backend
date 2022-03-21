@@ -15,4 +15,8 @@ public class HelloWorldService {
     public String m1() throws Exception {
         return helloWorldMapper.m1() + "456";
     }
+
+    public String a1(String name) throws Exception {
+        return "Hello: " + name;
+    }
 }

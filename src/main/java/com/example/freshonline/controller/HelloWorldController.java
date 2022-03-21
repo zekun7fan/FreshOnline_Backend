@@ -87,6 +87,12 @@ public class HelloWorldController {
     @Autowired
     private MongoDbDemo mongoDbDemo;
 
+    @GetMapping("/helloUnitTest")
+    public String a1(@RequestParam("hello_name") String name) throws Exception {
+        System.out.println("a1: hello_name = " + name);
+        return helloWorldService.a1(name);
+    }
+
     @GetMapping("/hello/{hello_id}")
     public String h1(@PathVariable("hello_id") Integer id, @RequestParam("hello_name") String xxx) {
         System.out.println("h1:  hello_id=" + id + "-----hello_name=" + xxx);
