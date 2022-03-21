@@ -3,10 +3,12 @@ package com.example.freshonline.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.service.StockedGoodsService;
+import org.junit.Assert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -38,18 +40,28 @@ public class StockedGoodsControllerUnitTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class TestNestPart2 {
 
-        @Test
-        public void getSearch() throws Exception {
-            String url = "/goods?price_low=1&price_high=30&brands=&sort_type=0&keyword=&page=1&category_id=&num_per_page=20";
-            SearchParams mockedParams = mock(SearchParams.class);
-            mockedParams.setPrice_low(1);
-            mockedParams.setPrice_high(30);
-            JSONObject mockedJSON = mock(JSONObject.class);
-            mockedJSON.put("mockedKey", "mockedValue");
-            Mockito.when(stockedGoodsService.getSearch(mockedParams)).thenReturn(mockedJSON);
+        @ParameterizedTest
+        @ValueSource( strings = {
+                        "/goods?price_low=1&price_high=30&brands=&sort_type=0&keyword=&page=1&category_id=&num_per_page=20",
+                        "/goods?price_low=5&price_high=100&brands=OPQ&sort_type=0&keyword=&page=1&category_id=&num_per_page=20",
+                        "/goods?brands=ABC,TNT&price_low=0&price_high=1000&sort_type=0&keyword=&page=1&category_id=&num_per_page=20",
+                        "/goods?price_low=1&price_high=30&category_id=123&brands=&sort_type=0&keyword=&page=1&num_per_page=20",
+                        "/goods?category_id=123,124&price_low=0&price_high=1000&brands=&sort_type=0&keyword=&page=1&num_per_page=20",
+                        "/goods?price_low=5&price_high=100&brands=&page=3&sort_type=0&keyword=&category_id=&num_per_page=20",
+                })
+        public void getSearch(String url) throws Exception {
+            JSONObject outputJSON = new JSONObject();
+            outputJSON.put("mockedKey", "mockedValue");
+
+            Mockito.when(stockedGoodsService.getSearch(Mockito.any(SearchParams.class))).thenReturn(outputJSON);
             MvcResult mvcResult = mockMvc.perform(get(url)).andReturn();
+
             System.out.println("response type: " + mvcResult.getResponse().getContentType());
             System.out.println("response: " + mvcResult.getResponse().getContentAsString());
+            JSONObject resp = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
+            JSONObject data = (JSONObject) resp.get("data");
+            Assert.assertEquals(0, resp.get("code"));
+            Assert.assertEquals(outputJSON, data);
         }
     }
 

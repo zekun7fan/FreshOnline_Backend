@@ -29,8 +29,6 @@ public class StockedGoodsService {
 
     @Autowired
     private SaledGoodsMapper saledGoodsMapper;
-
-    final BigDecimal MIN_PRICE = BigDecimal.valueOf(0), MAX_PRICE = BigDecimal.valueOf(10000);
     
     @Autowired
     private GoodsCategoryMapper goodsCategoryMapper;
