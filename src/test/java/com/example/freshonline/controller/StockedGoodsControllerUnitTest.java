@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.service.StockedGoodsService;
 import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,23 @@ public class StockedGoodsControllerUnitTest {
             Assert.assertEquals(0, resp.get("code"));
             Assert.assertEquals(outputJSON, data);
         }
+
+
+//        @ParameterizedTest
+//        @ValueSource( strings = {
+//                "/goods?price_low=abc"
+//        })
+//        public void getSearchwithException(String url) {
+//            try {
+//                MvcResult mvcResult = mockMvc.perform(get(url)).andReturn();
+//
+//                System.out.println("response type: " + mvcResult.getResponse().getContentType());
+//                System.out.println("response: " + mvcResult.getResponse().getContentAsString());
+//            } catch (Exception e){
+//                System.out.println("exception message: " + e.getMessage());
+//            }
+//        }
+
     }
 
 }
