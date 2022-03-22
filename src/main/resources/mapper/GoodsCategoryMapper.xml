@@ -43,7 +43,7 @@
     on cate3.parent_id = cate2.id
     inner join category as cate1
     on cate2.parent_id = cate1.id
-    where good.id = #{goodsId,jdbcType=INTEGER}
+    where good.id = #{goodsId,jdbcType=INTEGER} and good.active = 1
   </select>
 
 </mapper>

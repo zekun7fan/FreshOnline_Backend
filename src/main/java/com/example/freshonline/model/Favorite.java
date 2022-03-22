@@ -1,8 +1,10 @@
 package com.example.freshonline.model;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class Favorite {
     /**
      *

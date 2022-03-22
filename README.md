@@ -30,3 +30,5 @@
 │               └── example  
 │                   └── freshonline  
 │                       └── controller  **unit tests for controllers**    
+
+winbuild.exe is for windows docker build. Run "Set-ExecutionPolicy RemoteSigned" if no authorization.

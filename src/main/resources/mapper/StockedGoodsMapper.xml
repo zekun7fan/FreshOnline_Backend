@@ -554,7 +554,7 @@
     order by rand()
     limit 15
   </select>
-  <select id="selectByCatogary" resultMap="ResultMapWithBLOBs">
+  <select id="selectByCategory" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
     ,
@@ -587,14 +587,20 @@
         when onsale = 1 then sale_price else price end
         &lt;= ${param.price_high}
       </if>
-      <if test="param!=null and param.category_id_valid!=null">
-        and category_id in ${param.category_id_valid}
+      <if test="param!=null and param.category_id!=null and param.category_id.size>0">
+        and category_id in 
+        <foreach collection="param.category_id" index="index" item="item" open="(" separator="," close=")" >
+          #{item,jdbcType=INTEGER}
+        </foreach>
       </if>
       <if test="param!=null and param.keyword!=null">
         and name like CONCAT('%',#{param.keyword},'%')
       </if>
-      <if test="param!=null and param.brands_valid!=null">
-        and brand in ${param.brands_valid}
+      <if test="param!=null and param.brands!=null and param.brands.size>0">
+        and brand in
+        <foreach collection="param.brands" index="index" item="item" open="(" separator="," close=")">
+          #{item,jdbcType=VARCHAR}
+        </foreach>
       </if>
     </where>
     <if test="param!=null and param.sort_type!=0">
@@ -649,14 +655,20 @@
         when onsale = 1 then sale_price else price end
         &lt;= ${param.price_high}
       </if>
-      <if test="param!=null and param.category_id_valid!=null">
-        and category_id in ${param.category_id_valid}
+      <if test="param!=null and param.category_id!=null and param.category_id.size>0">
+        and category_id in
+        <foreach collection="param.category_id" index="index" item="item" open="(" separator="," close=")">
+          #{item,jdbcType=INTEGER}
+        </foreach>
       </if>
       <if test="param!=null and param.keyword!=null">
         and name like CONCAT('%',#{param.keyword},'%')
       </if>
-      <if test="param!=null and param.brands_valid!=null">
-        and brand in ${param.brands_valid}
+      <if test="param!=null and param.brands!=null and param.brands.size>0">
+        and brand in
+        <foreach collection="param.brands" index="index" item="item" open="(" separator="," close=")">
+          #{item,jdbcType=VARCHAR}
+        </foreach>
       </if>
     </where>
   </select>

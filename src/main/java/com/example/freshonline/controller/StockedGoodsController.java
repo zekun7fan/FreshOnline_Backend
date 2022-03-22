@@ -13,6 +13,7 @@ import com.example.freshonline.utils.PicUtils;
 import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,9 +69,9 @@ public class StockedGoodsController {
     * @return
     */
    @GetMapping("/goods")
-   public JSONObject getSearch(@Validated SearchParams param){
+   public JSONObject getSearch(@Validated SearchParams param) {
 
-       param.convert();
+       param.computePage();
        System.out.println(param);
 
        JSONObject output = stockedGoodsService.getSearch(param);
