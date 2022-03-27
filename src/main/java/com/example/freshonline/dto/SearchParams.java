@@ -26,9 +26,9 @@ public class SearchParams implements VerifyRequestData {
     private int page = 1;
     @NotNull
     private List<Integer> category_id = null;
-    @NotNull @Positive
-    private int num_per_page = 20;
 
+
+    private int num_per_page = 20;
     private int item_low = 1;
     private int item_high = 20;
 
