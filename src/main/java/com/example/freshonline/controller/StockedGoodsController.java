@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -125,9 +126,9 @@ public class StockedGoodsController {
     }
 
 
-    @PreAuthorize("checkUserId(#id, #session)")
+    @PreAuthorize("checkUserId(#id, #session, #jsonObject)")
     @GetMapping("/goods/{id}")
-    public JSONObject getGoods(@PathVariable("id") Integer id, HttpSession session){
+    public JSONObject getGoods(@PathVariable("id") Integer id, HttpSession session, @RequestBody JSONObject jsonObject){
         StockedGoods goods = stockedGoodsService.getGoodsByPk(id);
         return RespBuilder.create(goods, VerifyRule.NOT_NULL);
 
