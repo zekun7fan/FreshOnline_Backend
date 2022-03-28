@@ -63,7 +63,7 @@ public class UserController {
         return RespBuilder.create(orderService.getOrderByUserId(userId, position), VerifyRule.COLLECTION_NOT_EMPTY, "success", "Query error");
     }
 
-    @PostMapping("/login")
+    @PutMapping("/login")
     public JSONObject login(@RequestBody User user) {
         LoginedUserInfo loginedUserInfo = userService.login(user);
         return RespBuilder.create(loginedUserInfo, VerifyRule.NOT_NULL);
