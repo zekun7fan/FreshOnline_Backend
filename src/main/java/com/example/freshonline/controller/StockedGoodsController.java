@@ -7,7 +7,10 @@ import com.example.freshonline.constants.RespConstant;
 import com.example.freshonline.dto.GoodsPicInfo;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
+import com.example.freshonline.exception.CheckoutExcpetion;
+import com.example.freshonline.model.Cart;
 import com.example.freshonline.model.StockedGoods;
+import com.example.freshonline.service.CartService;
 import com.example.freshonline.service.StockedGoodsService;
 import com.example.freshonline.utils.PicUtils;
 import com.example.freshonline.utils.RespBuilder;
@@ -35,6 +38,25 @@ public class StockedGoodsController {
     @Autowired
     private StockedGoodsService stockedGoodsService;
 
+    @Autowired
+    private CartService cartService;
+
+    @GetMapping("/checkout/{user_id}")
+    public String test(@PathVariable("user_id") String id) {
+        Integer user_id = Integer.parseInt(id);
+        List<Cart> clist = cartService.getCart(user_id);
+        try {
+            stockedGoodsService.decreaseStorage(clist);
+        } catch (CheckoutExcpetion e) {
+            return e.getErrorGoodsList().toString();
+        }
+        return "success";
+    }
+
+
+
+
+
     @GetMapping("/goodsdetails/{goods_id}")
     public JSONObject getGoodsDetails(@PathVariable("goods_id") String id) {
         JSONObject res = new JSONObject();
@@ -57,11 +79,6 @@ public class StockedGoodsController {
         }
     }
 
-   /**
-    private final GoodsService goodsService;
-    public GoodsController(GoodsService goodsService){
-        this.goodsService=goodsService;
-    }
 
     /**
     * @author Josh Sun

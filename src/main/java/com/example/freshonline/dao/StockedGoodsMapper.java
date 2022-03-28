@@ -4,6 +4,8 @@ import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.dto.SearchResultInfo;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.model.StockedGoodsExample;
+
+import java.math.BigDecimal;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -127,4 +129,6 @@ public interface StockedGoodsMapper {
     List<StockedGoods> selectByFilter(@Param("param") SearchParams param);
 
     SearchResultInfo searchInfo(@Param("param") SearchParams param);
+
+    int reduceStorage(@Param("goods_id") Integer goods_id, @Param("amount") BigDecimal amount);
 }

@@ -5,18 +5,22 @@ import com.example.freshonline.dao.SaledGoodsMapper;
 import com.example.freshonline.dao.StockedGoodsMapper;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.dto.SearchResultInfo;
+import com.example.freshonline.exception.CheckoutExcpetion;
 import com.example.freshonline.exception.CustomException;
 import com.example.freshonline.exception.RedisException;
+import com.example.freshonline.model.Cart;
 import com.example.freshonline.model.SaledGoodsExample;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.utils.PicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.freshonline.dao.GoodsCategoryMapper;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -64,16 +68,13 @@ public class StockedGoodsService {
 
     public boolean updateGoodsRedis(StockedGoods goods) throws Exception{
         // 延迟双删
-        if (! redisTemplate.delete("goods"+goods.getId())){
-            throw new RedisException("fail to delete from redis");
-        };
+        redisTemplate.delete("goods"+goods.getId());
+
         if (stockedGoodsMapper.updateByPrimaryKeySelective(goods)!=1){
             throw new Exception();
         };
-        wait(100);
-        if (! redisTemplate.delete("goods"+goods.getId())){
-            throw new RedisException("fail to delete from redis");
-        };
+        Thread.sleep(100);
+        redisTemplate.delete("goods"+goods.getId());
         return true;
     }
 
@@ -167,5 +168,38 @@ public class StockedGoodsService {
             return picDeleted && stockedGoodsMapper.deleteByPrimaryKey(id)==1;
         }
     }
+
+    @Transactional
+    public Integer decreaseStorage(List<Cart> Cart_entries) throws CheckoutExcpetion{
+        List<Integer> invalid_Ids = new ArrayList<>();
+        for (Cart c : Cart_entries){
+            redisTemplate.delete("goods"+c.getGoodsId());
+            try{
+                stockedGoodsMapper.reduceStorage(c.getGoodsId(), c.getCount());
+            }catch(org.springframework.dao.DataIntegrityViolationException e ){
+                invalid_Ids.add(c.getGoodsId());
+            }
+        }
+        // if invalid entries happens, signal which goods are incorrect (usually insufficient storage)
+        if (invalid_Ids.size()>0){
+            throw new CheckoutExcpetion(invalid_Ids);
+        }
+        // wait 100seconds
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // delete from redis again for data consistency
+        for (Cart c : Cart_entries){
+            redisTemplate.delete("goods"+c.getGoodsId());
+        }
+        
+        return 0;
+    }
+
+
+
+    
 
 }

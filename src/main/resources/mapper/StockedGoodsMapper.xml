@@ -672,4 +672,8 @@
       </if>
     </where>
   </select>
+  <update id="reduceStorage" parameterType="map">
+    update stocked_goods set storage = storage - #{amount, jdbcType=DECIMAL}
+     where id = #{goods_id, jdbcType=INTEGER};
+  </update>
 </mapper>
