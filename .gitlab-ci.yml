@@ -2,7 +2,7 @@ build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
-    - pkill -f 'app.jar'
+    - pkill -f 'ece'
     - ./mvnw install -DskipTests
   environment:
     name: Dev
@@ -26,7 +26,7 @@ deploy-prod:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - file="$(find . -type f -iname "FreshOnline*.jar")"
-    - cp -v "$file" "app.jar" 
-    - nohup java -jar app.jar &
+    - cp -v "$file" "ece.jar" 
+    - nohup java -jar ece.jar &
     - java -jar app.jar > yourservice.log 2>&1 &
     - echo "done" 
