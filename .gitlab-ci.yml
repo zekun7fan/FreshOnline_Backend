@@ -18,7 +18,6 @@ test-job2:
     - echo "This job tests something, but takes more time than test-job1."
     - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
     - echo "docker "
-    - pkill -f 'java -jar app.jar'
   allow_failure: true
 
 
@@ -31,16 +30,9 @@ deploy-prod:
     - cp -v "$file" "/home/gitlab-runner/app.jar"  
   script:
     - echo "done"
-    - exit 0
   only:
     - master
 
-release_job:
-  stage: .post
-  before_script:
-   - nohup java -jar app.jar & disown -ah && exit
-  script:
-    - echo "done"
 
 
   
