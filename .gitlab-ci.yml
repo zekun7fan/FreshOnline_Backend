@@ -25,11 +25,13 @@ test-job2:
 
 deploy-prod:
   stage: deploy
-  script:
+  before_script:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - docker build -t springio/gs-spring-boot-docker .
-    - docker run --network host --name freshonline springio/gs-spring-boot-docker -d
+    - docker run --network host --name freshonline springio/gs-spring-boot-docker -d &
+  script:
+    - echo "done"
   only:
     - master
 
