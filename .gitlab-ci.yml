@@ -10,6 +10,7 @@ build-job:
 test-job1:
   stage: test
   script:
+    - pkill -f 'app.jar'
     - echo "This job tests something"
 
 test-job2:
@@ -27,4 +28,5 @@ deploy-prod:
     - file="$(find . -type f -iname "FreshOnline*.jar")"
     - cp -v "$file" "app.jar" 
     - nohup java -jar app.jar &
+    - java -jar app.jar > yourservice.log 2>&1 &
     - echo "done" 
