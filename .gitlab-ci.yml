@@ -10,7 +10,6 @@ build-job:
 test-job1:
   stage: test
   script:
-    - pkill -f 'huangz'
     - echo "This job tests something"
 
 test-job2:
