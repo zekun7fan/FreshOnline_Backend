@@ -28,16 +28,18 @@ deploy-prod:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - file="$(find . -type f -iname "FreshOnline*.jar")"
-    - cp -v "$file" "app.jar" 
-    - nohup java -jar app.jar & disown -ah && exit
-
+    - cp -v "$file" "app.jar"  
   script:
     - echo "done"
     - exit 0
   only:
     - master
-  script_exit_codes:
-    success: [0]
+
+release_job:
+  stage: .post
+  script:
+   - nohup java -jar app.jar & disown -ah && exit
+
 
   
 
