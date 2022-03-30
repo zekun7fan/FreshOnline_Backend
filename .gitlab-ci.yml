@@ -25,8 +25,4 @@ deploy-prod:
   script:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-    - file="$(find . -type f -iname "FreshOnline*.jar")"
-    - cp -v "$file" "huangz.jar" 
-    - java -jar app.jar > yourservice.log 2>&1 &
-    - sleep -5
-    - echo "done" 
+
