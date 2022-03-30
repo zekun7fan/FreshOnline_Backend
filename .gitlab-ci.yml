@@ -22,6 +22,11 @@ test-job2:
 deploy-prod:
   stage: deploy
   script:
+    - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+    - file="$(find . -type f -iname "FreshOnline*.jar")"
+    - cp -v "$file" "app.jar" 
+    - pkill -f "java"
+    - nohup java -jar app.jar -d &
 
 
