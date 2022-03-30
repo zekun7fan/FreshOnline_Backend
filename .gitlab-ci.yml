@@ -24,6 +24,9 @@ deploy-prod:
   script:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-    - chmod +x linuxappbuild.sh
-    - ./linuxappbuild.sh
+    - docker stop freshonline
+    - docker rm freshonline
+    - docker build -t springio/gs-spring-boot-docker .
+    - docker run -p 8080:8080 --name freshonline springio/gs-spring-boot-docker -d
+
 
