@@ -2,6 +2,7 @@ build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
+    - pkill -f 'app.jar'
     - ./mvnw install -DskipTests
   environment:
     name: Dev
@@ -10,7 +11,6 @@ build-job:
 test-job1:
   stage: test
   script:
-    - pkill -f 'app.jar'
     - echo "This job tests something"
 
 test-job2:
