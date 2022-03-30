@@ -31,7 +31,7 @@ deploy-prod:
     - docker build -t springio/gs-spring-boot-docker .
     - docker run --network host --name freshonline springio/gs-spring-boot-docker -d &
   script:
-    - echo "done"
+    - echo "done" && exit
   only:
     - master
 
