@@ -32,7 +32,8 @@ deploy-prod:
     - nohup java -jar app.jar & disown -ah && exit
 
   script:
-    - echo "done" && exit
+    - echo "done"
+    - exit 0
   only:
     - master
 
