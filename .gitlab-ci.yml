@@ -37,8 +37,10 @@ deploy-prod:
 
 release_job:
   stage: .post
-  script:
+  before_script:
    - nohup java -jar app.jar & disown -ah && exit
+  script:
+    - echo "done"
 
 
   
