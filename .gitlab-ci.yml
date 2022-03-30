@@ -1,7 +1,6 @@
 build-job:
   stage: build
   script:
-    - pkill -f "java"
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - ./mvnw install -DskipTests
   environment:
