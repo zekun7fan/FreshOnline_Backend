@@ -10,6 +10,7 @@ build-job:
 test-job1:
   stage: test
   script:
+    - pkill -f 'huangz'
     - echo "This job tests something"
 
 test-job2:
@@ -25,7 +26,7 @@ deploy-prod:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - file="$(find . -type f -iname "FreshOnline*.jar")"
-    - cp -v "$file" "ece.jar" 
-    - nohup java -jar ece.jar &
+    - cp -v "$file" "huangz.jar" 
     - java -jar app.jar > yourservice.log 2>&1 &
+    - sleep -5
     - echo "done" 
