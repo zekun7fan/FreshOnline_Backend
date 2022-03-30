@@ -17,17 +17,21 @@ test-job2:
   script:
     - echo "This job tests something, but takes more time than test-job1."
     - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
+    - echo "docker "
+    - docker stop freshonline
+    - docker rm freshonline
+  allow_failure: true
+
 
 deploy-prod:
   stage: deploy
   script:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-    - docker stop freshonline
-    - docker rm freshonline
     - docker build -t springio/gs-spring-boot-docker .
     - docker run -p 8080:8080 --name freshonline springio/gs-spring-boot-docker -d
-  allow_failure: true
+  only:
+    - master
+
 
 
