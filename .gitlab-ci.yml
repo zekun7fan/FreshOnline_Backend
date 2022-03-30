@@ -28,6 +28,4 @@ deploy-prod:
     - file="$(find . -type f -iname "FreshOnline*.jar")"
     - cp -v "$file" "app.jar" 
     - nohup java -jar app.jar &
-    - 
-
-
+    - echo "done" 
