@@ -11,6 +11,7 @@ test-job1:
   stage: test
   script:
     - echo "This job tests something"
+  allow_failure: true
 
 test-job2:
   stage: test
