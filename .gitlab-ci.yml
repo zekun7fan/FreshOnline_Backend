@@ -19,8 +19,8 @@ deploy-prod:
     - ./mvnw package -DskipTests
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
     - file="$(find . -type f -iname "FreshOnline*.jar")"
-    - cp -v "$file" "/home/gitlab-runner/app.jar"  
-    - sudo systemctl restart ece.service -S && echo ""
+    - cp -v "$file" "/root/app.jar"  
+    - sudo systemctl restart ece.service && echo ""
   script:
     - echo "done"
   only:
