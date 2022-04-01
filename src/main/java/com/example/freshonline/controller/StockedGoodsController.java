@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.freshonline.dto.CreateOrderDetail;
 import com.example.freshonline.event.CreateOrderEvent;
-
+import com.example.freshonline.event.CustomEventPublisher;
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 
 import javax.servlet.http.HttpSession;
@@ -48,7 +48,7 @@ public class StockedGoodsController {
     private CartService cartService;
 
     @Autowired
-    private CustomEventListener customEventListener;
+    private CustomEventPublisher customEventPublisher;
 
     @GetMapping("/checkout/{user_id}")
     public JSONObject test(@PathVariable("user_id") String id) {
@@ -69,11 +69,10 @@ public class StockedGoodsController {
         for(Cart c:clist){
             map.put(c.getGoodsId(),c.getCount());
         }
-        CreateOrderDetail detail = new CreateOrderDetail(user_id, map);
-        CreateOrderEvent createOrderEvent = new CreateOrderEvent(new Object(), detail);
-        customEventListener.handleCreateOrderEvent(createOrderEvent);
+        CreateOrderDetail detail = new CreateOrderDetail(user_id, "", map);
+        customEventPublisher.publishCreateOrderEvent(detail);
         res.put("code", 0);
-        res.put("msg", "success");s
+        res.put("msg", "success");
         return res ;
     }
 

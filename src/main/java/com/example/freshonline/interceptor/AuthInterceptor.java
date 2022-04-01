@@ -52,7 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String token = request.getHeader(TOKEN_KEY);
         if (token == null){
             onAuthFailed(response, RespConstant.TO_LOGIN_CODE, PLEASE_LOGIN_OR_REGISTER);
-            return false;
+            return true;
         }
         UserJwtPayload userJwtPayload = JwtUtils.verifyToken(token);
         if (userJwtPayload==null){

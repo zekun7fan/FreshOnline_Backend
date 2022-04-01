@@ -30,6 +30,7 @@ public class OrderService {
         order.setUserId(userId);
         order.setOrderTime(LocalDateTime.now());
         order.setStatus((byte) OrderStatus.CREATE.getStatus());
+        order.setLocation(location);
         orderMapper.insertSelective(order);
         return order.getOrderId();
     }
