@@ -63,20 +63,20 @@ public class UserController {
         return RespBuilder.create(orderService.getOrderByUserId(userId, position), VerifyRule.COLLECTION_NOT_EMPTY, "success", "Query error");
     }
 
-    @PutMapping("/login")
+    @PutMapping("/toLogin")
     public JSONObject login(@RequestBody User user) {
         LoginedUserInfo loginedUserInfo = userService.login(user);
         return RespBuilder.create(loginedUserInfo, VerifyRule.NOT_NULL);
     }
 
 
-    @PostMapping("/register")
+    @PostMapping("/toRegister")
     public JSONObject register(@RequestBody User user) {
         boolean res = userService.register(user);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
-    @PutMapping("/logout")
+    @PutMapping("/toLogout")
     public JSONObject logout(@RequestBody User user) {
         LoginedUserInfo loginedUserInfo = userService.logout(user);
         return RespBuilder.create(loginedUserInfo, VerifyRule.NOT_NULL);

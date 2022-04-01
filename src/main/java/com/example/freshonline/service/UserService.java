@@ -63,6 +63,14 @@ public class UserService {
         return true;
     }
 
+//    public boolean logout(User user){
+//        User u = userMapper.selectByPrimaryKey(user.getId());
+//        if (u == null){
+//            throw new CustomException(CustomizeErrorCode.USER_NOT_LOGIN);
+//        }
+//        return true;
+//    }
+
     public LoginedUserInfo logout(User user) {
         User u = userMapper.selectByPrimaryKey(user.getId());
         if (u == null) {

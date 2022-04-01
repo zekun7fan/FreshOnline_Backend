@@ -26,6 +26,6 @@ public class PaymentMethodService {
     public List<PaymentMethod> getPaymentMethodByUserId(Integer userId){
         PaymentMethodExample example = new PaymentMethodExample();
         example.createCriteria().andUserIdEqualTo(userId);
-        return paymentMethodMapper.selectByExample(example);
+        return paymentMethodMapper.selectByExampleWithBLOBs(example);
     }
 }

@@ -39,7 +39,7 @@ public class CustomEventListener {
                 CreateOrderDetail detail = event.getDetail();
 
                 // create order
-                Integer orderId = orderService.createOrder(detail.getUserId());
+                Integer orderId = orderService.createOrder(detail.getUserId(), detail.getLocation());
 
                 // record saled goods
                 saledGoodsService.addSaledGoods(orderId, detail.getOrderedGoods());

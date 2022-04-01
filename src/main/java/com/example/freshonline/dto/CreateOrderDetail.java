@@ -15,5 +15,7 @@ public class CreateOrderDetail {
 
     private Integer userId;
 
+    private String location;
+
     private Map<Integer, BigDecimal> orderedGoods;
 }

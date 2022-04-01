@@ -11,10 +11,14 @@ import com.example.freshonline.utils.TimeUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.tags.form.SelectTag;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class AuthInterceptor implements HandlerInterceptor {
@@ -23,25 +27,25 @@ public class AuthInterceptor implements HandlerInterceptor {
     private static final String PLEASE_LOGIN_OR_REGISTER = "please login or register";
     private static final String USER_INFO_EXPIRED = "user info is expired, please login or register again";
     private static final String PERMISSION_DENIED = "you have no permission to view these content";
-    private static final String TOKEN_KEY = "fresh_online_token";
+    private static final String TOKEN_KEY = "token";
 
-    private static final String userTokenKey = "user_token";
 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-//        return checkAuth(request, response, request.getSession());
-        request.getSession().setAttribute(UserInfoConstant.ID, 5);
-        return true;
+        String uri = request.getRequestURI();
+
+        return checkAuth(request, response, request.getSession());
+//        request.getSession().setAttribute(UserInfoConstant.ID, 5);
     }
 
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        String user_token = request.getHeader(userTokenKey);
+        String user_token = request.getHeader(TOKEN_KEY);
         String token = JwtUtils.updateToken(user_token);
-        response.setHeader(userTokenKey, token);
+        response.setHeader(TOKEN_KEY, token);
     }
 
     private boolean checkAuth(HttpServletRequest request, HttpServletResponse response, HttpSession session){

@@ -14,7 +14,7 @@ public class CustomEventPublisher {
 
     public void publishCreateOrderEvent(CreateOrderDetail detail) {
 
-        CreateOrderEvent createOrderEvent = new CreateOrderEvent(null, detail);
+        CreateOrderEvent createOrderEvent = new CreateOrderEvent(detail, detail);
         publisher.publishEvent(createOrderEvent);
 
     }

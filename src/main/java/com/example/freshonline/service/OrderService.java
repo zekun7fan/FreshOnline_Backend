@@ -25,7 +25,7 @@ public class OrderService {
     }
 
 
-    public Integer createOrder(Integer userId){
+    public Integer createOrder(Integer userId, String location){
         Order order = new Order();
         order.setUserId(userId);
         order.setOrderTime(LocalDateTime.now());

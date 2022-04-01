@@ -2,10 +2,7 @@ package com.example.freshonline.config;
 import com.example.freshonline.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 
 @Configuration
@@ -15,9 +12,10 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+                .allowedOriginPatterns("http://localhost:3000/")
                 .allowCredentials(true)
                 .allowedMethods("*")
+                .allowedHeaders("*")
                 .maxAge(3600);
     }
 
@@ -35,6 +33,14 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login","/register","/home","/");
+                .excludePathPatterns(
+                        "/home",
+                        "/",
+                        "/toLogin",
+                        "/toRegister",
+                        "/categoryTree",
+                        "/weekly_special",
+                        "/random_goods"
+                );
     }
 }
