@@ -8,6 +8,7 @@ import com.example.freshonline.dto.GoodsPicInfo;
 import com.example.freshonline.dto.SearchParams;
 import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.exception.CheckoutExcpetion;
+import com.example.freshonline.listener.CustomEventListener;
 import com.example.freshonline.model.Cart;
 import com.example.freshonline.model.StockedGoods;
 import com.example.freshonline.service.CartService;
@@ -20,6 +21,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.example.freshonline.dto.CreateOrderDetail;
+import com.example.freshonline.event.CreateOrderEvent;
 
 import com.example.freshonline.model.joined_tables.GoodsCategory;
 
@@ -27,6 +30,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -42,16 +47,34 @@ public class StockedGoodsController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private CustomEventListener customEventListener;
+
     @GetMapping("/checkout/{user_id}")
-    public String test(@PathVariable("user_id") String id) {
+    public JSONObject test(@PathVariable("user_id") String id) {
+        JSONObject res = new JSONObject();
         Integer user_id = Integer.parseInt(id);
         List<Cart> clist = cartService.getCart(user_id);
+        // try to decrement the storage count in the database
         try {
             stockedGoodsService.decreaseStorage(clist);
         } catch (CheckoutExcpetion e) {
-            return e.getErrorGoodsList().toString();
+            // if failed return list of goods id cannot be purchased
+            res.put("code", 1);
+            res.put("msg", e.getErrorGoodsList().toString());
+            return res ;
         }
-        return "success";
+        // send the event to event listener
+        HashMap<Integer,BigDecimal> map = new HashMap<Integer,BigDecimal>();
+        for(Cart c:clist){
+            map.put(c.getGoodsId(),c.getCount());
+        }
+        CreateOrderDetail detail = new CreateOrderDetail(user_id, map);
+        CreateOrderEvent createOrderEvent = new CreateOrderEvent(new Object(), detail);
+        customEventListener.handleCreateOrderEvent(createOrderEvent);
+        res.put("code", 0);
+        res.put("msg", "success");s
+        return res ;
     }
 
 

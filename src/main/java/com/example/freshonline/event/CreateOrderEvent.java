@@ -10,6 +10,7 @@ public class CreateOrderEvent extends ApplicationEvent {
 
     public CreateOrderEvent(Object source, CreateOrderDetail detail) {
         super(source);
+        this.detail = detail;
     }
 
     public CreateOrderDetail getDetail() {
