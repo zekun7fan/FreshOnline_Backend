@@ -32,7 +32,7 @@ public class SaledGoodsService {
             StockedGoods stockedGoods = stockedGoodsMapper.selectByPrimaryKey(goodsId);
             BigDecimal price = stockedGoods.getPrice();
             BigDecimal salePrice = stockedGoods.getSalePrice();
-            BigDecimal priceOnPurchase = salePrice == null ? salePrice : price;
+            BigDecimal priceOnPurchase = salePrice != null ? salePrice : price;
             SaledGoods saledGoods = new SaledGoods();
             saledGoods.setOrderId(orderId);
             saledGoods.setGoodsId(goodsId);
