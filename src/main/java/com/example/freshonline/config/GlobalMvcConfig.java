@@ -40,7 +40,8 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
                         "/toRegister",
                         "/categoryTree",
                         "/weekly_special",
-                        "/random_goods"
+                        "/random_goods",
+                        "/goods"
                 );
     }
 }
