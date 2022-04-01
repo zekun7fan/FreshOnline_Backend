@@ -19,7 +19,7 @@ public class GloabalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().configurationSource(request -> {
                     var cors = new CorsConfiguration();
-                    cors.setAllowedOrigins(List.of("http://localhost:3000/","http://137.184.8.39:8080"));
+                    cors.setAllowedOrigins(List.of("http://localhost:3000/","http://137.184.8.39:3000"));
                     cors.setAllowedMethods(List.of("*"));
                     cors.setAllowedHeaders(List.of("*"));
                     cors.setAllowCredentials(true);

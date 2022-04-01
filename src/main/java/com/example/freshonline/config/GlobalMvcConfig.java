@@ -12,7 +12,7 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:3000/","http://137.184.8.39:8080")
+                .allowedOriginPatterns("http://localhost:3000/","http://137.184.8.39:3000")
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("*")
@@ -29,18 +29,18 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     }
 
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthInterceptor())
-//                .addPathPatterns("/**")
-//                .excludePathPatterns(
-//                        "/home",
-//                        "/",
-//                        "/toLogin",
-//                        "/toRegister",
-//                        "/categoryTree",
-//                        "/weekly_special",
-//                        "/random_goods"
-//                );
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/home",
+                        "/",
+                        "/toLogin",
+                        "/toRegister",
+                        "/categoryTree",
+                        "/weekly_special",
+                        "/random_goods"
+                );
+    }
 }
