@@ -29,18 +29,18 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     }
 
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns(
-                        "/home",
-                        "/",
-                        "/toLogin",
-                        "/toRegister",
-                        "/categoryTree",
-                        "/weekly_special",
-                        "/random_goods"
-                );
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new AuthInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns(
+//                        "/home",
+//                        "/",
+//                        "/toLogin",
+//                        "/toRegister",
+//                        "/categoryTree",
+//                        "/weekly_special",
+//                        "/random_goods"
+//                );
+//    }
 }

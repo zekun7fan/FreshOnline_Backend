@@ -46,7 +46,9 @@ public class CustomEventListener {
 
                 // delete goods from cart
                 ArrayList<Integer> goodsIdList = new ArrayList<>(detail.getOrderedGoods().keySet());
-                cartService.batchDeleteFromCart(detail.getUserId(), goodsIdList);
+                if (goodsIdList.size() > 0){
+                    cartService.batchDeleteFromCart(detail.getUserId(), goodsIdList);
+                }
             }
         });
     }
