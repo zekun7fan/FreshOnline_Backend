@@ -12,7 +12,7 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:3000/","http://137.184.8.39:3000")
+                .allowedOriginPatterns("http://localhost:3000","http://137.184.8.39:3000")
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("*")
@@ -40,7 +40,8 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
                         "/toRegister",
                         "/categoryTree",
                         "/weekly_special",
-                        "/random_goods"
+                        "/random_goods",
+                        "/goods/pictures/**"
                 );
     }
 }

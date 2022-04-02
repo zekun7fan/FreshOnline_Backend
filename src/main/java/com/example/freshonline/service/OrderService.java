@@ -29,7 +29,7 @@ public class OrderService {
         Order order = new Order();
         order.setUserId(userId);
         order.setOrderTime(LocalDateTime.now());
-        order.setStatus((byte) OrderStatus.CREATE.getStatus());
+        order.setStatus((byte) OrderStatus.CREATED.getStatus());
         order.setLocation(location);
         orderMapper.insertSelective(order);
         return order.getOrderId();

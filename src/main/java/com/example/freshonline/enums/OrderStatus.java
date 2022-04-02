@@ -2,10 +2,10 @@ package com.example.freshonline.enums;
 
 public enum OrderStatus {
 
-    CREATE(0),
-    CANCEL(1),
+    CREATED(0),
+    CANCELLED(1),
     PAID(2),
-    IN_DELIVERY(3),
+    IN_DELIVERING(3),
     FINISHED(4)
     ;
 
