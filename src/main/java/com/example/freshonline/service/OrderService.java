@@ -34,4 +34,21 @@ public class OrderService {
         orderMapper.insertSelective(order);
         return order.getOrderId();
     }
+
+
+    public void deliveryOrder(Integer orderId){
+        Order order = new Order();
+        order.setOrderId(orderId);
+        order.setStatus((byte)OrderStatus.IN_DELIVERING.getStatus());
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
+    public void finishOrder(Integer orderId){
+        Order order = new Order();
+        order.setOrderId(orderId);
+        order.setFinishTime(LocalDateTime.now());
+        order.setStatus((byte)OrderStatus.FINISHED.getStatus());
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
 }

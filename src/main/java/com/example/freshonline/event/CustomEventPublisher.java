@@ -16,7 +16,18 @@ public class CustomEventPublisher {
 
         CreateOrderEvent createOrderEvent = new CreateOrderEvent(detail, detail);
         publisher.publishEvent(createOrderEvent);
+    }
 
+    public void publishDeliveryOrderEvent(Integer orderId, long handleDelay){
+        DeliveryOrderEvent deliveryOrderEvent = new DeliveryOrderEvent(new Object(), orderId, handleDelay);
+        publisher.publishEvent(deliveryOrderEvent);
+
+    }
+
+
+    public void publishFinishOrderEvent(Integer orderId, long handleDelay){
+        FinishOrderEvent finishOrderEvent = new FinishOrderEvent(new Object(), orderId, handleDelay);
+        publisher.publishEvent(finishOrderEvent);
     }
 
 
