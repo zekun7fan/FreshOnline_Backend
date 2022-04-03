@@ -44,15 +44,20 @@ public class CustomEventListener {
             @Override
             public void run() {
                 CreateOrderDetail detail = event.getDetail();
+                System.out.println("break1");
 
                 // create order
                 Integer orderId = orderService.createOrder(detail.getUserId(), detail.getLocation());
+                System.out.println("break2");
 
                 // record saled goods
                 saledGoodsService.addSaledGoods(orderId, detail.getOrderedGoods());
+                System.out.println("break3");
 
                 // delete goods from cart
                 ArrayList<Integer> goodsIdList = new ArrayList<>(detail.getOrderedGoods().keySet());
+                System.out.println("break4");
+
                 if (goodsIdList.size() > 0){
                     cartService.batchDeleteFromCart(detail.getUserId(), goodsIdList);
                 }

@@ -70,7 +70,7 @@ public class StockedGoodsController {
         } catch (CheckoutExcpetion e) {
             // if failed return list of goods id cannot be purchased
             res.put("code", 1);
-            res.put("msg", e.getErrorGoodsList().toString());
+            res.put("msg", e.getErrorGoodsList());
             return res ;
         }
         // send the event to event listener
