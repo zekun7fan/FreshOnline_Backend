@@ -43,18 +43,5 @@ public class GlobalExceptionHandler {
             ex.printStackTrace();
         }
     }
-
-    @ExceptionHandler(ConnectException.class)
-    void handle(ConnectException e, HttpServletRequest request, HttpServletResponse response) {
-        response.setStatus(Response.SC_OK);
-        try {
-            PrintWriter writer = response.getWriter();
-            String resp = JSONObject.toJSONString(RespBuilder.createFailedRsp("Network Exception!"));
-            writer.write(resp);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     
 }
