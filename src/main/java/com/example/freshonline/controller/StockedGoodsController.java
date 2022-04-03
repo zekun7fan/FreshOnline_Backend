@@ -21,6 +21,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.freshonline.dto.CheckOutInfo;
 import com.example.freshonline.dto.CreateOrderDetail;
 import com.example.freshonline.event.CreateOrderEvent;
 import com.example.freshonline.event.CustomEventPublisher;
@@ -50,11 +52,11 @@ public class StockedGoodsController {
     @Autowired
     private CustomEventPublisher customEventPublisher;
 
-    @GetMapping("/checkout/{user_id}")
-    public JSONObject test(@PathVariable("user_id") String id) {
+    @PostMapping("/checkout")
+    public JSONObject test(@RequestBody CheckOutInfo checkOutInfo) {
+        System.out.println(checkOutInfo.getLocation());
         JSONObject res = new JSONObject();
-        Integer user_id = Integer.parseInt(id);
-        List<Cart> clist = cartService.getCart(user_id);
+        List<Cart> clist = cartService.getCart(checkOutInfo.getId());
         // try to decrement the storage count in the database
         try {
             stockedGoodsService.decreaseStorage(clist);
@@ -69,7 +71,7 @@ public class StockedGoodsController {
         for(Cart c:clist){
             map.put(c.getGoodsId(),c.getCount());
         }
-        CreateOrderDetail detail = new CreateOrderDetail(user_id, "", map);
+        CreateOrderDetail detail = new CreateOrderDetail(checkOutInfo.getId(), checkOutInfo.getLocation(), map);
         customEventPublisher.publishCreateOrderEvent(detail);
         res.put("code", 0);
         res.put("msg", "success");
