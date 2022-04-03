@@ -11,7 +11,6 @@ import com.example.freshonline.exception.RedisException;
 import com.example.freshonline.model.Cart;
 import com.example.freshonline.model.SaledGoodsExample;
 import com.example.freshonline.model.StockedGoods;
-import com.example.freshonline.utils.PicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,9 @@ public class StockedGoodsService {
     
     @Autowired
     private GoodsCategoryMapper goodsCategoryMapper;
+
+    @Autowired
+    private GoodsPictureService pictureService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -134,16 +136,7 @@ public class StockedGoodsService {
 
 
     public boolean addGoods(StockedGoods goods){
-        Integer dummyId = goods.getId();
-        goods.setId(null);
-        if (stockedGoodsMapper.insertSelective(goods) != 1){
-            return false;
-        }
-        Integer id = goods.getId();
-        String pic = goods.getPic();
-        String new_pic = PicUtils.change(dummyId, id, pic);
-        goods.setPic(new_pic);
-        return stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
+        return stockedGoodsMapper.insertSelective(goods) == 1;
     }
 
 
@@ -156,16 +149,16 @@ public class StockedGoodsService {
         saledGoodsExample.createCriteria().andGoodsIdEqualTo(id);
         long num = saledGoodsMapper.countByExample(saledGoodsExample);
         // delete related pic
-        boolean picDeleted = PicUtils.deleteAllPicByGoodsId(id);
+        pictureService.delete(id);
         if (num > 0){
             // mark goods off the shelf, but not delete from db
             StockedGoods goods = new StockedGoods();
             goods.setId(id);
             goods.setActive(false);
-            return picDeleted && stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
+            return stockedGoodsMapper.updateByPrimaryKeySelective(goods)==1;
         }else{
             // delete goods from stocked_goods table
-            return picDeleted && stockedGoodsMapper.deleteByPrimaryKey(id)==1;
+            return stockedGoodsMapper.deleteByPrimaryKey(id)==1;
         }
     }
 

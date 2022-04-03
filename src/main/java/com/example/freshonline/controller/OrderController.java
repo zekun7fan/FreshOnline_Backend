@@ -30,9 +30,9 @@ public class OrderController {
     @PostMapping("/cancelOrder")
     public
     JSONObject cancelOrder(@RequestBody Order order) {
-        Order result = orderService.updateOrder(order, (byte)OrderStatus.CANCEL.ordinal());
+        Order result = orderService.updateOrder(order, (byte)OrderStatus.CANCELLED.ordinal());
         orderService.addBackStorage(result);
-        return RespBuilder.create(result.getStatus()==OrderStatus.CANCEL.ordinal(), VerifyRule.TRUE,
+        return RespBuilder.create(result.getStatus()==OrderStatus.CANCELLED.ordinal(), VerifyRule.TRUE,
                 "Order cancelled successfully","Operation fail");
     }
 }
