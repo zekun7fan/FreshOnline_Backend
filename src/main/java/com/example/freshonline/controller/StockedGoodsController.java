@@ -64,6 +64,7 @@ public class StockedGoodsController {
         System.out.println(checkOutInfo.getLocation());
         JSONObject res = new JSONObject();
         List<Cart> clist = cartService.getCart(checkOutInfo.getId());
+        System.out.println("checkout1");
         // try to decrement the storage count in the database
         try {
             stockedGoodsService.decreaseStorage(clist);
@@ -73,11 +74,14 @@ public class StockedGoodsController {
             res.put("msg", e.getErrorGoodsList());
             return res ;
         }
+        System.out.println("checkout2");
         // send the event to event listener
         HashMap<Integer,BigDecimal> map = new HashMap<Integer,BigDecimal>();
         for(Cart c:clist){
             map.put(c.getGoodsId(),c.getCount());
         }
+        System.out.println("checkout3");
+
         CreateOrderDetail detail = new CreateOrderDetail(checkOutInfo.getId(), checkOutInfo.getLocation(), map);
         customEventPublisher.publishCreateOrderEvent(detail);
         res.put("code", 0);
