@@ -37,6 +37,7 @@
       <include refid="Base_Column_List" />
       from `order`
       where order_id = #{order_id,jdbcType=INTEGER}
+        order by order_time desc
     </select>
     <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
       <!--
@@ -48,6 +49,7 @@
       <include refid="Base_Column_List" />
       from `order`
       where user_id = #{user_id,jdbcType=INTEGER}
+      order by order_time desc
       limit #{position,jdbcType=INTEGER} , 5
     </select>
 </mapper>
