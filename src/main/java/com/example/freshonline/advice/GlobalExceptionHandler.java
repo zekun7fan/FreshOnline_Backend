@@ -43,7 +43,6 @@ public class GlobalExceptionHandler {
             ex.printStackTrace();
         }
     }
-<<<<<<< HEAD
 
     // @ExceptionHandler(ConnectException.class)
     // void handle(ConnectException e, HttpServletRequest request, HttpServletResponse response) {
@@ -57,7 +56,5 @@ public class GlobalExceptionHandler {
     //     }
     // }
 
-=======
->>>>>>> 407df55148080df832ea9720dbea1dd0ae084544
     
 }
