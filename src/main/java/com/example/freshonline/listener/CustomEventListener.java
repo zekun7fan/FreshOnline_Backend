@@ -61,6 +61,7 @@ public class CustomEventListener {
                 if (goodsIdList.size() > 0){
                     cartService.batchDeleteFromCart(detail.getUserId(), goodsIdList);
                 }
+                System.out.println("break5");
             }
         });
     }
