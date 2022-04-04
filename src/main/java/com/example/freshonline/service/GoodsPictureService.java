@@ -39,7 +39,7 @@ public class GoodsPictureService {
         } catch (UnknownHostException e) {
            return null;
         }
-        sb.append("http://").append(localHost.getHostAddress()).append(":8080").
+        sb.append("http://").append(localHost.getCanonicalHostName()).append(":8080").
                 append("/goods/pictures").append("/").append(goodsId).append("/").append(uuid).append(".jpeg");
         String url = sb.toString();
         GoodsPicInfo goodsPicInfo = new GoodsPicInfo(url, uuid, uuid, data);
