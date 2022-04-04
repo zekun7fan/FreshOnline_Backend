@@ -136,13 +136,13 @@ public class StockedGoodsController {
     }
 
 
-    @PostMapping("/goods/picture/{id}")
+    @PostMapping("/goods/pictures/{id}")
     public JSONObject uploadGoodsPictures(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile multipartFile){
         GoodsPicInfo goodsPicInfo = pictureService.save(id, multipartFile);
         return RespBuilder.create(goodsPicInfo, VerifyRule.NOT_NULL);
     }
 
-    @DeleteMapping("/goods/picture/{id}")
+    @DeleteMapping("/goods/pictures/{id}")
     public JSONObject deleteGoodsPictures(@PathVariable("id") Integer id, @RequestBody GoodsPicInfo info){
         GoodsPicInfo goodsPicInfo = pictureService.delete(id, info.getUrl());
         return RespBuilder.create(goodsPicInfo, VerifyRule.NOT_NULL);
