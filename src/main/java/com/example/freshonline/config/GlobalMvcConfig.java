@@ -42,6 +42,7 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
                         "/weekly_special",
                         "/random_goods",
                         "/goods/pictures/**",
+                        "/goods/pictures/**/**",
                         "/goods"
                 );
     }
