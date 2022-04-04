@@ -34,6 +34,8 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(
+                        "/goods/pictures/**",
+                        "/goods/pictures/**/**",
                         "/home",
                         "/",
                         "/toLogin",
@@ -41,8 +43,6 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
                         "/categoryTree",
                         "/weekly_special",
                         "/random_goods",
-                        "/goods/pictures/**",
-                        "/goods/pictures/**/**",
                         "/goods"
                 );
     }
