@@ -34,10 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String uri = request.getRequestURI();
-
         return checkAuth(request, response, request.getSession());
-//        request.getSession().setAttribute(UserInfoConstant.ID, 5);
     }
 
 
@@ -48,11 +45,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         response.setHeader(TOKEN_KEY, token);
     }
 
+
+
     private boolean checkAuth(HttpServletRequest request, HttpServletResponse response, HttpSession session){
         String token = request.getHeader(TOKEN_KEY);
         if (token == null){
             onAuthFailed(response, RespConstant.TO_LOGIN_CODE, PLEASE_LOGIN_OR_REGISTER);
-            return true;
+            return false;
         }
         UserJwtPayload userJwtPayload = JwtUtils.verifyToken(token);
         if (userJwtPayload==null){

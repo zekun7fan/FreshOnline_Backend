@@ -2,13 +2,18 @@ package com.example.freshonline.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.freshonline.enums.respVerifyRule.VerifyRule;
+import com.example.freshonline.model.CartGoods;
 import com.example.freshonline.service.CartService;
 
+import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.freshonline.model.Cart;
 
+import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
@@ -19,142 +24,41 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    static public class Id {
-        private int userId;
-        private int goodsId;
 
-        public Id() {
-        }
 
-        public int getUserId() {
-            return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
-        public int getGoodsId() {
-            return goodsId;
-        }
-
-        public void setGoodsId(int goodsId) {
-            this.goodsId = goodsId;
-        }
-    }
-
-     
     @GetMapping("/cart_element")
-    public JSONObject getCartGood(@RequestParam("user_id") String user_id, @RequestParam("goods_id") String goods_id) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Integer userId = Integer.parseInt(user_id);
-            Integer goodsId = Integer.parseInt(goods_id);
-            Cart cart_goods = cartService.getCartEntry(userId,goodsId);
-        
-            JSONObject data = (JSONObject) JSONObject.toJSON(cart_goods);
-            res.put("code", 0);
-            res.put("data", data);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#userId, #session)")
+    public JSONObject getCartGood(@RequestParam("user_id") Integer userId, @RequestParam("goods_id") Integer goodsId, HttpSession session) {
+        Cart cartGoods = cartService.getCartEntry(userId, goodsId);
+        return RespBuilder.create(cartGoods, VerifyRule.NOT_NULL);
     }
 
     @GetMapping("/cart")
-    public JSONObject getCartGoods(@RequestParam("user_id") String user_id) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Integer id = Integer.parseInt(user_id);
-            List<Cart> cart_goods = cartService.getCart(id);
-            JSONArray data = (JSONArray) JSONArray.toJSON(cart_goods);
-            res.put("code", 0);
-            res.put("data", data);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#userId, #session)")
+    public JSONObject getCartGoods(@RequestParam("user_id") Integer userId, HttpSession session) {
+        List<Cart> list = cartService.getCart(userId);
+        return RespBuilder.create(list, VerifyRule.NOT_NULL);
     }
 
     @PutMapping("/cart")
-    public JSONObject addCartEntry(@RequestBody JSONObject req) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Cart cart = req.toJavaObject(Cart.class);
-            cartService.addToCart(cart);
-            res.put("code", 0);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#cart.userId, #session)")
+    public JSONObject addCartEntry(@RequestBody Cart cart, HttpSession session) {
+        boolean res = cartService.addToCart(cart);
+        return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @PostMapping("/cart")
-    public JSONObject updateCartEntry(@RequestBody JSONObject req) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Cart cart = req.toJavaObject(Cart.class);
-            cartService.updateToCart(cart);
-            res.put("code", 0);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#cart.userId, #session)")
+    public JSONObject updateCartEntry(@RequestBody Cart cart, HttpSession session) {
+        boolean res = cartService.updateToCart(cart);
+        return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @DeleteMapping("/cart")
-    public JSONObject deleteCartEntry(@RequestBody JSONObject req) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Id id = req.toJavaObject(Id.class);
-            cartService.deleteFromCart(id.getUserId(),id.getGoodsId());
-            res.put("code", 0);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#cartGoods.userId, #session)")
+    public JSONObject deleteCartEntry(@RequestBody CartGoods cartGoods, HttpSession session) {
+        boolean res = cartService.deleteFromCart(cartGoods.getUserId(),cartGoods.getGoodsId());
+        return RespBuilder.create(res, VerifyRule.TRUE);
     }
-
-
 
 }

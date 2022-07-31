@@ -8,13 +8,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaledGoodsDetail extends SaledGoods {
-    @Getter
-    @Setter
+
     public String name;
-    @Getter
-    @Setter
     public String pic;
-    @Getter
-    @Setter
-    public BigDecimal storage;
+//    public BigDecimal storage;
 }

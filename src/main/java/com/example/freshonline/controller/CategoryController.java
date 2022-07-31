@@ -8,8 +8,10 @@ import com.example.freshonline.model.Category;
 import com.example.freshonline.service.CategoryService;
 import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -27,13 +29,15 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public JSONObject addCategory(@RequestBody Category category) {
+    @PreAuthorize("isAdmin(#session)")
+    public JSONObject addCategory(@RequestBody Category category, HttpSession session) {
         boolean res = categoryService.addCategory(category);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @DeleteMapping("/category")
-    public JSONObject delCategory(@Valid @RequestBody CategoryTreeNode node) {
+    @PreAuthorize("isAdmin(#session)")
+    public JSONObject delCategory(@Valid @RequestBody CategoryTreeNode node, HttpSession session) {
         List<CategoryTreeNode> failedDelNodeList = categoryService.delSubCategoryTree(node);
         return RespBuilder.create(failedDelNodeList, VerifyRule.COLLECTION_EMPTY);
     }

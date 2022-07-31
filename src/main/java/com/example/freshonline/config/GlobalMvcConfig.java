@@ -12,7 +12,7 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:3000","http://137.184.8.39:3000")
+                .allowedOriginPatterns("http://138.197.147.136:4000", "http://localhost:4000")
                 .allowCredentials(true)
                 .allowedMethods("*")
                 .allowedHeaders("*")
@@ -20,30 +20,22 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
     }
 
 
+
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/pics/goods_pics/**").addResourceLocations(
-                "file:"+System.getProperty("user.dir")+System.getProperty("file.separator")+"pics"
-                        +System.getProperty("file.separator")+"goods_pics"+System.getProperty("file.separator")
-        );
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/goods/pictures/**",
+                        "/goods/pictures/**/**",
+                        "/home",
+                        "/",
+                        "/toLogin",
+                        "/toRegister",
+                        "/categoryTree",
+                        "/weekly_special",
+                        "/random_goods",
+                        "/goods"
+                );
     }
-
-
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthInterceptor())
-//                .addPathPatterns("/**")
-//                .excludePathPatterns(
-//                        "/goods/pictures/**",
-//                        "/goods/pictures/**/**",
-//                        "/home",
-//                        "/",
-//                        "/toLogin",
-//                        "/toRegister",
-//                        "/categoryTree",
-//                        "/weekly_special",
-//                        "/random_goods",
-//                        "/goods"
-//                );
-//    }
 }

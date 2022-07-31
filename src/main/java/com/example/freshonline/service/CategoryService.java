@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-/**
- * @author Josh Sun
- */
+
 @Service
 public class CategoryService {
 

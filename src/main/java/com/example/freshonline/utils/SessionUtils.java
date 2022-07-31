@@ -8,9 +8,11 @@ import com.example.freshonline.exception.CustomizeErrorCode;
 
 import javax.servlet.http.HttpSession;
 
+
+
 public class SessionUtils {
 
-    public static Integer getUserId(HttpSession session) throws Exception {
+    public static Integer getUserId(HttpSession session) {
         Integer id = (Integer) session.getAttribute(UserInfoConstant.ID);
         if (id == null){
             throw new CustomException(CustomizeErrorCode.USER_NOT_LOGIN);
@@ -18,7 +20,7 @@ public class SessionUtils {
         return id;
     }
 
-    public static UserType getUserType(HttpSession session) throws Exception {
+    public static UserType getUserType(HttpSession session)  {
         Integer type = (Integer) session.getAttribute(UserInfoConstant.TYPE);
         if (type == null){
             throw new CustomException(CustomizeErrorCode.USER_NOT_LOGIN);
@@ -29,9 +31,6 @@ public class SessionUtils {
         }
         return UserType.CUSTOMER;
     }
-
-
-
 
 
 

@@ -25,7 +25,7 @@ public class GoodsPictureService {
     private StockedGoodsMapper stockedGoodsMapper;
 
     public GoodsPicInfo save(Integer goodsId, MultipartFile multipartFile) {
-        byte[] data = new byte[0];
+        byte[] data;
         try {
             data = multipartFile.getBytes();
         } catch (IOException e) {
@@ -33,24 +33,16 @@ public class GoodsPictureService {
         }
         StringBuilder sb = new StringBuilder();
         String uuid = UUID.randomUUID().toString();
-        InetAddress localHost;
-        try {
-            localHost = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-           return null;
-        }
-        sb.append("http://").append("137.184.8.39").append(":8080").
-                append("/goods/pictures").append("/").append(goodsId).append("/").append(uuid).append(".jpeg");
+        sb.append(goodsId).append("-").append(uuid);
         String url = sb.toString();
         GoodsPicInfo goodsPicInfo = new GoodsPicInfo(url, uuid, uuid, data);
         mapper.save(goodsPicInfo);
-
         StockedGoods stockedGoods = stockedGoodsMapper.selectByPrimaryKey(goodsId);
         String pic = StringUtils.addPicUrl(stockedGoods.getPic(), url);
         stockedGoods.setPic(pic);
         int n = stockedGoodsMapper.updateByPrimaryKeySelective(stockedGoods);
         goodsPicInfo.setData(null);
-        return n==1 ? goodsPicInfo : null;
+        return n == 1 ? goodsPicInfo : null;
     }
 
     public GoodsPicInfo delete(Integer goodsId, String url){

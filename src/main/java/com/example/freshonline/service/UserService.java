@@ -1,5 +1,6 @@
 package com.example.freshonline.service;
 
+import com.example.freshonline.dao.UserExtMapper;
 import com.example.freshonline.dao.UserMapper;
 import com.example.freshonline.dto.LoginedUserInfo;
 import com.example.freshonline.dto.UserJwtPayload;
@@ -24,6 +25,9 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserExtMapper userExtMapper;
+
     public User getUserById(Integer id) {
         return userMapper.selectByPrimaryKey(id);
     }
@@ -33,11 +37,21 @@ public class UserService {
         return "";
     }
 
+
+    public boolean updatePassword(User user) {
+        return userMapper.updateByPrimaryKeySelective(user) == 1;
+    }
+
+
+    public boolean updateAddr(User user) {
+        return userMapper.updateByPrimaryKeySelective(user) == 1;
+    }
+
     public User checkUser(Integer userId, String passWord) {
         User user = new User();
         user.setId(userId);
         user.setPassword(passWord);
-        return userMapper.selectUserByIdPassword(user);
+        return userExtMapper.selectUserByIdPassword(user);
     }
 
     public LoginedUserInfo login(User user) {

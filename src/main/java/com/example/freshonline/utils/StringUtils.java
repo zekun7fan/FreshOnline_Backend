@@ -18,7 +18,7 @@ public class StringUtils {
             return "";
         }
         List<String> list = Arrays.stream(oldUrlList.split(",")).collect(Collectors.toList());
-        list.removeIf(next -> next.equals(url));
+        list.removeIf(str -> str.equals(url));
         int sz = list.size();
         StringBuilder newUrlList = new StringBuilder();
         for (int i = 0; i < sz; i++) {

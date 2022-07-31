@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CustomEventPublisher {
 
@@ -28,6 +30,12 @@ public class CustomEventPublisher {
     public void publishFinishOrderEvent(Integer orderId, long handleDelay){
         FinishOrderEvent finishOrderEvent = new FinishOrderEvent(new Object(), orderId, handleDelay);
         publisher.publishEvent(finishOrderEvent);
+    }
+
+
+    public void publishFlushStorageEvent(List<Integer> list) {
+        FlushStorageEvent flushStorageEvent = new FlushStorageEvent(new Object(), list);
+        publisher.publishEvent(flushStorageEvent);
     }
 
 

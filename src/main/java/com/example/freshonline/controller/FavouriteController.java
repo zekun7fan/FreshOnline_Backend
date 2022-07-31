@@ -1,15 +1,20 @@
 package com.example.freshonline.controller;
 
+import com.example.freshonline.enums.respVerifyRule.VerifyRule;
 import com.example.freshonline.service.FavouriteService;
 import com.example.freshonline.model.Favorite;
 
+import com.example.freshonline.utils.RespBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
+import javax.servlet.http.HttpSession;
 
 @RestController
 public class FavouriteController {
@@ -18,68 +23,26 @@ public class FavouriteController {
     private FavouriteService favouriteService;
 
     @GetMapping("/favourite")
-    public JSONObject checkFavourite(@RequestParam("user_id") String user_id, @RequestParam("goods_id") String goods_id) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Integer userID = Integer.parseInt(user_id);
-            Integer goodsID = Integer.parseInt(goods_id);
-            
-            res.put("code", 0);
-            res.put("result", favouriteService.isFavourite(userID, goodsID));
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#userId, #session)")
+    public JSONObject checkFavourite(@RequestParam("user_id") Integer userId, @RequestParam("goods_id") Integer goodsId, HttpSession session) {
+        boolean res = favouriteService.isFavourite(userId, goodsId);
+        return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
 
     @PutMapping("/favourite")
-    public JSONObject addFavEntry(@RequestBody JSONObject req) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Favorite favorite = req.toJavaObject(Favorite.class);
-            favouriteService.addFavourite(favorite);
-            res.put("code", 0);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-
-        }
+    @PreAuthorize("checkUserId(#favorite.userId, #session)")
+    public JSONObject addFavEntry(@RequestBody Favorite favorite, HttpSession session) {
+        boolean res = favouriteService.addFavourite(favorite);
+        return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
 
     @DeleteMapping("/favourite")
-    public JSONObject deleteFavEntry(@RequestBody JSONObject req) {
-        JSONObject res = new JSONObject();
-
-        try {
-            Favorite favorite = req.toJavaObject(Favorite.class);
-            favouriteService.deleteFavourite(favorite);
-            res.put("code", 0);
-            return res;
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            res.put("code", 1);
-            res.put("msg", sw.toString());
-            return res;
-        }
+    @PreAuthorize("checkUserId(#favorite.userId, #session)")
+    public JSONObject deleteFavEntry(@RequestBody Favorite favorite, HttpSession session) {
+        boolean res = favouriteService.deleteFavourite(favorite);
+        return RespBuilder.create(res, VerifyRule.TRUE);
     }
     
 }

@@ -18,18 +18,17 @@ public class FavouriteService {
 
     public boolean isFavourite(Integer userID, Integer goodsID){
         FavoriteExample example = new FavoriteExample();
-        example.or().andUserIdEqualTo(userID).andGoodsIdEqualTo(goodsID);
+        example.createCriteria().andUserIdEqualTo(userID).andGoodsIdEqualTo(goodsID);
         long count = favoriteMapper.countByExample(example);
-        return count!=0;
-
+        return count != 0;
     }
 
-    public void addFavourite(Favorite favorite) {
-        favoriteMapper.insert( favorite);
+    public boolean addFavourite(Favorite favorite) {
+        return favoriteMapper.insert(favorite) != 0;
     }
 
-    public void deleteFavourite(Favorite favorite) {
-        favoriteMapper.deleteByPrimaryKey( favorite.getUserId(), favorite.getGoodsId());
+    public boolean deleteFavourite(Favorite favorite) {
+        return favoriteMapper.deleteByPrimaryKey( favorite.getUserId(), favorite.getGoodsId()) == 1;
     }
     
 }
