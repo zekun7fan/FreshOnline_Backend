@@ -21,28 +21,35 @@ This repository is the backend part of it.
 5. enable many customers to place orders concurrently (using redis and lua script)
 
 6. add/delete/modify stocked goods
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.58.14 PM.png)
+
+![https://user-images.githubusercontent.com/89892494/182271682-0ed836ff-13f7-4969-8ce4-9913617aac30.png]
+
 7. add/delete category of stocked goods
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.58.14 PM.png)
+
+![https://user-images.githubusercontent.com/89892494/182270614-de33f46f-69d5-4e40-b3b7-2861f689ac43.png]
+
+
 8. query and sort stocked goods by different filter condition 
 (category, name, price, brand)
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.22.17 PM.png)
+![https://user-images.githubusercontent.com/89892494/182270657-328c6c35-2770-4a5c-9685-a909b0d918d3.png]
+9. add/remove goods into cart
+![https://user-images.githubusercontent.com/89892494/182270647-7da22192-966c-45e1-baec-744cf113ece0.png]
+10. view/pay/cancer placed orders
+![https://user-images.githubusercontent.com/89892494/182270645-84987154-bede-49bf-88e5-941704e04580.png]
+11. deliver paid orders (simulated by scheduled tasks)
+![https://user-images.githubusercontent.com/89892494/182270640-19493d37-9090-428b-87b1-415bde9ef478.png]
+12. view/edit customer account information
+![https://user-images.githubusercontent.com/89892494/182270652-fc466a32-67d8-42a2-8dc8-27e6fe52aa9d.png]
+13. view/edit customer address
+![https://user-images.githubusercontent.com/89892494/182270650-eb70e3f9-5247-4966-9ddc-5e4f8074ea12.png]
+14. view/edit customer payment method
+![https://user-images.githubusercontent.com/89892494/182270648-e4eba293-3b60-4f96-a7d0-aadfa6da7be1.png]
+15. rate and comment on the goods you bought
 
-8. add/remove goods into cart
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.24.19 PM.png)
+![https://user-images.githubusercontent.com/89892494/182270639-35359241-0917-429b-90d8-08b48dcc112a.png]
 
-9. view/pay/cancer placed orders
-
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.28.30 PM.png)
-10. deliver paid orders (simulated by scheduled tasks)
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.29.05 PM.png)
-11. view/edit customer account information
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.23.04 PM.png)
-12. view/edit customer address
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.23.13 PM.png)
-13. view/edit customer payment method
-![](/Users/fanzekun/Desktop/Screen Shot 2022-08-01 at 8.23.27 PM.png)
-
+16. add/remove goods into favorite list
+![https://user-images.githubusercontent.com/89892494/182270634-79dbe44d-ecb5-469d-b985-d7567662e1ec.png]
     
 # test accounts
 
