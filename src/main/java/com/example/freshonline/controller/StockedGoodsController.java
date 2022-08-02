@@ -105,14 +105,12 @@ public class StockedGoodsController {
 
 
     @PostMapping("/goods/pictures/{id}")
-    @PreAuthorize("isAdmin(#session)")
     public JSONObject uploadGoodsPictures(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile multipartFile, HttpSession session) {
         GoodsPicInfo goodsPicInfo = pictureService.save(id, multipartFile);
         return RespBuilder.create(goodsPicInfo, VerifyRule.NOT_NULL);
     }
 
     @DeleteMapping("/goods/pictures/{id}")
-    @PreAuthorize("isAdmin(#session)")
     public JSONObject deleteGoodsPictures(@PathVariable("id") Integer id, @RequestBody GoodsPicInfo info, HttpSession session) {
         GoodsPicInfo goodsPicInfo = pictureService.delete(id, info.getUrl());
         return RespBuilder.create(goodsPicInfo, VerifyRule.NOT_NULL);
@@ -126,7 +124,6 @@ public class StockedGoodsController {
     }
 
     @PostMapping("/goods")
-    @PreAuthorize("isAdmin(#session)")
     public JSONObject addGoods(@RequestBody StockedGoods goods, HttpSession session) {
         boolean res = stockedGoodsService.addGoods(goods);
         return RespBuilder.create(res, VerifyRule.TRUE);
@@ -143,14 +140,12 @@ public class StockedGoodsController {
 
 
     @PutMapping("/goods")
-    @PreAuthorize("isAdmin(#session)")
     public JSONObject updateGoods(@RequestBody StockedGoods goods, HttpSession session) {
         boolean res = stockedGoodsService.updateGoods(goods);
         return RespBuilder.create(res, VerifyRule.TRUE);
     }
 
     @DeleteMapping("/goods/{id}")
-    @PreAuthorize("isAdmin(#session)")
     public JSONObject deleteGoods(@PathVariable("id") Integer id, HttpSession session) {
         boolean res = stockedGoodsService.deleteGoods(id);
         return RespBuilder.create(res, VerifyRule.TRUE);
@@ -158,7 +153,7 @@ public class StockedGoodsController {
 
 
     @GetMapping("/random_goods")
-    public JSONObject getRandomGoods(@RequestParam(value = "catogory_id_list", required = true) List<Integer> categoryIdList) {
+    public JSONObject getRandomGoods(@RequestParam(value = "category_id_list", required = true) List<Integer> categoryIdList) {
         List<StockedGoods> list = stockedGoodsService.getRandomGoods(categoryIdList);
         return RespBuilder.create(list, VerifyRule.COLLECTION_NOT_EMPTY);
     }

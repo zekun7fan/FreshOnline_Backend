@@ -34,3 +34,8 @@ This repository is the backend part of it.
 14. view/edit customer address
 15. view/edit customer payment method
 
+
+
+
+# test accounts
+

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 public class GlobalMvcConfig implements WebMvcConfigurer {
 
-    // handler cors problem
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -18,7 +18,6 @@ public class GlobalMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .maxAge(3600);
     }
-
 
 
     @Override
