@@ -25,6 +25,8 @@ This repository is the backend part of it.
 6. add/delete category of stocked goods
 7. query and sort stocked goods by different filter condition 
 (category, name, price, brand)
+
+
 8. add/remove goods into cart
 9. add/remove goods into favorite list
 10. enable many customers to place orders concurrently (using redis and lua script)
@@ -38,4 +40,9 @@ This repository is the backend part of it.
 
 
 # test accounts
+
+
+email: ct@qq.com, password:123, user type: CUSTOMER
+
+
 
